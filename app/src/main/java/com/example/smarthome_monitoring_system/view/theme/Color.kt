@@ -1,4 +1,4 @@
-package com.example.smarthome_monitoring_system.ui.theme
+package com.example.smarthome_monitoring_system.view.theme
 
 import androidx.compose.ui.graphics.Color
 
