@@ -1,37 +1,16 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
-
-# Android Studio
 .gradle/
 .idea/
-*.iml
+.kotlin/
+build/
+**/build/
 local.properties
-
-# Build files
-/build/
-app/build/
-
-# Firebase
-google-services.json
-
-# OS files
 .DS_Store
 
-# Node
-node_modules/
+firebase/functions/node_modules/
+firebase/.firebase/
 
-# Logs
+hardware-simulator/node_modules/
+
+.env
 *.log
+service-account*.json

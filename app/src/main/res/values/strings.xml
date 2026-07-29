@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">SmartHome-Monitoring-System</string>
+    <string name="app_name">NexHome</string>
+    <string name="menu">Menu</string>
+    <string name="notifications">Notifications</string>
+    <string name="app_logo">App Logo</string>
+    <string name="stat_title_devices_on">Devices On</string>
+    <string name="stat_value_devices_on">16</string>
+    <string name="content_desc_stat_icon">Devices Logo</string>
+    <string name="content_desc_quick_action_icon">Qucik Action Icon</string>
+    <string name="quick_action_label_floors">Qucik Floor Actions</string>
+    <string name="quick_action_label_default">Qucik Actions</string>
 </resources>

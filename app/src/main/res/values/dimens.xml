@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Toolbar -->
+    <dimen name="toolbar_height">56dp</dimen>
+
+    <!-- Icons -->
+    <dimen name="toolbar_icon_size">40dp</dimen>
+    <dimen name="app_logo_size">35dp</dimen>
+
+    <!-- Margins -->
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+
+    <!-- Text -->
+    <dimen name="toolbar_title_size">20sp</dimen>
+
+</resources>

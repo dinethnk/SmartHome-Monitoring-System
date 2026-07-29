@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.SmartHomeMonitoringSystem" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.SmartHomeMonitoringSystem"
+        parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Primary app colors -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+
+    </style>
+
 </resources>
