@@ -1,0 +1,29 @@
+package com.example.smarthome.data.firebase
+
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
+object FirebaseDataSource {
+
+    private const val DATABASE_URL =
+        "https://nexhome-91fc8-default-rtdb.asia-southeast1.firebasedatabase.app/"
+
+    private val database: FirebaseDatabase by lazy {
+        FirebaseDatabase.getInstance(DATABASE_URL)
+    }
+
+    val floorsReference: DatabaseReference
+        get() = database.getReference("floors")
+
+    val devicesReference: DatabaseReference
+        get() = database.getReference("devices")
+
+    val schedulesReference: DatabaseReference
+        get() = database.getReference("schedules")
+
+    val usageRecordsReference: DatabaseReference
+        get() = database.getReference("usageRecords")
+
+    val alertsReference: DatabaseReference
+        get() = database.getReference("alerts")
+}

@@ -1,47 +1,72 @@
 package com.example.smarthome_monitoring_system
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.smarthome_monitoring_system.view.theme.SmartHomeMonitoringSystemTheme
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
 
 class MainActivity : ComponentActivity() {
+
+    companion object {
+        private const val TAG = "FIREBASE_TEST"
+
+        private const val DATABASE_URL =
+            "https://nexhome-91fc8-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            SmartHomeMonitoringSystemTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
+
+        testFirebaseConnection()
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    private fun testFirebaseConnection() {
+        val database = FirebaseDatabase.getInstance(DATABASE_URL)
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SmartHomeMonitoringSystemTheme {
-        Greeting("Android")
+        val testReference = database
+            .getReference("connectionTest")
+            .child("androidApp")
+
+        Log.d(
+            "FIREBASE_TEST",
+            "Writing to: ${testReference}"
+        )
+
+        val testData = mapOf(
+            "message" to "Android connected successfully",
+            "connected" to true,
+            "timestamp" to ServerValue.TIMESTAMP
+        )
+
+        testReference.setValue(testData)
+            .addOnSuccessListener {
+                Log.d(
+                    "FIREBASE_TEST",
+                    "Firebase connection successful"
+                )
+
+                testReference.get()
+                    .addOnSuccessListener { snapshot ->
+                        Log.d(
+                            "FIREBASE_TEST",
+                            "Read-back value: ${snapshot.value}"
+                        )
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e(
+                            "FIREBASE_TEST",
+                            "Read-back failed",
+                            exception
+                        )
+                    }
+            }
+            .addOnFailureListener { exception ->
+                Log.e(
+                    "FIREBASE_TEST",
+                    "Firebase connection failed",
+                    exception
+                )
+            }
     }
 }

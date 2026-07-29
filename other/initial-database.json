@@ -1,0 +1,148 @@
+{
+  "floors": {
+    "floor_001": {
+      "name": "Ground Floor",
+      "floorPlanUrl": "",
+      "gridRows": 8,
+      "gridColumns": 8,
+      "createdAt": 1785290000000,
+      "updatedAt": 1785290000000
+    },
+    "floor_002": {
+      "name": "First Floor",
+      "floorPlanUrl": "",
+      "gridRows": 8,
+      "gridColumns": 8,
+      "createdAt": 1785290000000,
+      "updatedAt": 1785290000000
+    }
+  },
+  "devices": {
+    "device_001": {
+      "name": "Living Room Outlet",
+      "type": "OUTLET",
+      "floorId": "floor_001",
+      "roomName": "Living Room",
+      "gridRow": 3,
+      "gridColumn": 4,
+      "status": "OFF",
+      "lastUpdatedAt": 1785290000000,
+      "lastUpdatedBy": "MOBILE_APP"
+    },
+    "device_002": {
+      "name": "Living Room Switch Board",
+      "type": "MULTI_SWITCH",
+      "floorId": "floor_001",
+      "roomName": "Living Room",
+      "gridRow": 2,
+      "gridColumn": 5,
+      "status": "ON",
+      "lastUpdatedAt": 1785290000000,
+      "lastUpdatedBy": "SIMULATOR",
+      "channels": {
+        "channel_001": {
+          "name": "Main Light",
+          "position": 1,
+          "status": "ON",
+          "lastUpdatedAt": 1785290000000
+        },
+        "channel_002": {
+          "name": "Wall Light",
+          "position": 2,
+          "status": "OFF",
+          "lastUpdatedAt": 1785290000000
+        },
+        "channel_003": {
+          "name": "Ceiling Fan",
+          "position": 3,
+          "status": "OFF",
+          "lastUpdatedAt": 1785290000000
+        }
+      }
+    },
+    "device_003": {
+      "name": "Bedroom Iron",
+      "type": "SAFETY_DEVICE",
+      "floorId": "floor_002",
+      "roomName": "Bedroom",
+      "gridRow": 5,
+      "gridColumn": 2,
+      "status": "OFF",
+      "turnedOnAt": 0,
+      "maxOnDurationSeconds": 1800,
+      "lastUpdatedAt": 1785290000000,
+      "lastUpdatedBy": "MOBILE_APP"
+    },
+    "device_004": {
+      "name": "Outdoor Light",
+      "type": "LIGHT",
+      "floorId": "floor_001",
+      "roomName": "Front Garden",
+      "gridRow": 7,
+      "gridColumn": 4,
+      "status": "OFF",
+      "lastUpdatedAt": 1785290000000,
+      "lastUpdatedBy": "MOBILE_APP"
+    },
+    "device_005": {
+      "name": "Front Door Camera",
+      "type": "CAMERA",
+      "floorId": "floor_001",
+      "roomName": "Front Entrance",
+      "gridRow": 1,
+      "gridColumn": 4,
+      "status": "ON",
+      "streamType": "SNAPSHOT",
+      "streamUrl": "",
+      "snapshotUpdatedAt": 1785290000000,
+      "lastUpdatedAt": 1785290000000,
+      "lastUpdatedBy": "SIMULATOR"
+    }
+  },
+  "schedules": {
+    "device_004": {
+      "deviceId": "device_004",
+      "enabled": true,
+      "onTime": "18:00",
+      "offTime": "06:00",
+      "timezone": "Asia/Colombo",
+      "lastExecutedAction": "OFF",
+      "lastExecutedAt": 1785290000000,
+      "updatedAt": 1785290000000
+    }
+  },
+  "usageRecords": {
+    "device_003": {
+      "sample_record_001": {
+        "deviceId": "device_003",
+        "startedAt": 1785288200000,
+        "endedAt": 1785290000000,
+        "durationSeconds": 1800,
+        "startSource": "MOBILE_APP",
+        "shutdownReason": "SAFETY_CUTOFF"
+      }
+    }
+  },
+  "alerts": {
+    "sample_alert_001": {
+      "deviceId": "device_003",
+      "deviceName": "Bedroom Iron",
+      "type": "SAFETY_CUTOFF",
+      "severity": "HIGH",
+      "title": "Safety cutoff activated",
+      "message": "Bedroom Iron was automatically turned off.",
+      "createdAt": 1785290000000,
+      "read": false
+    }
+  },
+  "simulatorEvents": {
+    "sample_event_001": {
+      "deviceId": "device_001",
+      "deviceName": "Living Room Outlet",
+      "previousStatus": "ON",
+      "newStatus": "OFF",
+      "source": "MOBILE_APP",
+      "createdAt": 1785290000000
+    }
+  }
+}

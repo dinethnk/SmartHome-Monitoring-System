@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "614945972249",
+    "firebase_url": "https://nexhome-91fc8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "nexhome-91fc8",
+    "storage_bucket": "nexhome-91fc8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614945972249:android:2061315907dd2a427d4a88",
+        "android_client_info": {
+          "package_name": "com.example.smarthome_monitoring_system"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcF_gICTxrckh1VzeizFb_yhfRuP8aA4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
