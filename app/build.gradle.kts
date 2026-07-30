@@ -57,6 +57,8 @@ dependencies {
         platform("com.google.firebase:firebase-bom:34.16.0")
     )
 
+    implementation("androidx.appcompat:appcompat:1.7.1")
+
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-storage")

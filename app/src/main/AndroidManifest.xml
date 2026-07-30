@@ -16,19 +16,25 @@
         android:theme="@style/Theme.SmartHomeMonitoringSystem"
         android:label="@string/app_name">
 
+        <activity android:name=".view.reports.ReportsActivity" />
+        <activity android:name=".view.camera.CameraActivity" />
+        <activity android:name=".view.schedule.LightScheduleActivity" />
+
+        <activity android:name=".view.devices.SafetyDeviceActivity" />
+        <activity android:name=".view.devices.MultiSwitchControlActivity" />
+        <activity android:name=".view.devices.OutletControlActivity" />
+
+        <activity android:name=".view.floors.FloorPlanActivity" />
+        <activity android:name=".view.floors.FloorFormActivity" />
+        <activity android:name=".view.floors.ManageFloorsActivity" />
+
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.SmartHomeMonitoringSystem"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize">
+            android:name=".view.dashboard.DashboardActivity"
+            android:exported="true">
 
             <intent-filter>
-                <action
-                    android:name="android.intent.action.MAIN" />
-
-                <category
-                    android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
