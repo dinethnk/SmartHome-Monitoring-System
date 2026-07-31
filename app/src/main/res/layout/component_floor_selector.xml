@@ -1,6 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp"
+    app:strokeColor="#E7E7EC"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="112dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <!-- Previous floor button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonPreviousFloor"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="Previous floor"
+            app:backgroundTint="#F0E9F8"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/ic_arrow_left"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:iconTint="#6750A4" />
+
+        <!-- Selected floor information -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="12dp">
+
+            <TextView
+                android:id="@+id/textFloorLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CURRENT FLOOR"
+                android:textColor="#77727D"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textFloorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Ground Floor"
+                android:textColor="#211F26"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textFloorDeviceCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="3 connected devices"
+                android:textColor="#00866A"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <!-- Next floor button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonNextFloor"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="Next floor"
+            app:backgroundTint="#F0E9F8"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/ic_arrow_right"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:iconTint="#6750A4" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

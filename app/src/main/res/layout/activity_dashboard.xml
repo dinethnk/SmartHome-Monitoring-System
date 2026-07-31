@@ -1,52 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="?attr/colorSurface"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context=".view.dashboard.DashboardActivity">
 
     <include
-        android:id="@+id/topBar"
+        android:id="@+id/dashboardTopBar"
         layout="@layout/component_top_bar"
         android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/textView"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/dashboardScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="28dp"
+                android:text="Good Morning, Dineth 👋"
+                android:textColor="#211F26"
+                android:textSize="27sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="Welcome back to your smart home"
+                android:textColor="#69646E"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="28dp"
+                android:text="Your Home"
+                android:textColor="#211F26"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <include
+                android:id="@+id/floorSelector"
+                layout="@layout/component_floor_selector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="28dp"
+                android:text="Home Overview"
+                android:textColor="#211F26"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerHomeOverview"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:layout_marginTop="12dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingStart="20dp"
+                android:paddingEnd="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_stat_card" />
+
+            <TextView
+                android:id="@+id/textQuickActionsHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:text="Quick Actions"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerQuickActions"
+                android:layout_width="match_parent"
+                android:layout_height="112dp"
+                android:layout_marginTop="12dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingStart="20dp"
+                android:paddingEnd="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_quick_action" />
+
+            <TextView
+                android:id="@+id/textRecentActivityHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:text="Recent Activity"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerRecentActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="24dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_recent_activity" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="Good Morning, Dineth 👋"
-        android:textSize="28sp"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="14dp"/>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Welcome back!"
-        android:textSize="20sp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginBottom="8dp" />
-
-    <include
-        android:id="@+id/cardStat"
-        layout="@layout/item_stat_card"
-        android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_height="wrap_content"/>
-
-    <include
-        android:id="@+id/cardQuickAction"
-        layout="@layout/item_quick_action"
-        android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_height="wrap_content"/>
+        android:background="?attr/colorSurface"
+        android:elevation="8dp"
+        app:menu="@menu/menu_bottom_navigation" />
 
 </LinearLayout>

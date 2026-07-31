@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-</resources>
+    <item
+        android:id="@+id/navigationDashboard"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Dashboard" />
+
+    <item
+        android:id="@+id/navigationFloors"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="Floors" />
+
+    <item
+        android:id="@+id/navigationCameras"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Cameras" />
+
+    <item
+        android:id="@+id/navigationReports"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Reports" />
+
+</menu>

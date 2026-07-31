@@ -1,57 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardQuickAction"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:checkable="false"
+    android:id="@+id/quickActionCard"
+    android:layout_width="112dp"
+    android:layout_height="112dp"
+    android:layout_marginEnd="12dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="18dp"
     app:cardElevation="1dp"
-    app:rippleColor="?attr/colorPrimary"
-    app:strokeWidth="0dp">
+    app:strokeColor="#E8E5EC"
+    app:strokeWidth="1dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <ImageView
-            android:id="@+id/ivQuickActionIcon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:contentDescription="@string/content_desc_quick_action_icon"
-            android:src="@drawable/ic_quick_action_floors"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="?attr/colorPrimary" />
+            android:id="@+id/imageQuickActionIcon"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_stat_icon"
+            android:contentDescription="Quick action icon"
+            android:padding="10dp"
+            android:src="@drawable/ic_devices"
+            app:tint="#6750A4" />
 
         <TextView
-            android:id="@+id/tvQuickActionLabel"
-            android:layout_width="0dp"
+            android:id="@+id/textQuickActionTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:ellipsize="end"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:maxLines="1"
-            android:text="@string/quick_action_label_default"
-            android:textAppearance="?attr/textAppearanceLabelLarge"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivQuickActionIcon"
-            tools:text="@string/quick_action_label_floors" />
+            android:maxLines="2"
+            android:textColor="#211F26"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            tools:text="Manage Floors" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
