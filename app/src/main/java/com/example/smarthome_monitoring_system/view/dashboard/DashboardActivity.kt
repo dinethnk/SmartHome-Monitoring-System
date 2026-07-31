@@ -12,6 +12,9 @@ import com.example.smarthome_monitoring_system.adapter.QuickActionAdapter
 import com.example.smarthome_monitoring_system.data.model.QuickAction
 import com.example.smarthome_monitoring_system.adapter.RecentActivityAdapter
 import com.example.smarthome_monitoring_system.data.model.RecentActivity
+import android.content.Intent
+import com.example.smarthome_monitoring_system.view.floors.ManageFloorsActivity
+import com.example.smarthome_monitoring_system.view.reports.ReportsActivity
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -96,11 +99,34 @@ class DashboardActivity : AppCompatActivity() {
         recyclerQuickActions.adapter =
             QuickActionAdapter(quickActions) { selectedAction ->
 
-                Toast.makeText(
-                    this,
-                    "${selectedAction.title} selected",
-                    Toast.LENGTH_SHORT
-                ).show()
+                when (selectedAction.title) {
+
+                    "Manage Floors" -> {
+                        val intent = Intent(
+                            this,
+                            ManageFloorsActivity::class.java
+                        )
+
+                        startActivity(intent)
+                    }
+
+                    "Reports" -> {
+                        val intent = Intent(
+                            this,
+                            ReportsActivity::class.java
+                        )
+
+                        startActivity(intent)
+                    }
+
+                    else -> {
+                        Toast.makeText(
+                            this,
+                            "${selectedAction.title} selected",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
     }
 

@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    app:strokeColor="#E8E5EC"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="92dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imageUsageDeviceIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_stat_icon"
+            android:contentDescription="Device icon"
+            android:padding="12dp"
+            android:src="@drawable/ic_power"
+            app:tint="#6750A4" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textUsageDeviceName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#211F26"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Living Room Outlet" />
+
+            <TextView
+                android:id="@+id/textUsageDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#6750A4"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Used for 45 minutes" />
+
+            <TextView
+                android:id="@+id/textUsageDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="#716B76"
+                android:textSize="12sp"
+                tools:text="31 Jul 2026 • 06:30 PM" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

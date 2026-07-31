@@ -1,6 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    app:strokeColor="#E8E5EC"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="86dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_stat_icon"
+            android:contentDescription="Switch"
+            android:padding="11dp"
+            android:src="@drawable/ic_light"
+            app:tint="#6750A4" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textSwitchName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#211F26"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Main Light" />
+
+            <TextView
+                android:id="@+id/textSwitchState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="OFF"
+                android:textColor="#716B76"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchChannelControl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:contentDescription="Switch control" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

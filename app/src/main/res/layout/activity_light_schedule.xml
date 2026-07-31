@@ -1,6 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:background="#FFF8FF"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".view.schedule.LightScheduleActivity">
+
+    <include
+        android:id="@+id/lightScheduleTopBar"
+        layout="@layout/component_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="24dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Light Schedule"
+            android:textColor="#211F26"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Automatically turn the light on and off"
+            android:textColor="#716B76"
+            android:textSize="14sp" />
+
+        <include
+            android:id="@+id/lightScheduleDeviceStatus"
+            layout="@layout/component_device_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp" />
+
+        <!-- Schedule settings -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="1dp"
+            app:strokeColor="#E8E5EC"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchScheduleEnabled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="Enable automatic schedule"
+                    android:textColor="#211F26"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Turn ON time"
+                    android:textColor="#716B76"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSelectOnTime"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="start|center_vertical"
+                    android:text="06:00 PM"
+                    android:textAllCaps="false"
+                    android:textColor="#211F26"
+                    android:textSize="16sp"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/ic_clock"
+                    app:iconTint="#6750A4"
+                    app:strokeColor="#DDD3E5" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="Turn OFF time"
+                    android:textColor="#716B76"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSelectOffTime"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="start|center_vertical"
+                    android:text="06:00 AM"
+                    android:textAllCaps="false"
+                    android:textColor="#211F26"
+                    android:textSize="16sp"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/ic_clock"
+                    app:iconTint="#6750A4"
+                    app:strokeColor="#DDD3E5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSaveSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Save Schedule"
+                    android:textAllCaps="false"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="#6750A4"
+                    app:cornerRadius="16dp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</LinearLayout>

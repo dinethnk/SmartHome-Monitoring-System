@@ -16,17 +16,41 @@
         android:theme="@style/Theme.SmartHomeMonitoringSystem"
         android:label="@string/app_name">
 
-        <activity android:name=".view.reports.ReportsActivity" />
-        <activity android:name=".view.camera.CameraActivity" />
-        <activity android:name=".view.schedule.LightScheduleActivity" />
+        <activity
+            android:name=".view.reports.ReportsActivity"
+            android:exported="false" />
 
-        <activity android:name=".view.devices.SafetyDeviceActivity" />
-        <activity android:name=".view.devices.MultiSwitchControlActivity" />
-        <activity android:name=".view.devices.OutletControlActivity" />
+        <activity
+            android:name=".view.camera.CameraActivity"
+            android:exported="false" />
 
-        <activity android:name=".view.floors.FloorPlanActivity" />
-        <activity android:name=".view.floors.FloorFormActivity" />
-        <activity android:name=".view.floors.ManageFloorsActivity" />
+        <activity
+            android:name=".view.schedule.LightScheduleActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.devices.SafetyDeviceActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.devices.MultiSwitchControlActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.devices.OutletControlActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.floors.FloorPlanActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.floors.FloorFormActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.floors.ManageFloorsActivity"
+            android:exported="false" />
 
         <activity
             android:name=".view.dashboard.DashboardActivity"

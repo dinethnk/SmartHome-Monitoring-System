@@ -2,5 +2,61 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="84dp"
+    android:layout_height="82dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/deviceMarkerIconContainer"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="3dp"
+            app:strokeColor="#6750A4"
+            app:strokeWidth="2dp">
+
+            <ImageView
+                android:id="@+id/imageDeviceMarker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Device"
+                android:padding="11dp"
+                android:src="@drawable/ic_devices"
+                app:tint="#6750A4" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/textDeviceMarkerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="#211F26"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            tools:text="Light" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/deviceMarkerStatus"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginStart="34dp"
+        android:background="@drawable/status_dot_on" />
+
+</FrameLayout>

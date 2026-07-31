@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="200dp"
+    android:viewportWidth="320"
+    android:viewportHeight="200">
+
+    <path
+        android:fillColor="#242830"
+        android:pathData="M0,0h320v200H0z" />
+
+    <!-- Window -->
+    <path
+        android:fillColor="#526D82"
+        android:pathData="M28,22h105v70H28z" />
+
+    <path
+        android:fillColor="#A7C5D8"
+        android:pathData="M34,28h44v58H34zM84,28h43v58H84z" />
+
+    <!-- Floor -->
+    <path
+        android:fillColor="#4A4140"
+        android:pathData="M0,145h320v55H0z" />
+
+    <!-- Sofa -->
+    <path
+        android:fillColor="#786B84"
+        android:pathData="M78,119h165v52H78z" />
+
+    <path
+        android:fillColor="#91829E"
+        android:pathData="M91,106h138v45H91z" />
+
+    <path
+        android:fillColor="#5E5369"
+        android:pathData="M67,128h24v48H67zM230,128h24v48H230z" />
+
+    <!-- Table -->
+    <path
+        android:fillColor="#A2866D"
+        android:pathData="M132,157h68v12H132zM139,169h8v25H139zM185,169h8v25H185z" />
+
+</vector>
