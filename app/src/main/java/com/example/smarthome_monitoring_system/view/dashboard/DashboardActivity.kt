@@ -15,6 +15,11 @@ import com.example.smarthome_monitoring_system.data.model.RecentActivity
 import android.content.Intent
 import com.example.smarthome_monitoring_system.view.floors.ManageFloorsActivity
 import com.example.smarthome_monitoring_system.view.reports.ReportsActivity
+import android.util.Log
+import com.example.smarthome_monitoring_system.data.firebase.FirebaseDataSource
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -23,9 +28,30 @@ class DashboardActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_dashboard)
 
+//        testFirebaseConnection()
+
         setupHomeOverview()
         setupQuickActions()
         setupRecentActivity()
+    }
+
+    private fun testFirebaseConnection() {
+
+        FirebaseDataSource.floorsReference
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    Log.d("FirebaseTest", "Connected Successfully!")
+
+                    Log.d("FirebaseTest", snapshot.value.toString())
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                    Log.e("FirebaseTest", error.message)
+                }
+            })
     }
 
     private fun setupHomeOverview() {

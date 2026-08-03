@@ -5,3 +5,15 @@ data class SwitchChannel(
     var name: String = "",
     var isOn: Boolean = false
 )
+
+//data class SwitchChannel(
+//
+//    var id: String = "",
+//
+//    var deviceId: String = "",
+//
+//    var name: String = "",
+//
+//    var status: DeviceStatus = DeviceStatus.OFF
+//
+//)

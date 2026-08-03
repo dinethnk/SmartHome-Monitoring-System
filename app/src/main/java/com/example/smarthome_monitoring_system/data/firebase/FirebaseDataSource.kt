@@ -1,4 +1,4 @@
-package com.example.smarthome.data.firebase
+package com.example.smarthome_monitoring_system.data.firebase
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
