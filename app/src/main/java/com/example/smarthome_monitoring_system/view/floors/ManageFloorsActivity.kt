@@ -10,14 +10,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.adapter.FloorAdapter
 import com.example.smarthome_monitoring_system.data.model.Floor
+import androidx.lifecycle.ViewModelProvider
+import com.example.smarthome_monitoring_system.viewmodel.FloorViewModel
 import android.content.Intent
 
 class ManageFloorsActivity : AppCompatActivity() {
+
+    private lateinit var floorViewModel: FloorViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_manage_floors)
+
+        floorViewModel =
+            ViewModelProvider(this)[FloorViewModel::class.java]
 
         setupTopBar()
         setupFloorList()
@@ -37,72 +44,54 @@ class ManageFloorsActivity : AppCompatActivity() {
     }
 
     private fun setupFloorList() {
+
         val recyclerFloors =
             findViewById<RecyclerView>(R.id.recyclerFloors)
-
-        val floors = listOf(
-            Floor(
-                id = "floor_001",
-                name = "Ground Floor",
-                floorPlanUrl = "",
-                gridRows = 8,
-                gridColumns = 8,
-                deviceCount = 3,
-                active = true
-            ),
-            Floor(
-                id = "floor_002",
-                name = "First Floor",
-                floorPlanUrl = "",
-                gridRows = 8,
-                gridColumns = 8,
-                deviceCount = 4,
-                active = true
-            ),
-            Floor(
-                id = "floor_003",
-                name = "Second Floor",
-                floorPlanUrl = "",
-                gridRows = 6,
-                gridColumns = 6,
-                deviceCount = 2,
-                active = false
-            )
-        )
 
         recyclerFloors.layoutManager =
             LinearLayoutManager(this)
 
-        recyclerFloors.adapter =
-            FloorAdapter(floors) { selectedFloor ->
+        floorViewModel.floors.observe(this) { floors ->
 
-                val intent = Intent(
-                    this,
-                    FloorPlanActivity::class.java
-                ).apply {
-                    putExtra(
-                        FloorPlanActivity.EXTRA_FLOOR_NAME,
-                        selectedFloor.name
-                    )
+            recyclerFloors.adapter =
+                FloorAdapter(floors) { selectedFloor ->
 
-                    putExtra(
-                        FloorPlanActivity.EXTRA_GRID_ROWS,
-                        selectedFloor.gridRows
-                    )
+                    val intent = Intent(
+                        this,
+                        FloorPlanActivity::class.java
+                    ).apply {
 
-                    putExtra(
-                        FloorPlanActivity.EXTRA_GRID_COLUMNS,
-                        selectedFloor.gridColumns
-                    )
+                        putExtra(
+                            FloorPlanActivity.EXTRA_FLOOR_NAME,
+                            selectedFloor.name
+                        )
 
-                    putExtra(
-                        FloorPlanActivity.EXTRA_DEVICE_COUNT,
-                        selectedFloor.deviceCount
-                    )
+                        putExtra(
+                            FloorPlanActivity.EXTRA_GRID_ROWS,
+                            selectedFloor.gridRows
+                        )
+
+                        putExtra(
+                            FloorPlanActivity.EXTRA_GRID_COLUMNS,
+                            selectedFloor.gridColumns
+                        )
+                    }
+
+                    startActivity(intent)
                 }
+        }
 
-                startActivity(intent)
+        floorViewModel.error.observe(this) { errorMessage ->
+
+            if (!errorMessage.isNullOrEmpty()) {
+
+                Toast.makeText(
+                    this,
+                    errorMessage,
+                    Toast.LENGTH_LONG
+                ).show()
             }
+        }
     }
 
     private fun setupAddFloorButton() {

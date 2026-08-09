@@ -44,6 +44,8 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation("io.coil-kt.coil3:coil:3.4.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.4.0")
 
     implementation(
         "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"

@@ -1,5 +1,6 @@
 package com.example.smarthome_monitoring_system.view.floors
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -11,17 +12,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import coil3.load
 import com.example.smarthome_monitoring_system.R
-import com.google.android.material.button.MaterialButton
-import android.content.Intent
-import com.example.smarthome_monitoring_system.view.devices.OutletControlActivity
+import com.example.smarthome_monitoring_system.view.camera.CameraActivity
 import com.example.smarthome_monitoring_system.view.devices.MultiSwitchControlActivity
+import com.example.smarthome_monitoring_system.view.devices.OutletControlActivity
 import com.example.smarthome_monitoring_system.view.devices.SafetyDeviceActivity
 import com.example.smarthome_monitoring_system.view.schedule.LightScheduleActivity
-import com.example.smarthome_monitoring_system.view.camera.CameraActivity
+import com.google.android.material.button.MaterialButton
 
 class FloorPlanActivity : AppCompatActivity() {
 
+    private lateinit var floorPlanImage: ImageView
     private lateinit var gridOverlay: GridOverlayView
     private lateinit var markerContainer: FrameLayout
 
@@ -37,12 +39,14 @@ class FloorPlanActivity : AppCompatActivity() {
         connectViews()
         setupTopBar()
         setupFloorInformation()
+        setupFloorPlanImage()
         setupGrid()
         setupAddDeviceButton()
         displayTemporaryDevices()
     }
 
     private fun readFloorInformation() {
+
         gridRows = intent.getIntExtra(
             EXTRA_GRID_ROWS,
             8
@@ -55,6 +59,10 @@ class FloorPlanActivity : AppCompatActivity() {
     }
 
     private fun connectViews() {
+
+        floorPlanImage =
+            findViewById(R.id.imageFloorPlan)
+
         gridOverlay =
             findViewById(R.id.gridOverlay)
 
@@ -63,14 +71,18 @@ class FloorPlanActivity : AppCompatActivity() {
     }
 
     private fun setupTopBar() {
+
         val backButton =
-            findViewById<ImageButton>(R.id.buttonMenu)
+            findViewById<ImageButton>(
+                R.id.buttonMenu
+            )
 
         backButton.setImageResource(
             R.drawable.ic_arrow_left
         )
 
-        backButton.contentDescription = "Go back"
+        backButton.contentDescription =
+            "Go back"
 
         backButton.setOnClickListener {
             finish()
@@ -78,12 +90,17 @@ class FloorPlanActivity : AppCompatActivity() {
     }
 
     private fun setupFloorInformation() {
+
         val floorName =
-            intent.getStringExtra(EXTRA_FLOOR_NAME)
-                ?: "Floor Plan"
+            intent.getStringExtra(
+                EXTRA_FLOOR_NAME
+            ) ?: "Floor Plan"
 
         val deviceCount =
-            intent.getIntExtra(EXTRA_DEVICE_COUNT, 0)
+            intent.getIntExtra(
+                EXTRA_DEVICE_COUNT,
+                0
+            )
 
         findViewById<TextView>(
             R.id.textFloorPlanName
@@ -91,10 +108,31 @@ class FloorPlanActivity : AppCompatActivity() {
 
         findViewById<TextView>(
             R.id.textFloorPlanDeviceCount
-        ).text = "$deviceCount connected devices"
+        ).text =
+            "$deviceCount connected devices"
+    }
+
+    private fun setupFloorPlanImage() {
+
+        val floorPlanUrl =
+            intent.getStringExtra(
+                EXTRA_FLOOR_PLAN_URL
+            ).orEmpty()
+
+        if (floorPlanUrl.isBlank()) {
+
+            floorPlanImage.setImageResource(
+                R.drawable.ic_floor
+            )
+
+            return
+        }
+
+        floorPlanImage.load(floorPlanUrl)
     }
 
     private fun setupGrid() {
+
         gridOverlay.setGridSize(
             gridRows,
             gridColumns
@@ -102,12 +140,14 @@ class FloorPlanActivity : AppCompatActivity() {
     }
 
     private fun setupAddDeviceButton() {
+
         val addDeviceButton =
             findViewById<MaterialButton>(
                 R.id.buttonAddDevice
             )
 
         addDeviceButton.setOnClickListener {
+
             Toast.makeText(
                 this,
                 "Add Device selected",
@@ -117,6 +157,7 @@ class FloorPlanActivity : AppCompatActivity() {
     }
 
     private fun displayTemporaryDevices() {
+
         markerContainer.post {
 
             addDeviceMarker(
@@ -168,13 +209,15 @@ class FloorPlanActivity : AppCompatActivity() {
         column: Int,
         statusColor: String
     ) {
-        val markerView = LayoutInflater
-            .from(this)
-            .inflate(
-                R.layout.item_device_marker,
-                markerContainer,
-                false
-            )
+
+        val markerView =
+            LayoutInflater
+                .from(this)
+                .inflate(
+                    R.layout.item_device_marker,
+                    markerContainer,
+                    false
+                )
 
         markerView.findViewById<TextView>(
             R.id.textDeviceMarkerName
@@ -182,7 +225,9 @@ class FloorPlanActivity : AppCompatActivity() {
 
         markerView.findViewById<ImageView>(
             R.id.imageDeviceMarker
-        ).setImageResource(iconResource)
+        ).setImageResource(
+            iconResource
+        )
 
         val statusView =
             markerView.findViewById<View>(
@@ -194,14 +239,19 @@ class FloorPlanActivity : AppCompatActivity() {
                 Color.parseColor(statusColor)
             )
 
-        val markerWidth = dpToPixels(84)
-        val markerHeight = dpToPixels(82)
+        val markerWidth =
+            dpToPixels(84)
+
+        val markerHeight =
+            dpToPixels(82)
 
         val cellWidth =
-            markerContainer.width.toFloat() / gridColumns
+            markerContainer.width.toFloat() /
+                    gridColumns
 
         val cellHeight =
-            markerContainer.height.toFloat() / gridRows
+            markerContainer.height.toFloat() /
+                    gridRows
 
         val horizontalPosition =
             column * cellWidth +
@@ -220,20 +270,25 @@ class FloorPlanActivity : AppCompatActivity() {
             )
 
         layoutParameters.leftMargin =
-            horizontalPosition.toInt()
+            horizontalPosition
+                .toInt()
                 .coerceIn(
                     0,
-                    markerContainer.width - markerWidth
+                    markerContainer.width -
+                            markerWidth
                 )
 
         layoutParameters.topMargin =
-            verticalPosition.toInt()
+            verticalPosition
+                .toInt()
                 .coerceIn(
                     0,
-                    markerContainer.height - markerHeight
+                    markerContainer.height -
+                            markerHeight
                 )
 
-        markerView.layoutParams = layoutParameters
+        markerView.layoutParams =
+            layoutParameters
 
         markerView.setOnClickListener {
 
@@ -292,19 +347,34 @@ class FloorPlanActivity : AppCompatActivity() {
             }
         }
 
-        markerContainer.addView(markerView)
+        markerContainer.addView(
+            markerView
+        )
     }
 
     private fun dpToPixels(dp: Int): Int {
+
         return (
-                dp * resources.displayMetrics.density
+                dp *
+                        resources.displayMetrics.density
                 ).toInt()
     }
 
     companion object {
-        const val EXTRA_FLOOR_NAME = "floor_name"
-        const val EXTRA_GRID_ROWS = "grid_rows"
-        const val EXTRA_GRID_COLUMNS = "grid_columns"
-        const val EXTRA_DEVICE_COUNT = "device_count"
+
+        const val EXTRA_FLOOR_NAME =
+            "floor_name"
+
+        const val EXTRA_GRID_ROWS =
+            "grid_rows"
+
+        const val EXTRA_GRID_COLUMNS =
+            "grid_columns"
+
+        const val EXTRA_DEVICE_COUNT =
+            "device_count"
+
+        const val EXTRA_FLOOR_PLAN_URL =
+            "floor_plan_url"
     }
 }

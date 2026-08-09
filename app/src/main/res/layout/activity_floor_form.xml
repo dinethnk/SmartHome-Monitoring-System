@@ -1,236 +1,254 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFF8FF"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context=".view.floors.FloorFormActivity">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFF9FF">
 
     <include
-        android:id="@+id/floorFormTopBar"
-        layout="@layout/component_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:id="@+id/floorFormTopBar"
+            layout="@layout/component_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="20dp"
-            android:paddingTop="24dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="32dp">
-
-            <TextView
-                android:id="@+id/textFloorFormTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add New Floor"
-                android:textColor="#211F26"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Enter the floor details and select a floor-plan image"
-                android:textColor="#716B76"
-                android:textSize="14sp" />
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="24dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="32dp">
 
-            <!-- Floor name -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:hint="Floor name"
-                app:boxBackgroundMode="outline"
-                app:boxCornerRadiusBottomEnd="14dp"
-                app:boxCornerRadiusBottomStart="14dp"
-                app:boxCornerRadiusTopEnd="14dp"
-                app:boxCornerRadiusTopStart="14dp">
+            <TextView
+                    android:id="@+id/textFloorFormTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add New Floor"
+                    android:textColor="#211F26"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editFloorName"
+            <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
-                    android:maxLines="1"
-                    tools:text="Ground Floor" />
+                    android:layout_marginTop="5dp"
+                    android:text="Enter the floor details and provide a floor-plan image URL"
+                    android:textColor="#716B76"
+                    android:textSize="14sp" />
+
+            <!-- Floor name -->
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:hint="Floor name"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="14dp"
+                    app:boxCornerRadiusBottomStart="14dp"
+                    app:boxCornerRadiusTopEnd="14dp"
+                    app:boxCornerRadiusTopStart="14dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editFloorName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        tools:text="Ground Floor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Floor-plan heading -->
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Floor Plan"
-                android:textColor="#211F26"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Floor Plan"
+                    android:textColor="#211F26"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+            <!-- Floor-plan URL -->
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Floor plan image URL"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="14dp"
+                    app:boxCornerRadiusBottomStart="14dp"
+                    app:boxCornerRadiusTopEnd="14dp"
+                    app:boxCornerRadiusTopStart="14dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editFloorPlanUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textUri"
+                        android:maxLines="3"
+                        android:ellipsize="none"
+                        tools:text="https://example.com/floor-plan.png" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Floor-plan preview -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="190dp"
-                android:layout_marginTop="10dp"
-                app:cardBackgroundColor="#F4EDF9"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#DDD3E5"
-                app:strokeWidth="1dp">
 
-                <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:layout_height="190dp"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="#F4EDF9"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#DDD3E5"
+                    app:strokeWidth="1dp">
+
+                <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/imageFloorPlanPreview"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:contentDescription="Selected floor plan"
-                        android:src="@drawable/ic_floor"
-                        app:tint="#6750A4" />
+                            android:id="@+id/imageFloorPlanPreview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="Floor plan preview"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_floor" />
 
                     <TextView
-                        android:id="@+id/textFloorPlanPlaceholder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="No floor plan selected"
-                        android:textColor="#716B76"
-                        android:textSize="14sp" />
+                            android:id="@+id/textFloorPlanPlaceholder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Enter an image URL to preview"
+                            android:textColor="#716B76"
+                            android:textSize="14sp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonSelectFloorPlan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Choose Image"
-                        android:textAllCaps="false"
-                        app:backgroundTint="#6750A4"
-                        app:cornerRadius="12dp"
-                        app:icon="@drawable/ic_upload"
-                        app:iconTint="#FFFFFF" />
-
-                </LinearLayout>
+                </FrameLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Grid heading -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Floor Grid"
-                android:textColor="#211F26"
-                android:textSize="17sp"
-                android:textStyle="bold" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:text="Define the rows and columns used to position devices"
-                android:textColor="#716B76"
-                android:textSize="13sp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Floor Grid"
+                    android:textColor="#211F26"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="Define the rows and columns used to position devices"
+                    android:textColor="#716B76"
+                    android:textSize="13sp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                <!-- Rows -->
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:layout_weight="1"
-                    android:hint="Rows"
-                    app:boxBackgroundMode="outline">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:hint="Rows"
+                        app:boxBackgroundMode="outline">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editGridRows"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLength="2"
-                        tools:text="8" />
+                            android:id="@+id/editGridRows"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            tools:text="8" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Columns -->
+
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:hint="Columns"
-                    app:boxBackgroundMode="outline">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:hint="Columns"
+                        app:boxBackgroundMode="outline">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editGridColumns"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLength="2"
-                        tools:text="8" />
+                            android:id="@+id/editGridColumns"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            tools:text="8" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
             <!-- Active status -->
+
             <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switchFloorActive"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:checked="true"
-                android:text="Floor is active"
-                android:textColor="#211F26"
-                android:textSize="15sp" />
+                    android:id="@+id/switchFloorActive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:checked="true"
+                    android:text="Floor is active"
+                    android:textColor="#211F26"
+                    android:textSize="15sp" />
 
             <!-- Save button -->
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonSaveFloor"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="24dp"
-                android:text="Save Floor"
-                android:textAllCaps="false"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="#6750A4"
-                app:cornerRadius="16dp" />
+                    android:id="@+id/buttonSaveFloor"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Save Floor"
+                    android:textAllCaps="false"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="#6750A4"
+                    app:cornerRadius="16dp" />
 
             <!-- Cancel button -->
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonCancelFloor"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="10dp"
-                android:text="Cancel"
-                android:textAllCaps="false"
-                android:textColor="#6750A4"
-                android:textSize="15sp"
-                app:cornerRadius="16dp"
-                app:strokeColor="#6750A4" />
+                    android:id="@+id/buttonCancelFloor"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="#6750A4"
+                    android:textSize="15sp"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="#6750A4" />
 
         </LinearLayout>
 

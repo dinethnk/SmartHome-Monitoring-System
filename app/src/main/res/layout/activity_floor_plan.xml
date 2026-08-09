@@ -1,155 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFF8FF"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context=".view.floors.FloorPlanActivity">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFF9FF">
+
+    <!-- Top bar -->
 
     <include
-        android:id="@+id/floorPlanTopBar"
-        layout="@layout/component_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:id="@+id/floorPlanTopBar"
+            layout="@layout/component_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     <!-- Floor information -->
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="20dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="16dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="16dp">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textFloorPlanName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ground Floor"
-                android:textColor="#211F26"
-                android:textSize="26sp"
-                android:textStyle="bold" />
+                    android:id="@+id/textFloorPlanName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ground Floor"
+                    android:textColor="#211F26"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textFloorPlanDeviceCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:text="3 connected devices"
-                android:textColor="#716B76"
-                android:textSize="14sp" />
+                    android:id="@+id/textFloorPlanDeviceCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="3 connected devices"
+                    android:textColor="#716B76"
+                    android:textSize="14sp" />
 
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonAddDevice"
-            android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:text="Add Device"
-            android:textAllCaps="false"
-            app:backgroundTint="#6750A4"
-            app:cornerRadius="12dp"
-            app:icon="@drawable/ic_add"
-            app:iconTint="#FFFFFF" />
+                android:id="@+id/buttonAddDevice"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:text="Add Device"
+                android:textAllCaps="false"
+                app:backgroundTint="#6750A4"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_add"
+                app:iconTint="#FFFFFF" />
 
     </LinearLayout>
 
     <!-- Interactive floor plan -->
+
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="16dp"
-        android:layout_weight="1"
-        app:cardBackgroundColor="#F4EDF9"
-        app:cardCornerRadius="18dp"
-        app:cardElevation="1dp"
-        app:strokeColor="#DDD3E5"
-        app:strokeWidth="1dp">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            app:cardBackgroundColor="#F4EDF9"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="1dp"
+            app:strokeColor="#DDD3E5"
+            app:strokeWidth="1dp">
 
         <FrameLayout
-            android:id="@+id/floorPlanContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!-- Selected floor-plan image -->
-            <ImageView
-                android:id="@+id/imageFloorPlan"
+                android:id="@+id/floorPlanContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="Floor-plan image"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_floor"
-                app:tint="#B8A9C8" />
+                android:layout_height="match_parent">
+
+            <!-- Floor-plan image loaded from floorPlanUrl -->
+
+            <ImageView
+                    android:id="@+id/imageFloorPlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Floor-plan image"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_floor" />
 
             <!-- Grid overlay -->
-            <com.example.smarthome_monitoring_system.view.floors.GridOverlayView
-                android:id="@+id/gridOverlay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
-            <!-- Device markers are added here through Kotlin -->
+            <com.example.smarthome_monitoring_system.view.floors.GridOverlayView
+                    android:id="@+id/gridOverlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            <!-- Device markers -->
+
             <FrameLayout
-                android:id="@+id/deviceMarkerContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                    android:id="@+id/deviceMarkerContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
         </FrameLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Device status legend -->
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="20dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/status_dot_on"
-            android:drawablePadding="6dp"
-            android:text="ON"
-            android:textColor="#211F26"
-            android:textSize="12sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/status_dot_on"
+                android:drawablePadding="6dp"
+                android:text="ON"
+                android:textColor="#211F26"
+                android:textSize="12sp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:drawableStart="@drawable/status_dot_off"
-            android:drawablePadding="6dp"
-            android:text="OFF"
-            android:textColor="#211F26"
-            android:textSize="12sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:drawableStart="@drawable/status_dot_off"
+                android:drawablePadding="6dp"
+                android:text="OFF"
+                android:textColor="#211F26"
+                android:textSize="12sp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:drawableStart="@drawable/status_dot_error"
-            android:drawablePadding="6dp"
-            android:text="ERROR"
-            android:textColor="#211F26"
-            android:textSize="12sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:drawableStart="@drawable/status_dot_error"
+                android:drawablePadding="6dp"
+                android:text="ERROR"
+                android:textColor="#211F26"
+                android:textSize="12sp" />
 
     </LinearLayout>
 

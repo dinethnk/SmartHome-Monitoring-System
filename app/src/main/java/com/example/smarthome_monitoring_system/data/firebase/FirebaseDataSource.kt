@@ -6,7 +6,7 @@ import com.google.firebase.database.FirebaseDatabase
 object FirebaseDataSource {
 
     private const val DATABASE_URL =
-        "https://nexhome-91fc8-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        "https://smarthomemonitoringsyste-59316-default-rtdb.asia-southeast1.firebasedatabase.app/"
 
     private val database: FirebaseDatabase by lazy {
         FirebaseDatabase.getInstance(DATABASE_URL)
@@ -26,4 +26,7 @@ object FirebaseDataSource {
 
     val alertsReference: DatabaseReference
         get() = database.getReference("alerts")
+
+    val simulatorEventsReference: DatabaseReference
+        get() = database.getReference("simulatorEvents")
 }
