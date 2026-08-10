@@ -47,7 +47,9 @@ class FloorFirebaseDataSource {
                     Log.d(
                         "FloorFirebase",
                         "Loaded floors: ${
-                            floors.map { "${it.id} = ${it.name}" }
+                            floors.map {
+                                "${it.id} = ${it.name}, url=${it.floorPlanUrl}"
+                            }
                         }"
                     )
 

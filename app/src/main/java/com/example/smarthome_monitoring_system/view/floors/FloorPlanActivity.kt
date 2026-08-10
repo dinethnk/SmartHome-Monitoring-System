@@ -119,7 +119,17 @@ class FloorPlanActivity : AppCompatActivity() {
                 EXTRA_FLOOR_PLAN_URL
             ).orEmpty()
 
+        android.util.Log.d(
+            "FloorPlanImage",
+            "URL received: $floorPlanUrl"
+        )
+
         if (floorPlanUrl.isBlank()) {
+
+            android.util.Log.d(
+                "FloorPlanImage",
+                "URL is empty"
+            )
 
             floorPlanImage.setImageResource(
                 R.drawable.ic_floor
@@ -127,6 +137,11 @@ class FloorPlanActivity : AppCompatActivity() {
 
             return
         }
+
+        android.util.Log.d(
+            "FloorPlanImage",
+            "Loading image..."
+        )
 
         floorPlanImage.load(floorPlanUrl)
     }
