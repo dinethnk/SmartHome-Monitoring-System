@@ -1,92 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/floorCard"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="14dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="1dp"
-    app:strokeColor="#E8E5EC"
-    app:strokeWidth="1dp">
-
-    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/floorCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="120dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_marginBottom="14dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="1dp"
+        app:strokeColor="#E8E5EC"
+        app:strokeWidth="1dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="120dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
         <!-- Floor icon -->
+
         <ImageView
-            android:id="@+id/imageFloor"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:background="@drawable/bg_stat_icon"
-            android:contentDescription="Floor icon"
-            android:padding="15dp"
-            android:src="@drawable/ic_floor"
-            app:tint="#6750A4" />
+                android:id="@+id/imageFloor"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/bg_stat_icon"
+                android:contentDescription="Floor icon"
+                android:padding="15dp"
+                android:src="@drawable/ic_floor"
+                app:tint="#6750A4" />
+
 
         <!-- Floor information -->
+
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textFloorItemName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#211F26"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="Ground Floor" />
+                    android:id="@+id/textFloorItemName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#211F26"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Ground Floor" />
 
             <TextView
-                android:id="@+id/textFloorItemDeviceCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="#716B76"
-                android:textSize="13sp"
-                tools:text="3 connected devices" />
+                    android:id="@+id/textFloorItemDeviceCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#716B76"
+                    android:textSize="13sp"
+                    tools:text="3 connected devices" />
 
             <TextView
-                android:id="@+id/textFloorItemStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_status_chip"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:textColor="#00866A"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                tools:text="ACTIVE" />
+                    android:id="@+id/textFloorItemStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_status_chip"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:textColor="#00866A"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    tools:text="ACTIVE" />
 
         </LinearLayout>
 
-        <!-- Open floor button -->
-        <ImageButton
-            android:id="@+id/buttonOpenFloor"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Open floor"
-            android:padding="10dp"
-            android:src="@drawable/ic_arrow_right"
-            app:tint="#6750A4" />
+
+        <!-- Floor actions -->
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+
+
+            <!-- Edit floor -->
+
+            <ImageButton
+                    android:id="@+id/buttonEditFloor"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Edit floor"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_edit"
+                    app:tint="#6750A4" />
+
+            <!-- Delete floor -->
+
+            <ImageButton
+                    android:id="@+id/buttonDeleteFloor"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Delete floor"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_delete"
+                    app:tint="#BA1A1A" />
+
+            <!-- Open floor -->
+
+            <ImageButton
+                    android:id="@+id/buttonOpenFloor"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Open floor"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="#6750A4" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

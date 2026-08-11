@@ -11,6 +11,11 @@ class FloorFirebaseDataSource {
     private val floorsReference =
         FirebaseDataSource.floorsReference
 
+
+    // ---------------------------------------------------------
+    // Observe all floors
+    // ---------------------------------------------------------
+
     fun observeFloors(
         onSuccess: (List<Floor>) -> Unit,
         onError: (String) -> Unit
@@ -66,6 +71,11 @@ class FloorFirebaseDataSource {
         )
     }
 
+
+    // ---------------------------------------------------------
+    // Add floor
+    // ---------------------------------------------------------
+
     fun addFloor(
         floor: Floor,
         onSuccess: () -> Unit,
@@ -76,7 +86,11 @@ class FloorFirebaseDataSource {
             floorsReference.push().key
 
         if (floorId == null) {
-            onError("Unable to generate floor ID")
+
+            onError(
+                "Unable to generate floor ID"
+            )
+
             return
         }
 
@@ -86,12 +100,104 @@ class FloorFirebaseDataSource {
             .child(floorId)
             .setValue(floor)
             .addOnSuccessListener {
+
+                Log.d(
+                    "FloorFirebase",
+                    "Floor added: ${floor.name}"
+                )
+
                 onSuccess()
             }
             .addOnFailureListener { exception ->
+
                 onError(
                     exception.message
                         ?: "Failed to save floor"
+                )
+            }
+    }
+
+
+    // ---------------------------------------------------------
+    // Update floor
+    // ---------------------------------------------------------
+
+    fun updateFloor(
+        floor: Floor,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        if (floor.id.isBlank()) {
+
+            onError(
+                "Floor ID is missing"
+            )
+
+            return
+        }
+
+        floor.updatedAt =
+            System.currentTimeMillis()
+
+        floorsReference
+            .child(floor.id)
+            .setValue(floor)
+            .addOnSuccessListener {
+
+                Log.d(
+                    "FloorFirebase",
+                    "Floor updated: ${floor.id}"
+                )
+
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+
+                onError(
+                    exception.message
+                        ?: "Failed to update floor"
+                )
+            }
+    }
+
+
+    // ---------------------------------------------------------
+    // Delete floor
+    // ---------------------------------------------------------
+
+    fun deleteFloor(
+        floorId: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        if (floorId.isBlank()) {
+
+            onError(
+                "Floor ID is missing"
+            )
+
+            return
+        }
+
+        floorsReference
+            .child(floorId)
+            .removeValue()
+            .addOnSuccessListener {
+
+                Log.d(
+                    "FloorFirebase",
+                    "Floor deleted: $floorId"
+                )
+
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+
+                onError(
+                    exception.message
+                        ?: "Failed to delete floor"
                 )
             }
     }

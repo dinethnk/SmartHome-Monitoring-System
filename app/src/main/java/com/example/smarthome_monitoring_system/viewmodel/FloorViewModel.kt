@@ -26,9 +26,15 @@ class FloorViewModel : ViewModel() {
     val error: LiveData<String?>
         get() = _error
 
+
+    // ---------------------------------------------------------
+    // Start observing Firebase
+    // ---------------------------------------------------------
+
     init {
         observeFloors()
     }
+
 
     private fun observeFloors() {
 
@@ -44,6 +50,11 @@ class FloorViewModel : ViewModel() {
         )
     }
 
+
+    // ---------------------------------------------------------
+    // Add floor
+    // ---------------------------------------------------------
+
     fun addFloor(
         floor: Floor,
         onSuccess: () -> Unit,
@@ -52,6 +63,42 @@ class FloorViewModel : ViewModel() {
 
         repository.addFloor(
             floor = floor,
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
+
+    // ---------------------------------------------------------
+    // Update floor
+    // ---------------------------------------------------------
+
+    fun updateFloor(
+        floor: Floor,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        repository.updateFloor(
+            floor = floor,
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
+
+    // ---------------------------------------------------------
+    // Delete floor
+    // ---------------------------------------------------------
+
+    fun deleteFloor(
+        floorId: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        repository.deleteFloor(
+            floorId = floorId,
             onSuccess = onSuccess,
             onError = onError
         )

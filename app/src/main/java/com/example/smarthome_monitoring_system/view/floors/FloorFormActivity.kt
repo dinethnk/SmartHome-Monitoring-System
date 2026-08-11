@@ -1,13 +1,14 @@
 package com.example.smarthome_monitoring_system.view.floors
 
-import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import coil3.load
 import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.data.model.Floor
 import com.example.smarthome_monitoring_system.viewmodel.FloorViewModel
@@ -29,6 +30,13 @@ class FloorFormActivity : AppCompatActivity() {
     private lateinit var imageFloorPlanPreview: ImageView
     private lateinit var floorPlanPlaceholder: TextView
 
+    private var isEditMode = false
+
+    private var existingFloorId = ""
+
+    private var existingCreatedAt = 0L
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,10 +46,16 @@ class FloorFormActivity : AppCompatActivity() {
             ViewModelProvider(this)[FloorViewModel::class.java]
 
         connectViews()
+        readIntentData()
         setupTopBar()
         setupSaveButton()
         setupCancelButton()
     }
+
+
+    // ---------------------------------------------------------
+    // Connect views
+    // ---------------------------------------------------------
 
     private fun connectViews() {
 
@@ -67,10 +81,175 @@ class FloorFormActivity : AppCompatActivity() {
             findViewById(R.id.textFloorPlanPlaceholder)
     }
 
+
+    // ---------------------------------------------------------
+    // Read Add/Edit information
+    // ---------------------------------------------------------
+
+    private fun readIntentData() {
+
+        isEditMode =
+            intent.getBooleanExtra(
+                EXTRA_EDIT_MODE,
+                false
+            )
+
+        if (isEditMode) {
+
+            loadExistingFloor()
+
+        } else {
+
+            setupAddMode()
+        }
+    }
+
+
+    // ---------------------------------------------------------
+    // Add mode
+    // ---------------------------------------------------------
+
+    private fun setupAddMode() {
+
+        findViewById<TextView>(
+            R.id.textFloorFormTitle
+        ).text = "Add New Floor"
+
+        findViewById<MaterialButton>(
+            R.id.buttonSaveFloor
+        ).text = "Save Floor"
+
+        switchFloorActive.isChecked = true
+    }
+
+
+    // ---------------------------------------------------------
+    // Edit mode
+    // ---------------------------------------------------------
+
+    private fun loadExistingFloor() {
+
+        existingFloorId =
+            intent.getStringExtra(
+                EXTRA_FLOOR_ID
+            ).orEmpty()
+
+        existingCreatedAt =
+            intent.getLongExtra(
+                EXTRA_CREATED_AT,
+                0L
+            )
+
+        val floorName =
+            intent.getStringExtra(
+                EXTRA_FLOOR_NAME
+            ).orEmpty()
+
+        val floorPlanUrl =
+            intent.getStringExtra(
+                EXTRA_FLOOR_PLAN_URL
+            ).orEmpty()
+
+        val gridRows =
+            intent.getIntExtra(
+                EXTRA_GRID_ROWS,
+                8
+            )
+
+        val gridColumns =
+            intent.getIntExtra(
+                EXTRA_GRID_COLUMNS,
+                8
+            )
+
+
+        // -----------------------------------------
+        // Change screen title
+        // -----------------------------------------
+
+        findViewById<TextView>(
+            R.id.textFloorFormTitle
+        ).text = "Edit Floor"
+
+
+        // -----------------------------------------
+        // Change save button
+        // -----------------------------------------
+
+        findViewById<MaterialButton>(
+            R.id.buttonSaveFloor
+        ).text = "Update Floor"
+
+
+        // -----------------------------------------
+        // Fill existing values
+        // -----------------------------------------
+
+        editFloorName.setText(
+            floorName
+        )
+
+        editFloorPlanUrl.setText(
+            floorPlanUrl
+        )
+
+        editGridRows.setText(
+            gridRows.toString()
+        )
+
+        editGridColumns.setText(
+            gridColumns.toString()
+        )
+
+
+        // -----------------------------------------
+        // Show existing floor-plan image
+        // -----------------------------------------
+
+        if (floorPlanUrl.isNotBlank()) {
+
+            imageFloorPlanPreview.load(
+                floorPlanUrl
+            )
+
+            imageFloorPlanPreview.scaleType =
+                ImageView.ScaleType.CENTER_CROP
+
+            floorPlanPlaceholder.visibility =
+                View.GONE
+
+        } else {
+
+            imageFloorPlanPreview.setImageResource(
+                R.drawable.ic_floor
+            )
+
+            floorPlanPlaceholder.visibility =
+                View.VISIBLE
+        }
+
+
+        /*
+         * The current Floor model does not contain
+         * an active field.
+         *
+         * Therefore this switch is currently only
+         * a UI element and is not saved to Firebase.
+         */
+        switchFloorActive.isChecked = true
+    }
+
+
+    // ---------------------------------------------------------
+    // Top bar
+    // ---------------------------------------------------------
+
     private fun setupTopBar() {
 
         val backButton =
-            findViewById<ImageButton>(R.id.buttonMenu)
+            findViewById<ImageButton>(
+                R.id.buttonMenu
+            )
 
         backButton.setImageResource(
             R.drawable.ic_arrow_left
@@ -83,6 +262,11 @@ class FloorFormActivity : AppCompatActivity() {
             finish()
         }
     }
+
+
+    // ---------------------------------------------------------
+    // Save / Update button
+    // ---------------------------------------------------------
 
     private fun setupSaveButton() {
 
@@ -97,6 +281,11 @@ class FloorFormActivity : AppCompatActivity() {
         }
     }
 
+
+    // ---------------------------------------------------------
+    // Cancel button
+    // ---------------------------------------------------------
+
     private fun setupCancelButton() {
 
         val cancelButton =
@@ -109,6 +298,11 @@ class FloorFormActivity : AppCompatActivity() {
             finish()
         }
     }
+
+
+    // ---------------------------------------------------------
+    // Validate form
+    // ---------------------------------------------------------
 
     private fun validateAndSaveFloor() {
 
@@ -134,6 +328,7 @@ class FloorFormActivity : AppCompatActivity() {
                 ?.toString()
                 ?.toIntOrNull()
 
+
         // -----------------------------------------
         // Validate floor name
         // -----------------------------------------
@@ -147,6 +342,7 @@ class FloorFormActivity : AppCompatActivity() {
 
             return
         }
+
 
         // -----------------------------------------
         // Validate floor-plan URL
@@ -175,8 +371,9 @@ class FloorFormActivity : AppCompatActivity() {
             return
         }
 
+
         // -----------------------------------------
-        // Validate grid rows
+        // Validate rows
         // -----------------------------------------
 
         if (gridRows == null || gridRows <= 0) {
@@ -189,8 +386,9 @@ class FloorFormActivity : AppCompatActivity() {
             return
         }
 
+
         // -----------------------------------------
-        // Validate grid columns
+        // Validate columns
         // -----------------------------------------
 
         if (gridColumns == null || gridColumns <= 0) {
@@ -203,14 +401,36 @@ class FloorFormActivity : AppCompatActivity() {
             return
         }
 
+
         // -----------------------------------------
-        // Create Floor object
+        // Create timestamps
         // -----------------------------------------
 
         val currentTime =
             System.currentTimeMillis()
 
+        val createdAt =
+            if (
+                isEditMode &&
+                existingCreatedAt > 0L
+            ) {
+                existingCreatedAt
+            } else {
+                currentTime
+            }
+
+
+        // -----------------------------------------
+        // Create Floor object
+        // -----------------------------------------
+
         val floor = Floor(
+
+            id = if (isEditMode) {
+                existingFloorId
+            } else {
+                ""
+            },
 
             name = floorName,
 
@@ -220,13 +440,14 @@ class FloorFormActivity : AppCompatActivity() {
 
             gridColumns = gridColumns,
 
-            createdAt = currentTime,
+            createdAt = createdAt,
 
             updatedAt = currentTime
         )
 
+
         // -----------------------------------------
-        // Save to Firebase
+        // Disable button
         // -----------------------------------------
 
         val saveButton =
@@ -236,7 +457,57 @@ class FloorFormActivity : AppCompatActivity() {
 
         saveButton.isEnabled = false
 
-        saveButton.text = "Saving..."
+        saveButton.text =
+            if (isEditMode) {
+                "Updating..."
+            } else {
+                "Saving..."
+            }
+
+
+        // -----------------------------------------
+        // UPDATE existing floor
+        // -----------------------------------------
+
+        if (isEditMode) {
+
+            floorViewModel.updateFloor(
+
+                floor = floor,
+
+                onSuccess = {
+
+                    Toast.makeText(
+                        this,
+                        "$floorName updated successfully",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    finish()
+                },
+
+                onError = { errorMessage ->
+
+                    saveButton.isEnabled = true
+
+                    saveButton.text =
+                        "Update Floor"
+
+                    Toast.makeText(
+                        this,
+                        errorMessage,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            )
+
+            return
+        }
+
+
+        // -----------------------------------------
+        // ADD new floor
+        // -----------------------------------------
 
         floorViewModel.addFloor(
 
@@ -257,7 +528,8 @@ class FloorFormActivity : AppCompatActivity() {
 
                 saveButton.isEnabled = true
 
-                saveButton.text = "Save Floor"
+                saveButton.text =
+                    "Save Floor"
 
                 Toast.makeText(
                     this,
@@ -266,5 +538,34 @@ class FloorFormActivity : AppCompatActivity() {
                 ).show()
             }
         )
+    }
+
+
+    // ---------------------------------------------------------
+    // Intent constants
+    // ---------------------------------------------------------
+
+    companion object {
+
+        const val EXTRA_EDIT_MODE =
+            "edit_mode"
+
+        const val EXTRA_FLOOR_ID =
+            "floor_id"
+
+        const val EXTRA_FLOOR_NAME =
+            "floor_name"
+
+        const val EXTRA_FLOOR_PLAN_URL =
+            "floor_plan_url"
+
+        const val EXTRA_GRID_ROWS =
+            "grid_rows"
+
+        const val EXTRA_GRID_COLUMNS =
+            "grid_columns"
+
+        const val EXTRA_CREATED_AT =
+            "created_at"
     }
 }
