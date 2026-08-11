@@ -3,6 +3,7 @@ package com.example.smarthome_monitoring_system.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.smarthome_monitoring_system.data.firebase.DeviceFirebaseDataSource
 import com.example.smarthome_monitoring_system.data.firebase.FloorFirebaseDataSource
 import com.example.smarthome_monitoring_system.data.model.Floor
 import com.example.smarthome_monitoring_system.data.repository.SmartHomeRepository
@@ -11,7 +12,8 @@ class FloorViewModel : ViewModel() {
 
     private val repository =
         SmartHomeRepository(
-            FloorFirebaseDataSource()
+            FloorFirebaseDataSource(),
+            DeviceFirebaseDataSource()
         )
 
     private val _floors =

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import coil3.load
 import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.view.camera.CameraActivity
+import com.example.smarthome_monitoring_system.view.devices.AddDeviceActivity
 import com.example.smarthome_monitoring_system.view.devices.MultiSwitchControlActivity
 import com.example.smarthome_monitoring_system.view.devices.OutletControlActivity
 import com.example.smarthome_monitoring_system.view.devices.SafetyDeviceActivity
@@ -42,8 +43,15 @@ class FloorPlanActivity : AppCompatActivity() {
         setupFloorPlanImage()
         setupGrid()
         setupAddDeviceButton()
+
+        // Keep temporary devices for now.
         displayTemporaryDevices()
     }
+
+
+    // ---------------------------------------------------------
+    // Read floor information
+    // ---------------------------------------------------------
 
     private fun readFloorInformation() {
 
@@ -58,6 +66,11 @@ class FloorPlanActivity : AppCompatActivity() {
         )
     }
 
+
+    // ---------------------------------------------------------
+    // Connect views
+    // ---------------------------------------------------------
+
     private fun connectViews() {
 
         floorPlanImage =
@@ -69,6 +82,11 @@ class FloorPlanActivity : AppCompatActivity() {
         markerContainer =
             findViewById(R.id.deviceMarkerContainer)
     }
+
+
+    // ---------------------------------------------------------
+    // Top bar
+    // ---------------------------------------------------------
 
     private fun setupTopBar() {
 
@@ -88,6 +106,11 @@ class FloorPlanActivity : AppCompatActivity() {
             finish()
         }
     }
+
+
+    // ---------------------------------------------------------
+    // Floor information
+    // ---------------------------------------------------------
 
     private fun setupFloorInformation() {
 
@@ -111,6 +134,11 @@ class FloorPlanActivity : AppCompatActivity() {
         ).text =
             "$deviceCount connected devices"
     }
+
+
+    // ---------------------------------------------------------
+    // Floor-plan image
+    // ---------------------------------------------------------
 
     private fun setupFloorPlanImage() {
 
@@ -143,8 +171,15 @@ class FloorPlanActivity : AppCompatActivity() {
             "Loading image..."
         )
 
-        floorPlanImage.load(floorPlanUrl)
+        floorPlanImage.load(
+            floorPlanUrl
+        )
     }
+
+
+    // ---------------------------------------------------------
+    // Grid
+    // ---------------------------------------------------------
 
     private fun setupGrid() {
 
@@ -153,6 +188,11 @@ class FloorPlanActivity : AppCompatActivity() {
             gridColumns
         )
     }
+
+
+    // ---------------------------------------------------------
+    // Add Device button
+    // ---------------------------------------------------------
 
     private fun setupAddDeviceButton() {
 
@@ -163,13 +203,64 @@ class FloorPlanActivity : AppCompatActivity() {
 
         addDeviceButton.setOnClickListener {
 
-            Toast.makeText(
-                this,
-                "Add Device selected",
-                Toast.LENGTH_SHORT
-            ).show()
+            val floorId =
+                intent.getStringExtra(
+                    EXTRA_FLOOR_ID
+                ).orEmpty()
+
+            val floorName =
+                intent.getStringExtra(
+                    EXTRA_FLOOR_NAME
+                ).orEmpty()
+
+            if (floorId.isBlank()) {
+
+                Toast.makeText(
+                    this,
+                    "Floor ID is missing",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                return@setOnClickListener
+            }
+
+            val addDeviceIntent =
+                Intent(
+                    this,
+                    AddDeviceActivity::class.java
+                ).apply {
+
+                    putExtra(
+                        AddDeviceActivity.EXTRA_FLOOR_ID,
+                        floorId
+                    )
+
+                    putExtra(
+                        AddDeviceActivity.EXTRA_FLOOR_NAME,
+                        floorName
+                    )
+
+                    putExtra(
+                        AddDeviceActivity.EXTRA_GRID_ROWS,
+                        gridRows
+                    )
+
+                    putExtra(
+                        AddDeviceActivity.EXTRA_GRID_COLUMNS,
+                        gridColumns
+                    )
+                }
+
+            startActivity(
+                addDeviceIntent
+            )
         }
     }
+
+
+    // ---------------------------------------------------------
+    // Temporary devices
+    // ---------------------------------------------------------
 
     private fun displayTemporaryDevices() {
 
@@ -217,6 +308,11 @@ class FloorPlanActivity : AppCompatActivity() {
         }
     }
 
+
+    // ---------------------------------------------------------
+    // Add device marker
+    // ---------------------------------------------------------
+
     private fun addDeviceMarker(
         name: String,
         iconResource: Int,
@@ -251,7 +347,9 @@ class FloorPlanActivity : AppCompatActivity() {
 
         statusView.backgroundTintList =
             ColorStateList.valueOf(
-                Color.parseColor(statusColor)
+                Color.parseColor(
+                    statusColor
+                )
             )
 
         val markerWidth =
@@ -304,6 +402,11 @@ class FloorPlanActivity : AppCompatActivity() {
 
         markerView.layoutParams =
             layoutParameters
+
+
+        // -----------------------------------------------------
+        // Marker click
+        // -----------------------------------------------------
 
         markerView.setOnClickListener {
 
@@ -362,20 +465,38 @@ class FloorPlanActivity : AppCompatActivity() {
             }
         }
 
+
         markerContainer.addView(
             markerView
         )
     }
 
-    private fun dpToPixels(dp: Int): Int {
+
+    // ---------------------------------------------------------
+    // dp → pixels
+    // ---------------------------------------------------------
+
+    private fun dpToPixels(
+        dp: Int
+    ): Int {
 
         return (
                 dp *
-                        resources.displayMetrics.density
+                        resources
+                            .displayMetrics
+                            .density
                 ).toInt()
     }
 
+
+    // ---------------------------------------------------------
+    // Intent constants
+    // ---------------------------------------------------------
+
     companion object {
+
+        const val EXTRA_FLOOR_ID =
+            "floor_id"
 
         const val EXTRA_FLOOR_NAME =
             "floor_name"

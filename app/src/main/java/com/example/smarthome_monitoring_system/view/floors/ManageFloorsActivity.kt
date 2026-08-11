@@ -146,11 +146,19 @@ class ManageFloorsActivity : AppCompatActivity() {
                 FloorPlanActivity::class.java
             ).apply {
 
+                // Firebase floor ID
+                putExtra(
+                    FloorPlanActivity.EXTRA_FLOOR_ID,
+                    floor.id
+                )
+
+                // Floor name
                 putExtra(
                     FloorPlanActivity.EXTRA_FLOOR_NAME,
                     floor.name
                 )
 
+                // Grid configuration
                 putExtra(
                     FloorPlanActivity.EXTRA_GRID_ROWS,
                     floor.gridRows
@@ -161,6 +169,7 @@ class ManageFloorsActivity : AppCompatActivity() {
                     floor.gridColumns
                 )
 
+                // Floor-plan image
                 putExtra(
                     FloorPlanActivity.EXTRA_FLOOR_PLAN_URL,
                     floor.floorPlanUrl

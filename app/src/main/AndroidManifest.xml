@@ -1,60 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission
-        android:name="android.permission.INTERNET" />
+            android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.SmartHomeMonitoringSystem"
-        android:label="@string/app_name">
+            android:allowBackup="true"
+            android:dataExtractionRules="@xml/data_extraction_rules"
+            android:fullBackupContent="@xml/backup_rules"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.SmartHomeMonitoringSystem"
+            android:label="@string/app_name">
 
         <activity
-            android:name=".view.reports.ReportsActivity"
-            android:exported="false" />
+                android:name=".view.reports.ReportsActivity"
+                android:exported="false" />
 
         <activity
-            android:name=".view.camera.CameraActivity"
-            android:exported="false" />
+                android:name=".view.camera.CameraActivity"
+                android:exported="false" />
 
         <activity
-            android:name=".view.schedule.LightScheduleActivity"
-            android:exported="false" />
+                android:name=".view.schedule.LightScheduleActivity"
+                android:exported="false" />
+
+        <!-- Add Device -->
+        <activity
+                android:name=".view.devices.AddDeviceActivity"
+                android:exported="false" />
 
         <activity
-            android:name=".view.devices.SafetyDeviceActivity"
-            android:exported="false" />
+                android:name=".view.devices.SafetyDeviceActivity"
+                android:exported="false" />
 
         <activity
-            android:name=".view.devices.MultiSwitchControlActivity"
-            android:exported="false" />
+                android:name=".view.devices.MultiSwitchControlActivity"
+                android:exported="false" />
 
         <activity
-            android:name=".view.devices.OutletControlActivity"
-            android:exported="false" />
+                android:name=".view.devices.OutletControlActivity"
+                android:exported="false" />
 
         <activity
-            android:name=".view.floors.FloorPlanActivity"
-            android:exported="false" />
+                android:name=".view.floors.FloorPlanActivity"
+                android:exported="false" />
 
         <activity
-            android:name=".view.floors.FloorFormActivity"
-            android:exported="false" />
+                android:name=".view.floors.FloorFormActivity"
+                android:exported="false" />
 
         <activity
-            android:name=".view.floors.ManageFloorsActivity"
-            android:exported="false" />
+                android:name=".view.floors.ManageFloorsActivity"
+                android:exported="false" />
 
         <activity
-            android:name=".view.dashboard.DashboardActivity"
-            android:exported="true">
+                android:name=".view.dashboard.DashboardActivity"
+                android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
