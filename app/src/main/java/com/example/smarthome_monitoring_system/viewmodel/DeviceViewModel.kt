@@ -12,14 +12,14 @@ class DeviceViewModel : ViewModel() {
 
     private val repository =
         SmartHomeRepository(
-            FloorFirebaseDataSource(),
-            DeviceFirebaseDataSource()
+            floorFirebaseDataSource = FloorFirebaseDataSource(),
+            deviceFirebaseDataSource = DeviceFirebaseDataSource()
         )
 
 
-    // ---------------------------------------------------------
-    // All devices
-    // ---------------------------------------------------------
+    // =========================================================
+    // DEVICES
+    // =========================================================
 
     private val _devices =
         MutableLiveData<List<Device>>()
@@ -28,9 +28,9 @@ class DeviceViewModel : ViewModel() {
         get() = _devices
 
 
-    // ---------------------------------------------------------
-    // Error
-    // ---------------------------------------------------------
+    // =========================================================
+    // ERROR
+    // =========================================================
 
     private val _error =
         MutableLiveData<String?>()
@@ -39,15 +39,53 @@ class DeviceViewModel : ViewModel() {
         get() = _error
 
 
-    // ---------------------------------------------------------
-    // Observe all devices
-    // ---------------------------------------------------------
+    // =========================================================
+    // Observe devices for a specific floor
+    // =========================================================
 
-    init {
-        observeDevices()
+    fun observeDevicesByFloor(
+        floorId: String
+    ) {
+
+        if (floorId.isBlank()) {
+
+            _devices.postValue(
+                emptyList()
+            )
+
+            _error.postValue(
+                "Floor ID is required"
+            )
+
+            return
+        }
+
+        repository.observeDevicesByFloor(
+
+            floorId = floorId,
+
+            onSuccess = { devices ->
+
+                _devices.postValue(
+                    devices
+                )
+            },
+
+            onError = { message ->
+
+                _error.postValue(
+                    message
+                )
+            }
+        )
     }
 
-    private fun observeDevices() {
+
+    // =========================================================
+    // Observe all devices
+    // =========================================================
+
+    fun observeAllDevices() {
 
         repository.observeDevices(
 
@@ -68,43 +106,9 @@ class DeviceViewModel : ViewModel() {
     }
 
 
-    // ---------------------------------------------------------
-    // Observe devices on a specific floor
-    // ---------------------------------------------------------
-
-    fun observeDevicesByFloor(
-        floorId: String
-    ): LiveData<List<Device>> {
-
-        val floorDevices =
-            MutableLiveData<List<Device>>()
-
-        repository.observeDevicesByFloor(
-
-            floorId = floorId,
-
-            onSuccess = { devices ->
-
-                floorDevices.postValue(
-                    devices
-                )
-            },
-
-            onError = { message ->
-
-                _error.postValue(
-                    message
-                )
-            }
-        )
-
-        return floorDevices
-    }
-
-
-    // ---------------------------------------------------------
+    // =========================================================
     // Add device
-    // ---------------------------------------------------------
+    // =========================================================
 
     fun addDevice(
         device: Device,
@@ -123,9 +127,9 @@ class DeviceViewModel : ViewModel() {
     }
 
 
-    // ---------------------------------------------------------
+    // =========================================================
     // Update device
-    // ---------------------------------------------------------
+    // =========================================================
 
     fun updateDevice(
         device: Device,
@@ -144,9 +148,9 @@ class DeviceViewModel : ViewModel() {
     }
 
 
-    // ---------------------------------------------------------
+    // =========================================================
     // Delete device
-    // ---------------------------------------------------------
+    // =========================================================
 
     fun deleteDevice(
         deviceId: String,
