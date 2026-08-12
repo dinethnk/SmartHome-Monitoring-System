@@ -5,45 +5,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/quickActionCard"
-    android:layout_width="112dp"
-    android:layout_height="112dp"
-    android:layout_marginEnd="12dp"
+    android:layout_width="100dp"
+    android:layout_height="110dp"
+    android:layout_marginEnd="@dimen/spacing_12"
+    android:layout_marginBottom="@dimen/spacing_8"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="18dp"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="@dimen/radius_medium"
     app:cardElevation="1dp"
-    app:strokeColor="#E8E5EC"
-    app:strokeWidth="1dp">
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="@dimen/spacing_8">
 
         <ImageView
             android:id="@+id/imageQuickActionIcon"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_stat_icon"
+            android:backgroundTint="@color/primary_container"
             android:contentDescription="Quick action icon"
-            android:padding="10dp"
+            android:padding="12dp"
             android:src="@drawable/ic_devices"
-            app:tint="#6750A4" />
+            app:tint="@color/primary" />
 
         <TextView
             android:id="@+id/textQuickActionTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/spacing_12"
             android:gravity="center"
             android:maxLines="2"
-            android:textColor="#211F26"
-            android:textSize="13sp"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
             android:textStyle="bold"
+            android:textColor="@color/on_background"
             tools:text="Manage Floors" />
 
     </LinearLayout>

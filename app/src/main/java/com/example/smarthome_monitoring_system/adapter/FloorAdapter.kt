@@ -1,6 +1,5 @@
 package com.example.smarthome_monitoring_system.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,9 @@ import com.example.smarthome_monitoring_system.data.model.Floor
 
 class FloorAdapter(
     private val floors: List<Floor>,
-    private val onFloorClick: (Floor) -> Unit
+    private val onFloorClick: (Floor) -> Unit,
+    private val onEditFloor: (Floor) -> Unit,
+    private val onDeleteFloor: (Floor) -> Unit
 ) : RecyclerView.Adapter<FloorAdapter.FloorViewHolder>() {
 
     class FloorViewHolder(itemView: View) :
@@ -33,6 +34,12 @@ class FloorAdapter(
 
         val openButton: ImageButton =
             itemView.findViewById(R.id.buttonOpenFloor)
+
+        val editButton: ImageButton =
+            itemView.findViewById(R.id.buttonEditFloor)
+
+        val deleteButton: ImageButton =
+            itemView.findViewById(R.id.buttonDeleteFloor)
     }
 
     override fun onCreateViewHolder(
@@ -42,7 +49,11 @@ class FloorAdapter(
 
         val itemView = LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.item_floor, parent, false)
+            .inflate(
+                R.layout.item_floor,
+                parent,
+                false
+            )
 
         return FloorViewHolder(itemView)
     }
@@ -51,24 +62,36 @@ class FloorAdapter(
         holder: FloorViewHolder,
         position: Int
     ) {
+
         val floor = floors[position]
+
+        // -----------------------------------------------------
+        // Floor information
+        // -----------------------------------------------------
 
         holder.floorName.text = floor.name
 
+        /*
+         * Device count will be calculated from Firebase
+         * devices using floorId.
+         *
+         * For now, the floor object itself does not contain
+         * deviceCount.
+         */
         holder.deviceCount.text =
-            "${floor.deviceCount} connected devices"
+            "Loading devices..."
 
-        if (floor.active) {
-            holder.floorStatus.text = "ACTIVE"
-            holder.floorStatus.setTextColor(
-                Color.parseColor("#00866A")
-            )
-        } else {
-            holder.floorStatus.text = "INACTIVE"
-            holder.floorStatus.setTextColor(
-                Color.parseColor("#77727D")
-            )
-        }
+        /*
+         * The current Firebase floor schema does not contain
+         * an active/inactive field.
+         */
+        holder.floorStatus.text =
+            "ACTIVE"
+
+
+        // -----------------------------------------------------
+        // Open floor
+        // -----------------------------------------------------
 
         holder.itemView.setOnClickListener {
             onFloorClick(floor)
@@ -76,6 +99,24 @@ class FloorAdapter(
 
         holder.openButton.setOnClickListener {
             onFloorClick(floor)
+        }
+
+
+        // -----------------------------------------------------
+        // Edit floor
+        // -----------------------------------------------------
+
+        holder.editButton.setOnClickListener {
+            onEditFloor(floor)
+        }
+
+
+        // -----------------------------------------------------
+        // Delete floor
+        // -----------------------------------------------------
+
+        holder.deleteButton.setOnClickListener {
+            onDeleteFloor(floor)
         }
     }
 

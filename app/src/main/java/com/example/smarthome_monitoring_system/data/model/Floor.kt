@@ -6,6 +6,6 @@ data class Floor(
     var floorPlanUrl: String = "",
     var gridRows: Int = 0,
     var gridColumns: Int = 0,
-    var deviceCount: Int = 0,
-    var active: Boolean = true
+    var createdAt: Long = 0L,
+    var updatedAt: Long = 0L
 )

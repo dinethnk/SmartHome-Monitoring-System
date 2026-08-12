@@ -5,88 +5,80 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="20dp"
+    app:cardBackgroundColor="@color/primary_container"
+    app:cardCornerRadius="@dimen/radius_large"
     app:cardElevation="2dp"
-    app:strokeColor="#E7E7EC"
-    app:strokeWidth="1dp">
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="112dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="16dp">
+        android:padding="@dimen/spacing_24">
 
-        <!-- Previous floor button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonPreviousFloor"
             style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="Previous floor"
-            app:backgroundTint="#F0E9F8"
-            app:cornerRadius="24dp"
+            app:backgroundTint="@color/on_primary"
+            app:cornerRadius="@dimen/radius_extra_large"
             app:icon="@drawable/ic_arrow_left"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
             app:iconSize="24dp"
-            app:iconTint="#6750A4" />
+            app:iconTint="@color/primary" />
 
-        <!-- Selected floor information -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingHorizontal="12dp">
+            android:paddingHorizontal="@dimen/spacing_12">
 
             <TextView
                 android:id="@+id/textFloorLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CURRENT FLOOR"
-                android:textColor="#77727D"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textStyle="bold"
+                android:textColor="@color/primary"
+                android:alpha="0.7" />
 
             <TextView
                 android:id="@+id/textFloorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Ground Floor"
-                android:textColor="#211F26"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/spacing_4"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="@color/primary"
+                android:text="Ground Floor" />
 
             <TextView
                 android:id="@+id/textFloorDeviceCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:text="3 connected devices"
-                android:textColor="#00866A"
-                android:textSize="13sp" />
+                android:layout_marginTop="@dimen/spacing_4"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="@color/active"
+                android:textStyle="bold"
+                android:text="3 connected devices" />
 
         </LinearLayout>
 
-        <!-- Next floor button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonNextFloor"
             style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="Next floor"
-            app:backgroundTint="#F0E9F8"
-            app:cornerRadius="24dp"
+            app:backgroundTint="@color/on_primary"
+            app:cornerRadius="@dimen/radius_extra_large"
             app:icon="@drawable/ic_arrow_right"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
             app:iconSize="24dp"
-            app:iconTint="#6750A4" />
+            app:iconTint="@color/primary" />
 
     </LinearLayout>
 
