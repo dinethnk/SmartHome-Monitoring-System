@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -27,7 +28,8 @@ class AddDeviceActivity : AppCompatActivity() {
     private lateinit var autoDeviceType: AutoCompleteTextView
     private lateinit var autoDeviceStatus: AutoCompleteTextView
 
-
+    private var isEditMode = false
+    private var deviceId: String = ""
     private var floorId: String = ""
     private var floorName: String = ""
 
@@ -48,6 +50,11 @@ class AddDeviceActivity : AppCompatActivity() {
         setupTopBar()
         setupDeviceTypeDropdown()
         setupDeviceStatusDropdown()
+        
+        if (isEditMode) {
+            setupEditMode()
+        }
+        
         setupSaveButton()
         setupCancelButton()
     }
@@ -58,6 +65,17 @@ class AddDeviceActivity : AppCompatActivity() {
     // ---------------------------------------------------------
 
     private fun readFloorInformation() {
+
+        isEditMode =
+            intent.getBooleanExtra(
+                EXTRA_EDIT_MODE,
+                false
+            )
+
+        deviceId =
+            intent.getStringExtra(
+                EXTRA_DEVICE_ID
+            ).orEmpty()
 
         floorId =
             intent.getStringExtra(
@@ -183,8 +201,24 @@ class AddDeviceActivity : AppCompatActivity() {
     }
 
 
-    // ---------------------------------------------------------
-    // Device status dropdown
+    private fun setupEditMode() {
+        
+        findViewById<TextView>(R.id.textAddDeviceTitle).text = "Edit Device"
+        findViewById<MaterialButton>(R.id.buttonSaveDevice).text = "Update Device"
+
+        val deviceName = intent.getStringExtra(EXTRA_DEVICE_NAME).orEmpty()
+        val deviceTypeStr = intent.getStringExtra(EXTRA_DEVICE_TYPE).orEmpty()
+        val deviceStatusStr = intent.getStringExtra(EXTRA_DEVICE_STATUS).orEmpty()
+        val row = intent.getIntExtra(EXTRA_DEVICE_ROW, 0)
+        val col = intent.getIntExtra(EXTRA_DEVICE_COLUMN, 0)
+
+        editDeviceName.setText(deviceName)
+        editDeviceRow.setText(row.toString())
+        editDeviceColumn.setText(col.toString())
+        
+        autoDeviceType.setText(deviceTypeStr, false)
+        autoDeviceStatus.setText(deviceStatusStr, false)
+    }
     // ---------------------------------------------------------
 
     private fun setupDeviceStatusDropdown() {
@@ -412,6 +446,8 @@ class AddDeviceActivity : AppCompatActivity() {
         val device =
             Device(
 
+                id = if (isEditMode) deviceId else "",
+
                 name = deviceName,
 
                 floorId = floorId,
@@ -431,40 +467,40 @@ class AddDeviceActivity : AppCompatActivity() {
         // -----------------------------------------------------
 
         saveButton.isEnabled = false
-        saveButton.text = "Saving..."
+        saveButton.text = if (isEditMode) "Updating..." else "Saving..."
 
 
         // -----------------------------------------------------
         // Save to Firebase
         // -----------------------------------------------------
 
-        deviceViewModel.addDevice(
-
-            device = device,
-
-            onSuccess = {
-
-                Toast.makeText(
-                    this,
-                    "$deviceName added successfully",
-                    Toast.LENGTH_LONG
-                ).show()
-
-                finish()
-            },
-
-            onError = { errorMessage ->
-
-                saveButton.isEnabled = true
-                saveButton.text = "Save Device"
-
-                Toast.makeText(
-                    this,
-                    errorMessage,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        )
+        if (isEditMode) {
+            deviceViewModel.updateDevice(
+                device = device,
+                onSuccess = {
+                    Toast.makeText(this, "$deviceName updated", Toast.LENGTH_LONG).show()
+                    finish()
+                },
+                onError = { errorMessage ->
+                    saveButton.isEnabled = true
+                    saveButton.text = "Update Device"
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+                }
+            )
+        } else {
+            deviceViewModel.addDevice(
+                device = device,
+                onSuccess = {
+                    Toast.makeText(this, "$deviceName added", Toast.LENGTH_LONG).show()
+                    finish()
+                },
+                onError = { errorMessage ->
+                    saveButton.isEnabled = true
+                    saveButton.text = "Save Device"
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+                }
+            )
+        }
     }
 
 
@@ -522,6 +558,27 @@ class AddDeviceActivity : AppCompatActivity() {
 
 
     companion object {
+
+        const val EXTRA_EDIT_MODE =
+            "edit_mode"
+
+        const val EXTRA_DEVICE_ID =
+            "device_id"
+
+        const val EXTRA_DEVICE_NAME =
+            "device_name"
+
+        const val EXTRA_DEVICE_TYPE =
+            "device_type"
+
+        const val EXTRA_DEVICE_STATUS =
+            "device_status"
+
+        const val EXTRA_DEVICE_ROW =
+            "device_row"
+
+        const val EXTRA_DEVICE_COLUMN =
+            "device_column"
 
         const val EXTRA_FLOOR_ID =
             "floor_id"

@@ -586,21 +586,79 @@ class FloorPlanActivity : AppCompatActivity() {
 
             DeviceType.LIGHT -> {
 
-                startActivity(
+                val floorName =
+                    intent.getStringExtra(
+                        EXTRA_FLOOR_NAME
+                    ).orEmpty()
+
+                val lightIntent =
                     Intent(
                         this,
                         LightScheduleActivity::class.java
-                    )
+                    ).apply {
+
+                        putExtra(
+                            LightScheduleActivity.EXTRA_DEVICE_ID,
+                            device.id
+                        )
+
+                        putExtra(
+                            LightScheduleActivity.EXTRA_FLOOR_NAME,
+                            floorName
+                        )
+
+                        putExtra(
+                            LightScheduleActivity.EXTRA_GRID_ROWS,
+                            gridRows
+                        )
+
+                        putExtra(
+                            LightScheduleActivity.EXTRA_GRID_COLUMNS,
+                            gridColumns
+                        )
+                    }
+
+                startActivity(
+                    lightIntent
                 )
             }
 
             DeviceType.OUTLET -> {
 
-                startActivity(
+                val floorName =
+                    intent.getStringExtra(
+                        EXTRA_FLOOR_NAME
+                    ).orEmpty()
+
+                val outletIntent =
                     Intent(
                         this,
                         OutletControlActivity::class.java
-                    )
+                    ).apply {
+
+                        putExtra(
+                            OutletControlActivity.EXTRA_DEVICE_ID,
+                            device.id
+                        )
+
+                        putExtra(
+                            OutletControlActivity.EXTRA_FLOOR_NAME,
+                            floorName
+                        )
+
+                        putExtra(
+                            OutletControlActivity.EXTRA_GRID_ROWS,
+                            gridRows
+                        )
+
+                        putExtra(
+                            OutletControlActivity.EXTRA_GRID_COLUMNS,
+                            gridColumns
+                        )
+                    }
+
+                startActivity(
+                    outletIntent
                 )
             }
 
