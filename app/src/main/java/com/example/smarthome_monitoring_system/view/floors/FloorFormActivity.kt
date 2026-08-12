@@ -1,12 +1,16 @@
 package com.example.smarthome_monitoring_system.view.floors
 
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import coil3.load
 import com.example.smarthome_monitoring_system.R
@@ -48,6 +52,7 @@ class FloorFormActivity : AppCompatActivity() {
         connectViews()
         readIntentData()
         setupTopBar()
+        setupLivePreview()
         setupSaveButton()
         setupCancelButton()
     }
@@ -118,6 +123,8 @@ class FloorFormActivity : AppCompatActivity() {
         findViewById<MaterialButton>(
             R.id.buttonSaveFloor
         ).text = "Save Floor"
+
+        updatePreview("")
 
         switchFloorActive.isChecked = true
     }
@@ -206,27 +213,7 @@ class FloorFormActivity : AppCompatActivity() {
         // Show existing floor-plan image
         // -----------------------------------------
 
-        if (floorPlanUrl.isNotBlank()) {
-
-            imageFloorPlanPreview.load(
-                floorPlanUrl
-            )
-
-            imageFloorPlanPreview.scaleType =
-                ImageView.ScaleType.CENTER_CROP
-
-            floorPlanPlaceholder.visibility =
-                View.GONE
-
-        } else {
-
-            imageFloorPlanPreview.setImageResource(
-                R.drawable.ic_floor
-            )
-
-            floorPlanPlaceholder.visibility =
-                View.VISIBLE
-        }
+        updatePreview(floorPlanUrl)
 
 
         /*
@@ -237,6 +224,84 @@ class FloorFormActivity : AppCompatActivity() {
          * a UI element and is not saved to Firebase.
          */
         switchFloorActive.isChecked = true
+    }
+
+
+    // ---------------------------------------------------------
+    // Live preview
+    // ---------------------------------------------------------
+
+    private fun setupLivePreview() {
+
+        editFloorPlanUrl.addTextChangedListener(
+            object : TextWatcher {
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {}
+
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {}
+
+                override fun afterTextChanged(
+                    s: Editable?
+                ) {
+                    updatePreview(s?.toString().orEmpty())
+                }
+            }
+        )
+    }
+
+
+    // ---------------------------------------------------------
+    // Update preview image
+    // ---------------------------------------------------------
+
+    private fun updatePreview(url: String) {
+
+        val isValidUrl =
+            url.startsWith("http://") ||
+            url.startsWith("https://")
+
+        if (isValidUrl) {
+
+            imageFloorPlanPreview.imageTintList = null
+
+            imageFloorPlanPreview.load(url)
+
+            imageFloorPlanPreview.scaleType =
+                ImageView.ScaleType.CENTER_CROP
+
+            floorPlanPlaceholder.visibility =
+                View.GONE
+
+        } else {
+
+            imageFloorPlanPreview.imageTintList =
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.primary
+                    )
+                )
+
+            imageFloorPlanPreview.setImageResource(
+                R.drawable.ic_floor
+            )
+
+            imageFloorPlanPreview.scaleType =
+                ImageView.ScaleType.CENTER_INSIDE
+
+            floorPlanPlaceholder.visibility =
+                View.VISIBLE
+        }
     }
 
 

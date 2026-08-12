@@ -132,8 +132,7 @@
                             android:layout_height="match_parent"
                             android:contentDescription="Floor plan preview"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_floor"
-                            app:tint="@color/primary" />
+                            android:src="@drawable/ic_floor" />
 
                     <TextView
                             android:id="@+id/textFloorPlanPlaceholder"
