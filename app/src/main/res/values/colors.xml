@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primary">#006C4C</color>
+    <!-- Branding Colors -->
+    <color name="primary">#1A237E</color>
     <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#E8EAF6</color>
+    <color name="on_primary_container">#1A237E</color>
+
+    <!-- Surface & Background -->
+    <color name="background">#FFFFFF</color>
+    <color name="on_background">#1C1B1F</color>
+    <color name="surface">#F8F9FA</color>
+    <color name="on_surface">#1C1B1F</color>
+    <color name="surface_variant">#E7E0EC</color>
+    <color name="on_surface_variant">#49454F</color>
+    <color name="outline">#79747E</color>
+
+    <!-- State Colors -->
+    <color name="active">#00BFA5</color>
+    <color name="on_active">#FFFFFF</color>
+    <color name="inactive">#9E9E9E</color>
+    <color name="on_inactive">#FFFFFF</color>
+    <color name="warning">#FFB300</color>
+    <color name="on_warning">#000000</color>
+    <color name="error">#E53935</color>
+    <color name="on_error">#FFFFFF</color>
 
 </resources>

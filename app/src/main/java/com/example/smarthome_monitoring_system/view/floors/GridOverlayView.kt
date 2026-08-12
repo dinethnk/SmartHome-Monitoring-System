@@ -18,8 +18,8 @@ class GridOverlayView @JvmOverloads constructor(
 ) {
 
     private val gridPaint = Paint().apply {
-        color = Color.parseColor("#806750A4")
-        strokeWidth = 1.5f * resources.displayMetrics.density
+        color = Color.parseColor("#1A1A237E") // 10% Indigo
+        strokeWidth = 1f * resources.displayMetrics.density
         style = Paint.Style.STROKE
     }
 

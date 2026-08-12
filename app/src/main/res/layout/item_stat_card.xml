@@ -4,53 +4,60 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/statCard"
-    android:layout_width="150dp"
-    android:layout_height="145dp"
-    android:layout_marginEnd="12dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="1dp"
-    app:strokeColor="#E8E5EC"
-    app:strokeWidth="1dp">
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spacing_12"
+    android:layout_marginBottom="@dimen/spacing_8"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="@dimen/radius_medium"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="14dp">
+        android:padding="@dimen/spacing_16">
 
-        <ImageView
-            android:id="@+id/imageStatIcon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="@drawable/bg_stat_icon"
-            android:contentDescription="Statistic icon"
-            android:padding="8dp"
-            android:src="@drawable/ic_devices"
-            app:tint="#6750A4" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            app:cardBackgroundColor="@color/primary_container"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <ImageView
+                android:id="@+id/imageStatIcon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Statistic icon"
+                android:padding="12dp"
+                android:src="@drawable/ic_devices"
+                app:tint="@color/primary" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/textStatValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="12"
-            android:textColor="#211F26"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="@dimen/spacing_16"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:text="12" />
 
         <TextView
             android:id="@+id/textStatTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/spacing_4"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:text="Total Devices"
-            android:textColor="#6E6872"
-            android:textSize="13sp" />
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="@color/outline"
+            android:text="Total Devices" />
 
     </LinearLayout>
 

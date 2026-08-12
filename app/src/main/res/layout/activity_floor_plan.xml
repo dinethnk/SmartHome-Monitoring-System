@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#FFF9FF">
+        android:background="@color/background"
+        android:fitsSystemWindows="true">
 
     <!-- Shared application top bar -->
 
@@ -43,10 +44,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingStart="20dp"
-                    android:paddingTop="14dp"
-                    android:paddingEnd="20dp"
-                    android:paddingBottom="12dp">
+                    android:paddingStart="@dimen/spacing_24"
+                    android:paddingTop="@dimen/spacing_16"
+                    android:paddingEnd="@dimen/spacing_24"
+                    android:paddingBottom="@dimen/spacing_12">
 
                 <LinearLayout
                         android:layout_width="0dp"
@@ -58,19 +59,16 @@
                             android:id="@+id/textFloorPlanName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ground Floor"
-                            android:textColor="#211F26"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                            tools:text="Ground Floor" />
 
                     <TextView
                             android:id="@+id/textFloorPlanDeviceCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="0 connected devices"
-                            android:textColor="#716B76"
-                            android:textSize="13sp" />
+                            android:layout_marginTop="@dimen/spacing_4"
+                            android:textAppearance="?attr/textAppearanceBodySmall"
+                            tools:text="0 connected devices" />
 
                 </LinearLayout>
 
@@ -80,27 +78,23 @@
                 <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonAddDevice"
                         android:layout_width="wrap_content"
-                        android:layout_height="44dp"
+                        android:layout_height="48dp"
                         android:text="Add Device"
                         android:textAllCaps="false"
-                        android:textSize="13sp"
-                        app:backgroundTint="#6750A4"
-                        app:cornerRadius="12dp"
-                        app:icon="@drawable/ic_add"
-                        app:iconTint="#FFFFFF" />
+                        app:cornerRadius="@dimen/radius_medium"
+                        app:icon="@drawable/ic_add" />
 
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="520dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    app:cardBackgroundColor="#F4EDF9"
-                    app:cardCornerRadius="18dp"
-                    app:cardElevation="1dp"
-                    app:strokeColor="#DDD3E5"
-                    app:strokeWidth="1dp">
+                    android:layout_marginStart="@dimen/spacing_24"
+                    android:layout_marginEnd="@dimen/spacing_24"
+                    app:cardBackgroundColor="@color/surface"
+                    app:cardCornerRadius="@dimen/radius_large"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
 
                 <FrameLayout
                         android:id="@+id/floorPlanContainer"
@@ -146,7 +140,7 @@
             <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="@dimen/spacing_16"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -157,10 +151,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/status_dot_on"
-                        android:drawablePadding="6dp"
+                        android:drawablePadding="@dimen/spacing_8"
                         android:text="ON"
-                        android:textColor="#211F26"
-                        android:textSize="12sp" />
+                        android:textAppearance="?attr/textAppearanceLabelLarge" />
 
 
                 <!-- OFF -->
@@ -168,12 +161,11 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="@dimen/spacing_24"
                         android:drawableStart="@drawable/status_dot_off"
-                        android:drawablePadding="6dp"
+                        android:drawablePadding="@dimen/spacing_8"
                         android:text="OFF"
-                        android:textColor="#211F26"
-                        android:textSize="12sp" />
+                        android:textAppearance="?attr/textAppearanceLabelLarge" />
 
 
                 <!-- ERROR -->
@@ -181,12 +173,11 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="@dimen/spacing_24"
                         android:drawableStart="@drawable/status_dot_error"
-                        android:drawablePadding="6dp"
+                        android:drawablePadding="@dimen/spacing_8"
                         android:text="ERROR"
-                        android:textColor="#211F26"
-                        android:textSize="12sp" />
+                        android:textAppearance="?attr/textAppearanceLabelLarge" />
 
             </LinearLayout>
 

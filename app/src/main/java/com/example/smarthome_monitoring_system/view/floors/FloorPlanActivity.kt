@@ -560,16 +560,16 @@ class FloorPlanActivity : AppCompatActivity() {
         return when (status) {
 
             DeviceStatus.ON ->
-                "#00A67E"
+                "#00BFA5" // Active Teal
 
             DeviceStatus.OFF ->
-                "#8A848E"
+                "#9E9E9E" // Inactive Grey
 
             DeviceStatus.ERROR ->
-                "#BA1A1A"
+                "#E53935" // Error Red
 
             DeviceStatus.DISCONNECTED ->
-                "#E08A00"
+                "#FFB300" // Warning Amber
         }
     }
 

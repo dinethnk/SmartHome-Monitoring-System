@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF8FF"
+    android:background="@color/background"
     android:orientation="vertical"
     tools:context=".view.floors.ManageFloorsActivity"
     android:fitsSystemWindows="true">
@@ -23,43 +23,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="24dp"
-        android:paddingEnd="20dp">
+        android:paddingStart="@dimen/spacing_24"
+        android:paddingTop="@dimen/spacing_24"
+        android:paddingEnd="@dimen/spacing_24">
 
         <TextView
             android:id="@+id/textManageFloorsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Manage Floors"
-            android:textColor="#211F26"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:textAppearance="?attr/textAppearanceHeadlineMedium" />
 
         <TextView
             android:id="@+id/textManageFloorsSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/spacing_4"
             android:text="View, add and manage your house floors"
-            android:textColor="#716B76"
-            android:textSize="14sp" />
+            android:textAppearance="?attr/textAppearanceBodyMedium" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonAddFloor"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="@dimen/spacing_24"
             android:text="Add New Floor"
             android:textAllCaps="false"
-            android:textSize="15sp"
             android:textStyle="bold"
-            app:backgroundTint="#6750A4"
-            app:cornerRadius="16dp"
+            app:cornerRadius="@dimen/radius_medium"
             app:icon="@drawable/ic_add"
             app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="#FFFFFF" />
+            app:iconPadding="@dimen/spacing_8" />
 
     </LinearLayout>
 
@@ -67,25 +61,23 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginStart="@dimen/spacing_24"
+        android:layout_marginTop="@dimen/spacing_32"
         android:text="Your Floors"
-        android:textColor="#211F26"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textAppearance="?attr/textAppearanceTitleLarge" />
 
     <!-- Floor list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerFloors"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/spacing_16"
         android:layout_weight="1"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="24dp"
+        android:paddingStart="@dimen/spacing_24"
+        android:paddingEnd="@dimen/spacing_24"
+        android:paddingBottom="@dimen/spacing_24"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
         tools:listitem="@layout/item_floor" />

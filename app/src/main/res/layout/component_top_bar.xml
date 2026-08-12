@@ -1,83 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.appbar.MaterialToolbar
+<com.google.android.material.appbar.AppBarLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/topAppBar"
     android:layout_width="match_parent"
-    android:layout_height="64dp"
-    android:background="?attr/colorSurface"
-    android:elevation="1dp"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
-    app:contentInsetEnd="0dp"
-    app:contentInsetStart="0dp"
-    app:contentInsetStartWithNavigation="0dp">
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    app:elevation="0dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topBarContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="64dp"
+        android:background="?attr/colorSurface">
 
-        <!-- Hamburger menu -->
-
+        <!-- Left action (Menu/Back) -->
         <ImageButton
             android:id="@+id/buttonMenu"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Open navigation menu"
-            android:padding="14dp"
+            android:contentDescription="Menu or Back"
+            android:padding="12dp"
             android:src="@drawable/ic_menu"
-            app:tint="?attr/colorOnSurface" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/on_background" />
 
         <!-- Centered NexHome logo -->
+        <ImageView
+            android:id="@+id/imageAppLogo"
+            android:layout_width="120dp"
+            android:layout_height="32dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="NexHome logo"
+            android:scaleType="centerInside"
+            android:src="@drawable/nexhome_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Right action (Notifications) -->
         <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/imageAppLogo"
-                android:layout_width="140dp"
-                android:layout_height="44dp"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:contentDescription="NexHome logo"
-                android:scaleType="centerInside"
-                android:src="@drawable/nexhome_logo" />
-
-        </FrameLayout>
-
-        <!-- Notification button -->
-
-        <FrameLayout
-            android:layout_width="52dp"
-            android:layout_height="52dp">
+            android:id="@+id/containerNotifications"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/buttonNotifications"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Notifications"
-                android:padding="14dp"
+                android:padding="12dp"
                 android:src="@drawable/ic_notifications"
-                app:tint="?attr/colorOnSurface" />
+                app:tint="@color/on_background" />
 
             <View
                 android:id="@+id/notificationDot"
-                android:layout_width="9dp"
-                android:layout_height="9dp"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
                 android:layout_gravity="top|end"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/bg_notification_dot" />
 
         </FrameLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.google.android.material.appbar.MaterialToolbar>
+</com.google.android.material.appbar.AppBarLayout>
