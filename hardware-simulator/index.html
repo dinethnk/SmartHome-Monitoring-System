@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>NexHome Hardware Simulator</title>
+
+    <link
+            rel="stylesheet"
+            href="css/styles.css"
+    >
+</head>
+
+<body>
+
+<!-- Top header -->
+<header class="top-bar">
+
+    <div class="brand">
+        <div class="brand-logo">N</div>
+
+        <div>
+            <h1>NexHome</h1>
+            <p>Hardware Simulator</p>
+        </div>
+    </div>
+
+    <!-- Firebase connection status -->
+    <div
+            id="connectionStatus"
+            class="connection-status connecting"
+    >
+        <span class="connection-dot"></span>
+
+        <span id="connectionStatusText">
+                Connecting to Firebase...
+            </span>
+    </div>
+
+</header>
+
+<!-- Main simulator content -->
+<main class="page-container">
+
+    <!-- Page introduction -->
+    <section class="page-heading">
+        <div>
+            <h2>Smart Home Devices</h2>
+
+            <p>
+                Simulated physical devices connected to
+                the NexHome cloud database.
+            </p>
+        </div>
+    </section>
+
+    <!-- Controls -->
+    <section class="toolbar">
+
+        <div class="filter-group">
+            <label for="floorFilter">
+                Select floor
+            </label>
+
+            <select id="floorFilter">
+                <option value="all">
+                    All Floors
+                </option>
+            </select>
+        </div>
+
+        <button
+                id="refreshButton"
+                class="secondary-button"
+                type="button"
+        >
+            Refresh
+        </button>
+
+    </section>
+
+    <!-- Summary cards -->
+    <section class="summary-grid">
+
+        <article class="summary-card">
+                <span class="summary-label">
+                    Total Devices
+                </span>
+
+            <strong id="totalDeviceCount">
+                0
+            </strong>
+        </article>
+
+        <article class="summary-card summary-online">
+                <span class="summary-label">
+                    Devices ON
+                </span>
+
+            <strong id="onDeviceCount">
+                0
+            </strong>
+        </article>
+
+        <article class="summary-card summary-offline">
+                <span class="summary-label">
+                    Devices OFF
+                </span>
+
+            <strong id="offDeviceCount">
+                0
+            </strong>
+        </article>
+
+        <article class="summary-card summary-error">
+                <span class="summary-label">
+                    Problems
+                </span>
+
+            <strong id="problemDeviceCount">
+                0
+            </strong>
+        </article>
+
+    </section>
+
+    <!-- Device list section -->
+    <section class="devices-section">
+
+        <div class="section-heading">
+            <div>
+                <h3>Simulated Appliances</h3>
+
+                <p>
+                    Changes made here will later be
+                    written to Firebase.
+                </p>
+            </div>
+        </div>
+
+        <!-- Loading state -->
+        <div
+                id="loadingState"
+                class="message-state"
+        >
+            <div class="loader"></div>
+
+            <p>Loading devices...</p>
+        </div>
+
+        <!-- Firebase error state -->
+        <div
+                id="errorState"
+                class="message-state error-message hidden"
+        >
+            <h4>Unable to load devices</h4>
+
+            <p id="errorMessage">
+                Check the Firebase configuration.
+            </p>
+        </div>
+
+        <!-- No devices state -->
+        <div
+                id="emptyState"
+                class="message-state hidden"
+        >
+            <h4>No devices found</h4>
+
+            <p>
+                Add devices to Firebase to display them
+                in the simulator.
+            </p>
+        </div>
+
+        <!-- JavaScript creates device cards here -->
+        <div
+                id="deviceGrid"
+                class="device-grid"
+        ></div>
+
+    </section>
+
+</main>
+
+<!-- Device-card template -->
+<template id="deviceCardTemplate">
+
+    <article class="device-card">
+
+        <div class="device-card-header">
+
+            <div class="device-identity">
+
+                <div class="device-icon">
+                    <span class="device-icon-symbol">●</span>
+                </div>
+
+                <div>
+                    <h4 class="device-name">
+                        Device
+                    </h4>
+
+                    <p class="device-location">
+                        Floor
+                    </p>
+                </div>
+
+            </div>
+
+            <span class="status-badge status-off">
+                    OFF
+                </span>
+
+        </div>
+
+        <div class="device-information">
+
+            <div>
+                <span>Type</span>
+                <strong class="device-type">
+                    OUTLET
+                </strong>
+            </div>
+
+            <div>
+                <span>Connection</span>
+                <strong class="device-connection">
+                    Connected
+                </strong>
+            </div>
+
+        </div>
+
+        <!-- Controls are created based on device type -->
+        <div class="device-controls"></div>
+
+    </article>
+
+</template>
+
+<!-- Main JavaScript entry point -->
+<script
+        type="module"
+        src="js/simulator.js"
+></script>
+
+</body>
+
+</html>
