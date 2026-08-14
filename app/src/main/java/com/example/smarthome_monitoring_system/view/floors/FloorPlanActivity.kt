@@ -20,6 +20,7 @@ import com.example.smarthome_monitoring_system.data.model.Device
 import com.example.smarthome_monitoring_system.data.model.DeviceStatus
 import com.example.smarthome_monitoring_system.data.model.DeviceType
 import com.example.smarthome_monitoring_system.view.camera.CameraActivity
+import com.example.smarthome_monitoring_system.view.common.TopBarHelper
 import com.example.smarthome_monitoring_system.view.devices.AddDeviceActivity
 import com.example.smarthome_monitoring_system.view.devices.MultiSwitchControlActivity
 import com.example.smarthome_monitoring_system.view.devices.OutletControlActivity
@@ -45,6 +46,8 @@ class FloorPlanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_floor_plan)
+
+        TopBarHelper.setupNotifications(this)
 
         readFloorInformation()
         connectViews()

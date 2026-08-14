@@ -17,6 +17,7 @@ import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.data.model.Device
 import com.example.smarthome_monitoring_system.data.model.DeviceSchedule
 import com.example.smarthome_monitoring_system.data.model.DeviceStatus
+import com.example.smarthome_monitoring_system.view.common.TopBarHelper
 import com.example.smarthome_monitoring_system.view.devices.AddDeviceActivity
 import com.example.smarthome_monitoring_system.viewmodel.DeviceViewModel
 import com.example.smarthome_monitoring_system.viewmodel.ScheduleViewModel
@@ -107,6 +108,8 @@ class LightScheduleActivity : AppCompatActivity() {
         // -----------------------------------------------------
 
         readIntentInformation()
+
+        TopBarHelper.setupNotifications(this)
 
         connectViews()
 

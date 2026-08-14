@@ -17,6 +17,7 @@ import com.example.smarthome_monitoring_system.data.model.Device
 import com.example.smarthome_monitoring_system.data.model.DeviceStatus
 import com.example.smarthome_monitoring_system.data.model.SafetyRuntime
 import com.example.smarthome_monitoring_system.data.model.SafetySettings
+import com.example.smarthome_monitoring_system.view.common.TopBarHelper
 import com.example.smarthome_monitoring_system.viewmodel.DeviceViewModel
 import com.example.smarthome_monitoring_system.viewmodel.SafetyViewModel
 import com.google.android.material.button.MaterialButton
@@ -98,6 +99,8 @@ class SafetyDeviceActivity : AppCompatActivity() {
         // -----------------------------------------------------
 
         readIntentInformation()
+
+        TopBarHelper.setupNotifications(this)
 
         connectViews()
 

@@ -1,9 +1,11 @@
 package com.example.smarthome_monitoring_system.data.repository
 
+import com.example.smarthome_monitoring_system.data.firebase.AlertFirebaseDataSource
 import com.example.smarthome_monitoring_system.data.firebase.DeviceFirebaseDataSource
 import com.example.smarthome_monitoring_system.data.firebase.FloorFirebaseDataSource
 import com.example.smarthome_monitoring_system.data.firebase.SafetyFirebaseDataSource
 import com.example.smarthome_monitoring_system.data.firebase.ScheduleFirebaseDataSource
+import com.example.smarthome_monitoring_system.data.model.Alert
 import com.example.smarthome_monitoring_system.data.model.Device
 import com.example.smarthome_monitoring_system.data.model.DeviceSchedule
 import com.example.smarthome_monitoring_system.data.model.Floor
@@ -16,7 +18,9 @@ class SmartHomeRepository(
     private val scheduleFirebaseDataSource: ScheduleFirebaseDataSource =
         ScheduleFirebaseDataSource(),
     private val safetyFirebaseDataSource: SafetyFirebaseDataSource =
-        SafetyFirebaseDataSource()
+        SafetyFirebaseDataSource(),
+    private val alertFirebaseDataSource: AlertFirebaseDataSource =
+        AlertFirebaseDataSource()
 ) {
 
     // =========================================================
@@ -242,4 +246,34 @@ class SmartHomeRepository(
             onError = onError
         )
     }
+
+    // =========================================================
+    // ALERTS
+    // =========================================================
+
+        fun observeAlerts(
+            onSuccess: (List<Alert>) -> Unit,
+            onError: (String) -> Unit
+        ) {
+
+            alertFirebaseDataSource.observeAlerts(
+                onSuccess = onSuccess,
+                onError = onError
+            )
+        }
+
+    // =========================================================
+    // MARK ALL ALERTS AS READ
+    // =========================================================
+
+        fun markAllAlertsAsRead(
+            onSuccess: () -> Unit,
+            onError: (String) -> Unit
+        ) {
+
+            alertFirebaseDataSource.markAllAlertsAsRead(
+                onSuccess = onSuccess,
+                onError = onError
+            )
+        }
 }

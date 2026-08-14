@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.adapter.SwitchAdapter
 import com.example.smarthome_monitoring_system.data.model.SwitchChannel
+import com.example.smarthome_monitoring_system.view.common.TopBarHelper
 
 class MultiSwitchControlActivity : AppCompatActivity() {
 
@@ -39,6 +40,8 @@ class MultiSwitchControlActivity : AppCompatActivity() {
         setContentView(
             R.layout.activity_multi_switch_control
         )
+
+        TopBarHelper.setupNotifications(this)
 
         setupTopBar()
         setupDeviceInformation()
