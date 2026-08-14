@@ -673,13 +673,14 @@ class FloorPlanActivity : AppCompatActivity() {
             }
 
             DeviceType.SAFETY_DEVICE -> {
-
-                startActivity(
-                    Intent(
-                        this,
-                        SafetyDeviceActivity::class.java
-                    )
-                )
+                val floorName = intent.getStringExtra(EXTRA_FLOOR_NAME).orEmpty()
+                val safetyIntent = Intent(this, SafetyDeviceActivity::class.java).apply {
+                    putExtra(SafetyDeviceActivity.EXTRA_DEVICE_ID, device.id)
+                    putExtra(SafetyDeviceActivity.EXTRA_FLOOR_NAME, floorName)
+                    putExtra(SafetyDeviceActivity.EXTRA_GRID_ROWS, gridRows)
+                    putExtra(SafetyDeviceActivity.EXTRA_GRID_COLUMNS, gridColumns)
+                }
+                startActivity(safetyIntent)
             }
 
             DeviceType.CAMERA -> {
