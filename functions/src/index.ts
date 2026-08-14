@@ -40,6 +40,18 @@ interface Device {
   column?: number;
 }
 
+interface Alert {
+  deviceId: string;
+  deviceName: string;
+  type:
+    | "SCHEDULE_ON"
+    | "SCHEDULE_OFF"
+    | "SAFETY_CUTOFF";
+  message: string;
+  timestamp: number;
+  read: boolean;
+}
+
 /**
  * Logs a message with the current Sri Lankan time.
  *
@@ -155,6 +167,43 @@ function shouldDeviceBeOn(
   return (
     currentMinutes >= onMinutes ||
     currentMinutes < offMinutes
+  );
+}
+
+/**
+ * Creates an alert in Firebase.
+ *
+ * @param {string} deviceId - Device ID.
+ * @param {string} deviceName - Device name.
+ * @param {"SCHEDULE_ON"|"SCHEDULE_OFF"|"SAFETY_CUTOFF"} type - Alert type.
+ * @param {string} message - Alert message.
+ * @return {Promise<void>} Promise completed after creating the alert.
+ */
+async function createAlert(
+  deviceId: string,
+  deviceName: string,
+  type:
+    | "SCHEDULE_ON"
+    | "SCHEDULE_OFF"
+    | "SAFETY_CUTOFF",
+  message: string
+): Promise<void> {
+  const alertReference =
+    db.ref("alerts").push();
+
+  const alert: Alert = {
+    deviceId,
+    deviceName,
+    type,
+    message,
+    timestamp: Date.now(),
+    read: false,
+  };
+
+  await alertReference.set(alert);
+
+  log(
+    `Alert created: ${type} | ${deviceName}`
   );
 }
 
@@ -352,6 +401,31 @@ async function processLightSchedules(): Promise<void> {
     await deviceReference.update({
       status: desiredStatus,
     });
+
+    // -----------------------------------------------------
+    // Create schedule alert
+    // -----------------------------------------------------
+
+    const alertType =
+      shouldBeOn
+        ? "SCHEDULE_ON"
+        : "SCHEDULE_OFF";
+
+    const alertMessage =
+      shouldBeOn
+        ? `${
+            device.name ?? deviceId
+          } was turned ON according to its schedule.`
+        : `${
+            device.name ?? deviceId
+          } was turned OFF according to its schedule.`;
+
+    await createAlert(
+      deviceId,
+      device.name ?? deviceId,
+      alertType,
+      alertMessage
+    );
 
     log(
       `Device ${
@@ -576,10 +650,26 @@ async function processSafetyDevices(): Promise<void> {
       } exceeded maximum ON duration.`
     );
 
-    // Turn device OFF.
+    // -----------------------------------------------------
+    // Turn device OFF
+    // -----------------------------------------------------
+
     await deviceReference.update({
       status: "OFF",
     });
+
+    // -----------------------------------------------------
+    // Create safety alert
+    // -----------------------------------------------------
+
+    await createAlert(
+      deviceId,
+      device.name ?? deviceId,
+      "SAFETY_CUTOFF",
+      `${
+        device.name ?? deviceId
+      } was automatically turned OFF after exceeding the maximum ON duration.`
+    );
 
     // -----------------------------------------------------
     // Remove runtime record
