@@ -19,6 +19,17 @@ interface DeviceSchedule {
   offTime: string;
 }
 
+interface SafetySettings {
+  deviceId: string;
+  enabled: boolean;
+  maxOnDuration: number;
+}
+
+interface SafetyRuntime {
+  deviceId: string;
+  turnedOnAt: number;
+}
+
 interface Device {
   id?: string;
   name?: string;
@@ -28,7 +39,6 @@ interface Device {
   row?: number;
   column?: number;
 }
-
 
 /**
  * Logs a message with the current Sri Lankan time.
@@ -46,65 +56,55 @@ function log(message: string): void {
   );
 }
 
-
 /**
  * Converts a schedule time string into a DateTime.
  *
- * Supports both:
+ * Supports:
  * - 24-hour format: "18:00"
  * - 12-hour format: "06:00 PM"
  *
  * @param {string} time - Schedule time.
  * @return {DateTime|null} Parsed time or null when invalid.
  */
-    function parseScheduleTime(
-      time: string
-    ): DateTime | null {
-      const trimmedTime = time.trim();
+function parseScheduleTime(
+  time: string
+): DateTime | null {
+  const trimmedTime = time.trim();
 
-      // -------------------------------------------------------
-      // Try 24-hour format first.
-      // Example: 18:00
-      // -------------------------------------------------------
-
-      let parsed =
-        DateTime.fromFormat(
-          trimmedTime,
-          "HH:mm",
-          {
-            zone: TIME_ZONE,
-          }
-        );
-
-      if (parsed.isValid) {
-        return parsed;
+  // Try 24-hour format.
+  let parsed =
+    DateTime.fromFormat(
+      trimmedTime,
+      "HH:mm",
+      {
+        zone: TIME_ZONE,
       }
+    );
 
-      // -------------------------------------------------------
-      // Try 12-hour format.
-      // Example: 06:00 PM
-      // -------------------------------------------------------
+  if (parsed.isValid) {
+    return parsed;
+  }
 
-      parsed =
-        DateTime.fromFormat(
-          trimmedTime,
-          "hh:mm a",
-          {
-            zone: TIME_ZONE,
-          }
-        );
-
-      if (parsed.isValid) {
-        return parsed;
+  // Try 12-hour format.
+  parsed =
+    DateTime.fromFormat(
+      trimmedTime,
+      "hh:mm a",
+      {
+        zone: TIME_ZONE,
       }
+    );
 
-      console.error(
-        `Invalid schedule time: ${time}`
-      );
+  if (parsed.isValid) {
+    return parsed;
+  }
 
-      return null;
-    }
+  console.error(
+    `Invalid schedule time: ${time}`
+  );
 
+  return null;
+}
 
 /**
  * Determines whether a device should currently be ON.
@@ -158,22 +158,13 @@ function shouldDeviceBeOn(
   );
 }
 
-
 /**
  * Processes all enabled light schedules.
  */
 async function processLightSchedules(): Promise<void> {
-  log(
-    "========================================"
-  );
-
-  log(
-    "Light schedule worker started"
-  );
-
-  log(
-    "========================================"
-  );
+  log("========================================");
+  log("Light schedule worker started");
+  log("========================================");
 
   // -------------------------------------------------------
   // Current Sri Lankan time
@@ -189,7 +180,6 @@ async function processLightSchedules(): Promise<void> {
     }`
   );
 
-
   // -------------------------------------------------------
   // Read all schedules
   // -------------------------------------------------------
@@ -199,20 +189,14 @@ async function processLightSchedules(): Promise<void> {
       .ref("schedules")
       .once("value");
 
-
   if (!schedulesSnapshot.exists()) {
-    log(
-      "No schedules found."
-    );
-
+    log("No schedules found.");
     return;
   }
-
 
   const schedules =
     schedulesSnapshot.val() as
       Record<string, DeviceSchedule>;
-
 
   // -------------------------------------------------------
   // Process every schedule
@@ -228,7 +212,6 @@ async function processLightSchedules(): Promise<void> {
       `Processing schedule for device: ${deviceId}`
     );
 
-
     // -----------------------------------------------------
     // Check whether schedule is enabled
     // -----------------------------------------------------
@@ -240,7 +223,6 @@ async function processLightSchedules(): Promise<void> {
 
       continue;
     }
-
 
     // -----------------------------------------------------
     // Validate schedule
@@ -257,7 +239,6 @@ async function processLightSchedules(): Promise<void> {
       continue;
     }
 
-
     // -----------------------------------------------------
     // Parse ON and OFF times
     // -----------------------------------------------------
@@ -272,7 +253,6 @@ async function processLightSchedules(): Promise<void> {
         schedule.offTime
       );
 
-
     if (
       !onTime ||
       !offTime
@@ -283,7 +263,6 @@ async function processLightSchedules(): Promise<void> {
 
       continue;
     }
-
 
     // -----------------------------------------------------
     // Determine required state
@@ -301,7 +280,6 @@ async function processLightSchedules(): Promise<void> {
         ? "ON"
         : "OFF";
 
-
     // -----------------------------------------------------
     // Read device
     // -----------------------------------------------------
@@ -316,7 +294,6 @@ async function processLightSchedules(): Promise<void> {
         "value"
       );
 
-
     if (!deviceSnapshot.exists()) {
       log(
         `Device not found: ${deviceId}`
@@ -325,13 +302,11 @@ async function processLightSchedules(): Promise<void> {
       continue;
     }
 
-
     const device =
       deviceSnapshot.val() as Device;
 
     const currentStatus =
       device.status;
-
 
     // -----------------------------------------------------
     // Log current situation
@@ -354,7 +329,6 @@ async function processLightSchedules(): Promise<void> {
       }`
     );
 
-
     // -----------------------------------------------------
     // No update required
     // -----------------------------------------------------
@@ -371,7 +345,6 @@ async function processLightSchedules(): Promise<void> {
       continue;
     }
 
-
     // -----------------------------------------------------
     // Update Firebase device status
     // -----------------------------------------------------
@@ -379,7 +352,6 @@ async function processLightSchedules(): Promise<void> {
     await deviceReference.update({
       status: desiredStatus,
     });
-
 
     log(
       `Device ${
@@ -392,20 +364,242 @@ async function processLightSchedules(): Promise<void> {
     );
   }
 
-
-  log(
-    "========================================"
-  );
-
-  log(
-    "Light schedule worker completed"
-  );
-
-  log(
-    "========================================"
-  );
+  log("========================================");
+  log("Light schedule worker completed");
+  log("========================================");
 }
 
+/**
+ * Processes all active safety devices.
+ *
+ * Checks how long each safety device has been ON.
+ * If the maximum allowed duration is exceeded,
+ * the device is automatically turned OFF.
+ */
+async function processSafetyDevices(): Promise<void> {
+  log("========================================");
+  log("Safety device worker started");
+  log("========================================");
+
+  // -------------------------------------------------------
+  // Current timestamp
+  // -------------------------------------------------------
+
+  const currentTime = Date.now();
+
+  log(
+    `Current timestamp: ${currentTime}`
+  );
+
+  // -------------------------------------------------------
+  // Read safety settings
+  // -------------------------------------------------------
+
+  const settingsSnapshot =
+    await db
+      .ref("safetySettings")
+      .once("value");
+
+  if (!settingsSnapshot.exists()) {
+    log("No safety settings found.");
+    return;
+  }
+
+  const settings =
+    settingsSnapshot.val() as
+      Record<string, SafetySettings>;
+
+  // -------------------------------------------------------
+  // Read active safety runtimes
+  // -------------------------------------------------------
+
+  const runtimeSnapshot =
+    await db
+      .ref("safetyRuntime")
+      .once("value");
+
+  if (!runtimeSnapshot.exists()) {
+    log("No active safety devices found.");
+    return;
+  }
+
+  const runtimes =
+    runtimeSnapshot.val() as
+      Record<string, SafetyRuntime>;
+
+  // -------------------------------------------------------
+  // Process every active safety device
+  // -------------------------------------------------------
+
+  for (
+    const deviceId of Object.keys(runtimes)
+  ) {
+    const runtime =
+      runtimes[deviceId];
+
+    log(
+      `Processing safety device: ${deviceId}`
+    );
+
+    // -----------------------------------------------------
+    // Find safety settings
+    // -----------------------------------------------------
+
+    const safetySetting =
+      settings[deviceId];
+
+    if (!safetySetting) {
+      log(
+        `No safety settings found for device: ${deviceId}`
+      );
+
+      continue;
+    }
+
+    // -----------------------------------------------------
+    // Check whether safety protection is enabled
+    // -----------------------------------------------------
+
+    if (!safetySetting.enabled) {
+      log(
+        `Safety protection disabled for device: ${deviceId}`
+      );
+
+      continue;
+    }
+
+    // -----------------------------------------------------
+    // Validate maximum duration
+    // -----------------------------------------------------
+
+    if (
+      !safetySetting.maxOnDuration ||
+      safetySetting.maxOnDuration <= 0
+    ) {
+      log(
+        `Invalid maximum duration for device: ${deviceId}`
+      );
+
+      continue;
+    }
+
+    // -----------------------------------------------------
+    // Calculate elapsed time
+    // -----------------------------------------------------
+
+    const elapsedMilliseconds =
+      currentTime - runtime.turnedOnAt;
+
+    const elapsedMinutes =
+      elapsedMilliseconds / (60 * 1000);
+
+    log(
+      `Device: ${deviceId} | ` +
+      `Elapsed: ${elapsedMinutes.toFixed(2)} min | ` +
+      `Maximum: ${safetySetting.maxOnDuration} min`
+    );
+
+    // -----------------------------------------------------
+    // Check whether maximum duration is exceeded
+    // -----------------------------------------------------
+
+    if (
+      elapsedMinutes <
+      safetySetting.maxOnDuration
+    ) {
+      log(
+        `Safety duration not exceeded for device: ${deviceId}`
+      );
+
+      continue;
+    }
+
+    // -----------------------------------------------------
+    // Read device
+    // -----------------------------------------------------
+
+    const deviceReference =
+      db.ref(
+        `devices/${deviceId}`
+      );
+
+    const deviceSnapshot =
+      await deviceReference.once(
+        "value"
+      );
+
+    if (!deviceSnapshot.exists()) {
+      log(
+        `Device not found: ${deviceId}`
+      );
+
+      // Runtime record is no longer useful.
+      await db
+        .ref(`safetyRuntime/${deviceId}`)
+        .remove();
+
+      continue;
+    }
+
+    const device =
+      deviceSnapshot.val() as Device;
+
+    // -----------------------------------------------------
+    // Only turn OFF if device is currently ON
+    // -----------------------------------------------------
+
+    if (
+      device.status !== "ON"
+    ) {
+      log(
+        `Device ${
+          device.name ?? deviceId
+        } is not ON. ` +
+        `Current status: ${device.status}`
+      );
+
+      // Runtime is no longer needed.
+      await db
+        .ref(`safetyRuntime/${deviceId}`)
+        .remove();
+
+      continue;
+    }
+
+    // -----------------------------------------------------
+    // Automatic safety cutoff
+    // -----------------------------------------------------
+
+    log(
+      `SAFETY CUTOFF: ${
+        device.name ?? deviceId
+      } exceeded maximum ON duration.`
+    );
+
+    // Turn device OFF.
+    await deviceReference.update({
+      status: "OFF",
+    });
+
+    // -----------------------------------------------------
+    // Remove runtime record
+    // -----------------------------------------------------
+
+    await db
+      .ref(`safetyRuntime/${deviceId}`)
+      .remove();
+
+    log(
+      `Device ${
+        device.name ?? deviceId
+      } automatically turned OFF.`
+    );
+  }
+
+  log("========================================");
+  log("Safety device worker completed");
+  log("========================================");
+}
 
 /**
  * Waits for the specified amount of time.
@@ -426,52 +620,53 @@ function sleep(
   );
 }
 
-
 /**
- * Starts the continuous scheduler worker.
+ * Starts the continuous scheduler and safety worker.
  */
 async function startWorker(): Promise<void> {
-  log(
-    "========================================"
-  );
-
-  log(
-    "Smart Home Scheduler Worker"
-  );
-
-  log(
-    "Worker started successfully."
-  );
-
-  log(
-    `Timezone: ${TIME_ZONE}`
-  );
-
-  log(
-    "Checking schedules every 60 seconds."
-  );
-
-  log(
-    "========================================"
-  );
-
+  log("========================================");
+  log("Smart Home Background Worker");
+  log("Worker started successfully.");
+  log(`Timezone: ${TIME_ZONE}`);
+  log("Checking schedules every 60 seconds.");
+  log("========================================");
 
   while (true) {
+    // -----------------------------------------------------
+    // Light scheduling
+    // -----------------------------------------------------
+
     try {
       await processLightSchedules();
     } catch (error) {
       console.error(
-        "Scheduler worker error:",
+        "Light scheduler worker error:",
         error
       );
     }
+
+    // -----------------------------------------------------
+    // Safety device monitoring
+    // -----------------------------------------------------
+
+    try {
+      await processSafetyDevices();
+    } catch (error) {
+      console.error(
+        "Safety worker error:",
+        error
+      );
+    }
+
+    // -----------------------------------------------------
+    // Wait before next check
+    // -----------------------------------------------------
 
     await sleep(
       CHECK_INTERVAL_MS
     );
   }
 }
-
 
 startWorker().catch(
   (error) => {

@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.data.model.Device
 import com.example.smarthome_monitoring_system.data.model.DeviceStatus
+import com.example.smarthome_monitoring_system.data.model.SafetyRuntime
 import com.example.smarthome_monitoring_system.data.model.SafetySettings
 import com.example.smarthome_monitoring_system.viewmodel.DeviceViewModel
 import com.example.smarthome_monitoring_system.viewmodel.SafetyViewModel
@@ -24,55 +25,113 @@ import com.google.android.material.textfield.TextInputEditText
 
 class SafetyDeviceActivity : AppCompatActivity() {
 
+    // =========================================================
+    // VIEW MODELS
+    // =========================================================
+
     private lateinit var deviceViewModel: DeviceViewModel
     private lateinit var safetyViewModel: SafetyViewModel
+
+
+    // =========================================================
+    // VIEWS
+    // =========================================================
 
     private lateinit var powerSwitch: MaterialSwitch
     private lateinit var powerStateText: TextView
     private lateinit var deviceStateText: TextView
     private lateinit var durationInput: TextInputEditText
 
+
+    // =========================================================
+    // DEVICE INFORMATION
+    // =========================================================
+
     private var deviceId: String = ""
     private var floorName: String = ""
+
     private var gridRows: Int = 8
     private var gridColumns: Int = 8
+
     private var currentDevice: Device? = null
 
+
+    // =========================================================
+    // FIREBASE UPDATE PROTECTION
+    // =========================================================
+
+    /**
+     * Prevents the Firebase observer from triggering
+     * another Firebase update when the UI is updated.
+     */
     private var isUpdatingFromFirebase = false
+
+
+    // =========================================================
+    // ACTIVITY CREATED
+    // =========================================================
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_safety_device)
+        setContentView(
+            R.layout.activity_safety_device
+        )
+
+        // -----------------------------------------------------
+        // ViewModels
+        // -----------------------------------------------------
 
         deviceViewModel =
-            ViewModelProvider(this)[DeviceViewModel::class.java]
+            ViewModelProvider(this)[
+                DeviceViewModel::class.java
+            ]
 
         safetyViewModel =
-            ViewModelProvider(this)[SafetyViewModel::class.java]
+            ViewModelProvider(this)[
+                SafetyViewModel::class.java
+            ]
+
+
+        // -----------------------------------------------------
+        // Setup
+        // -----------------------------------------------------
 
         readIntentInformation()
+
         connectViews()
+
         setupTopBar()
+
         setupActionButtons()
+
         setupPowerSwitch()
+
         setupSaveDurationButton()
+
         observeDevice()
+
         observeSafetyData()
     }
 
+
     // =========================================================
-    // INTENT
+    // READ INTENT INFORMATION
     // =========================================================
 
     private fun readIntentInformation() {
 
         deviceId =
-            intent.getStringExtra(EXTRA_DEVICE_ID).orEmpty()
+            intent.getStringExtra(
+                EXTRA_DEVICE_ID
+            ).orEmpty()
+
 
         floorName =
-            intent.getStringExtra(EXTRA_FLOOR_NAME)
-                ?: "Floor"
+            intent.getStringExtra(
+                EXTRA_FLOOR_NAME
+            ) ?: "Floor"
+
 
         gridRows =
             intent.getIntExtra(
@@ -80,11 +139,13 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 8
             )
 
+
         gridColumns =
             intent.getIntExtra(
                 EXTRA_GRID_COLUMNS,
                 8
             )
+
 
         if (deviceId.isBlank()) {
 
@@ -98,24 +159,37 @@ class SafetyDeviceActivity : AppCompatActivity() {
         }
     }
 
+
     // =========================================================
-    // VIEWS
+    // CONNECT XML VIEWS
     // =========================================================
 
     private fun connectViews() {
 
         powerSwitch =
-            findViewById(R.id.switchSafetyPower)
+            findViewById(
+                R.id.switchSafetyPower
+            )
+
 
         powerStateText =
-            findViewById(R.id.textSafetyPowerState)
+            findViewById(
+                R.id.textSafetyPowerState
+            )
+
 
         deviceStateText =
-            findViewById(R.id.textDeviceState)
+            findViewById(
+                R.id.textDeviceState
+            )
+
 
         durationInput =
-            findViewById(R.id.editMaximumDuration)
+            findViewById(
+                R.id.editMaximumDuration
+            )
     }
+
 
     // =========================================================
     // TOP BAR
@@ -128,17 +202,22 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 R.id.buttonMenu
             )
 
+
         backButton.setImageResource(
             R.drawable.ic_arrow_left
         )
 
+
         backButton.contentDescription =
             "Go back"
 
+
         backButton.setOnClickListener {
+
             finish()
         }
     }
+
 
     // =========================================================
     // ACTION BUTTONS
@@ -149,42 +228,61 @@ class SafetyDeviceActivity : AppCompatActivity() {
         findViewById<MaterialButton>(
             R.id.buttonEditDevice
         ).setOnClickListener {
+
             onEditClick()
         }
+
 
         findViewById<MaterialButton>(
             R.id.buttonDeleteDevice
         ).setOnClickListener {
+
             onDeleteClick()
         }
     }
 
+
     // =========================================================
-    // DEVICE OBSERVER
+    // OBSERVE DEVICE
     // =========================================================
 
     private fun observeDevice() {
 
         deviceViewModel.observeAllDevices()
 
-        deviceViewModel.devices.observe(this) { devices ->
+
+        deviceViewModel.devices.observe(
+            this
+        ) { devices ->
 
             val device =
                 devices.firstOrNull {
                     it.id == deviceId
                 }
 
+
             if (device == null) {
                 return@observe
             }
 
+
             currentDevice = device
 
-            updateHeaderInformation(device)
-            updatePowerUI(device.status)
+
+            updateHeaderInformation(
+                device
+            )
+
+
+            updatePowerUI(
+                device.status
+            )
         }
 
-        deviceViewModel.error.observe(this) { errorMessage ->
+
+        deviceViewModel.error.observe(
+            this
+        ) { errorMessage ->
 
             if (!errorMessage.isNullOrEmpty()) {
 
@@ -197,19 +295,34 @@ class SafetyDeviceActivity : AppCompatActivity() {
         }
     }
 
+
     // =========================================================
-    // SAFETY DATA OBSERVER
+    // OBSERVE SAFETY DATA
     // =========================================================
 
     private fun observeSafetyData() {
+
+        // -----------------------------------------------------
+        // Safety settings
+        // -----------------------------------------------------
 
         safetyViewModel.observeSafetySettings(
             deviceId
         )
 
+
+        // -----------------------------------------------------
+        // Safety runtime
+        // -----------------------------------------------------
+
         safetyViewModel.observeSafetyRuntime(
             deviceId
         )
+
+
+        // -----------------------------------------------------
+        // Safety settings observer
+        // -----------------------------------------------------
 
         safetyViewModel.safetySettings.observe(
             this
@@ -219,10 +332,42 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 return@observe
             }
 
+
             durationInput.setText(
                 settings.maxOnDuration.toString()
             )
         }
+
+
+        // -----------------------------------------------------
+        // Safety runtime observer
+        // -----------------------------------------------------
+
+        safetyViewModel.safetyRuntime.observe(
+            this
+        ) { runtime ->
+
+            if (runtime == null) {
+
+                // Device is currently not being tracked.
+                return@observe
+            }
+
+
+            // Runtime exists.
+            //
+            // The future safety worker will use:
+            //
+            // currentTime - runtime.turnedOnAt
+            //
+            // to determine how long the device
+            // has been active.
+        }
+
+
+        // -----------------------------------------------------
+        // Safety errors
+        // -----------------------------------------------------
 
         safetyViewModel.error.observe(
             this
@@ -239,6 +384,7 @@ class SafetyDeviceActivity : AppCompatActivity() {
         }
     }
 
+
     // =========================================================
     // DEVICE HEADER
     // =========================================================
@@ -253,15 +399,18 @@ class SafetyDeviceActivity : AppCompatActivity() {
             R.drawable.ic_iron
         )
 
+
         findViewById<TextView>(
             R.id.textDeviceStatusName
         ).text =
             device.name
 
+
         findViewById<TextView>(
             R.id.textDeviceStatusLocation
         ).text =
             "$floorName • Room"
+
 
         findViewById<TextView>(
             R.id.textConnectionStatus
@@ -274,6 +423,7 @@ class SafetyDeviceActivity : AppCompatActivity() {
             } else {
                 "Connected"
             }
+
 
         findViewById<View>(
             R.id.viewConnectionStatusDot
@@ -292,6 +442,7 @@ class SafetyDeviceActivity : AppCompatActivity() {
             )
     }
 
+
     // =========================================================
     // POWER SWITCH
     // =========================================================
@@ -303,14 +454,17 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 isChecked ->
 
             if (isUpdatingFromFirebase) {
+
                 return@setOnCheckedChangeListener
             }
+
 
             updateDeviceStatusInFirebase(
                 isChecked
             )
         }
     }
+
 
     // =========================================================
     // UPDATE DEVICE STATUS
@@ -323,6 +477,7 @@ class SafetyDeviceActivity : AppCompatActivity() {
         val device =
             currentDevice ?: return
 
+
         val newStatus =
             if (isOn) {
                 DeviceStatus.ON
@@ -330,20 +485,40 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 DeviceStatus.OFF
             }
 
+
         val updatedDevice =
             device.copy(
                 status = newStatus
             )
 
+
+        // Disable switch while Firebase
+        // operation is running.
         powerSwitch.isEnabled = false
+
 
         deviceViewModel.updateDevice(
             updatedDevice,
 
             onSuccess = {
 
-                powerSwitch.isEnabled =
-                    true
+                // -------------------------------------------------
+                // Device status successfully changed.
+                // Now update the safety runtime.
+                // -------------------------------------------------
+
+                if (isOn) {
+
+                    createSafetyRuntime()
+
+                } else {
+
+                    removeSafetyRuntime()
+                }
+
+
+                powerSwitch.isEnabled = true
+
 
                 Toast.makeText(
                     this,
@@ -358,8 +533,19 @@ class SafetyDeviceActivity : AppCompatActivity() {
 
             onError = { message ->
 
-                powerSwitch.isEnabled =
-                    true
+                powerSwitch.isEnabled = true
+
+
+                // Restore the switch to the
+                // actual Firebase state.
+                isUpdatingFromFirebase = true
+
+                powerSwitch.isChecked =
+                    device.status ==
+                            DeviceStatus.ON
+
+                isUpdatingFromFirebase = false
+
 
                 Toast.makeText(
                     this,
@@ -370,6 +556,84 @@ class SafetyDeviceActivity : AppCompatActivity() {
         )
     }
 
+
+    // =========================================================
+    // CREATE SAFETY RUNTIME
+    // =========================================================
+
+    /**
+     * Creates a runtime record when the safety device
+     * is turned ON.
+     *
+     * The timestamp is stored as Unix epoch milliseconds.
+     */
+    private fun createSafetyRuntime() {
+
+        val runtime =
+            SafetyRuntime(
+                deviceId = deviceId,
+                turnedOnAt = System.currentTimeMillis()
+            )
+
+
+        safetyViewModel.saveSafetyRuntime(
+            runtime = runtime,
+
+            onSuccess = {
+
+                Toast.makeText(
+                    this,
+                    "Safety runtime started",
+                    Toast.LENGTH_SHORT
+                ).show()
+            },
+
+            onError = { message ->
+
+                Toast.makeText(
+                    this,
+                    "Runtime tracking error: $message",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        )
+    }
+
+
+    // =========================================================
+    // REMOVE SAFETY RUNTIME
+    // =========================================================
+
+    /**
+     * Removes the runtime record when the safety device
+     * is turned OFF.
+     */
+    private fun removeSafetyRuntime() {
+
+        safetyViewModel.clearSafetyRuntime(
+            deviceId = deviceId,
+
+            onSuccess = {
+
+                Toast.makeText(
+                    this,
+                    "Safety runtime stopped",
+                    Toast.LENGTH_SHORT
+                ).show()
+            },
+
+            onError = { message ->
+
+                Toast.makeText(
+                    this,
+                    "Runtime removal error: $message",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        )
+    }
+
+
     // =========================================================
     // POWER UI
     // =========================================================
@@ -378,12 +642,23 @@ class SafetyDeviceActivity : AppCompatActivity() {
         status: DeviceStatus
     ) {
 
+        // -----------------------------------------------------
+        // Prevent listener from treating this as a user action.
+        // -----------------------------------------------------
+
         isUpdatingFromFirebase = true
+
 
         powerSwitch.isChecked =
             status == DeviceStatus.ON
 
+
         isUpdatingFromFirebase = false
+
+
+        // -----------------------------------------------------
+        // Switch text
+        // -----------------------------------------------------
 
         powerSwitch.text =
             if (status == DeviceStatus.ON) {
@@ -392,12 +667,18 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 "OFF"
             }
 
+
+        // -----------------------------------------------------
+        // Power state text
+        // -----------------------------------------------------
+
         powerStateText.text =
             if (status == DeviceStatus.ON) {
                 "Device is ON"
             } else {
                 "Device is OFF"
             }
+
 
         powerStateText.setTextColor(
             Color.parseColor(
@@ -409,12 +690,18 @@ class SafetyDeviceActivity : AppCompatActivity() {
             )
         )
 
+
+        // -----------------------------------------------------
+        // Device state badge
+        // -----------------------------------------------------
+
         deviceStateText.text =
             if (status == DeviceStatus.ON) {
                 "ON"
             } else {
                 "OFF"
             }
+
 
         deviceStateText.setTextColor(
             Color.parseColor(
@@ -425,6 +712,7 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 }
             )
         )
+
 
         deviceStateText.backgroundTintList =
             ColorStateList.valueOf(
@@ -437,10 +725,16 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 )
             )
 
+
+        // -----------------------------------------------------
+        // Disable power switch when device cannot be controlled.
+        // -----------------------------------------------------
+
         powerSwitch.isEnabled =
             status != DeviceStatus.ERROR &&
                     status != DeviceStatus.DISCONNECTED
     }
+
 
     // =========================================================
     // SAVE SAFETY DURATION
@@ -458,6 +752,7 @@ class SafetyDeviceActivity : AppCompatActivity() {
                     ?.trim()
                     ?.toIntOrNull()
 
+
             if (
                 duration == null ||
                 duration <= 0
@@ -471,12 +766,14 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+
             val settings =
                 SafetySettings(
                     deviceId = deviceId,
                     enabled = true,
                     maxOnDuration = duration
                 )
+
 
             safetyViewModel.saveSafetySettings(
                 settings = settings,
@@ -502,6 +799,7 @@ class SafetyDeviceActivity : AppCompatActivity() {
         }
     }
 
+
     // =========================================================
     // EDIT DEVICE
     // =========================================================
@@ -510,6 +808,7 @@ class SafetyDeviceActivity : AppCompatActivity() {
 
         val device =
             currentDevice ?: return
+
 
         val intent =
             Intent(
@@ -522,50 +821,60 @@ class SafetyDeviceActivity : AppCompatActivity() {
                     true
                 )
 
+
                 putExtra(
                     AddDeviceActivity.EXTRA_DEVICE_ID,
                     device.id
                 )
+
 
                 putExtra(
                     AddDeviceActivity.EXTRA_DEVICE_NAME,
                     device.name
                 )
 
+
                 putExtra(
                     AddDeviceActivity.EXTRA_DEVICE_TYPE,
                     device.type.name
                 )
+
 
                 putExtra(
                     AddDeviceActivity.EXTRA_DEVICE_STATUS,
                     device.status.name
                 )
 
+
                 putExtra(
                     AddDeviceActivity.EXTRA_DEVICE_ROW,
                     device.row
                 )
+
 
                 putExtra(
                     AddDeviceActivity.EXTRA_DEVICE_COLUMN,
                     device.column
                 )
 
+
                 putExtra(
                     AddDeviceActivity.EXTRA_FLOOR_ID,
                     device.floorId
                 )
+
 
                 putExtra(
                     AddDeviceActivity.EXTRA_FLOOR_NAME,
                     floorName
                 )
 
+
                 putExtra(
                     AddDeviceActivity.EXTRA_GRID_ROWS,
                     gridRows
                 )
+
 
                 putExtra(
                     AddDeviceActivity.EXTRA_GRID_COLUMNS,
@@ -573,8 +882,10 @@ class SafetyDeviceActivity : AppCompatActivity() {
                 )
             }
 
+
         startActivity(intent)
     }
+
 
     // =========================================================
     // DELETE DEVICE
@@ -585,8 +896,11 @@ class SafetyDeviceActivity : AppCompatActivity() {
         val device =
             currentDevice ?: return
 
+
         AlertDialog.Builder(this)
-            .setTitle("Delete Device?")
+            .setTitle(
+                "Delete Device?"
+            )
             .setMessage(
                 "Are you sure you want to delete \"${device.name}\"?"
             )
@@ -605,6 +919,11 @@ class SafetyDeviceActivity : AppCompatActivity() {
             .show()
     }
 
+
+    // =========================================================
+    // DELETE DEVICE
+    // =========================================================
+
     private fun deleteDevice(
         deviceId: String
     ) {
@@ -614,11 +933,29 @@ class SafetyDeviceActivity : AppCompatActivity() {
 
             onSuccess = {
 
+                // Also remove safety runtime
+                // when the device itself is deleted.
+                safetyViewModel.clearSafetyRuntime(
+                    deviceId = deviceId,
+
+                    onSuccess = {
+                        // Nothing else required.
+                    },
+
+                    onError = {
+                        // Device has already been deleted.
+                        // Runtime cleanup failure is handled
+                        // by the safety ViewModel.
+                    }
+                )
+
+
                 Toast.makeText(
                     this,
                     "Device deleted",
                     Toast.LENGTH_SHORT
                 ).show()
+
 
                 finish()
             },
@@ -633,6 +970,11 @@ class SafetyDeviceActivity : AppCompatActivity() {
             }
         )
     }
+
+
+    // =========================================================
+    // CONSTANTS
+    // =========================================================
 
     companion object {
 
