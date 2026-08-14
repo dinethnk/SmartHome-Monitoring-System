@@ -27,6 +27,12 @@ object FirebaseDataSource {
     val alertsReference: DatabaseReference
         get() = database.getReference("alerts")
 
+    val safetySettingsReference: DatabaseReference
+        get() = database.getReference("safetySettings")
+
+    val safetyRuntimeReference: DatabaseReference
+        get() = database.getReference("safetyRuntime")
+
     val simulatorEventsReference: DatabaseReference
         get() = database.getReference("simulatorEvents")
 }

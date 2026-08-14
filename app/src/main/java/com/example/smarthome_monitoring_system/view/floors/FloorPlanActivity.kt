@@ -585,6 +585,7 @@ class FloorPlanActivity : AppCompatActivity() {
         when (device.type) {
 
             DeviceType.LIGHT -> {
+                
 
                 val floorName =
                     intent.getStringExtra(
