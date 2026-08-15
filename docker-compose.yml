@@ -1,0 +1,43 @@
+services:
+
+  # ==========================================
+  # Smart Home Background Functions
+  # ==========================================
+
+  functions:
+    build:
+      context: ./functions
+      dockerfile: Dockerfile
+
+    image: smarthome-functions:latest
+
+    container_name: smarthome-functions
+
+    command: ["node", "lib/index.js"]
+
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /secrets/smarthomemonitoringsyste-59316-firebase-adminsdk-fbsvc-b2e968ad6c.json
+
+    volumes:
+      - ./secrets:/secrets:ro
+
+    restart: unless-stopped
+
+
+  # ==========================================
+  # Smart Home Hardware Simulator
+  # ==========================================
+
+  hardware-simulator:
+    build:
+      context: ./hardware-simulator
+      dockerfile: Dockerfile
+
+    image: smarthome-hardware-simulator:latest
+
+    container_name: smarthome-hardware-simulator
+
+    ports:
+      - "8080:80"
+
+    restart: unless-stopped

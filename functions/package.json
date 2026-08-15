@@ -4,7 +4,7 @@
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "start": "node lib/index.js"
+    "start": "GOOGLE_APPLICATION_CREDENTIALS=../secrets/smarthomemonitoringsyste-59316-firebase-adminsdk-fbsvc-b2e968ad6c.json node lib/index.js"
   },
   "engines": {
     "node": "24"
