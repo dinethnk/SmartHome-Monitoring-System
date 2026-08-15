@@ -21,6 +21,10 @@
                 android:exported="false" />
 
         <activity
+                android:name=".view.alerts.AlertsActivity"
+                android:exported="false" />
+
+        <activity
                 android:name=".view.camera.CameraActivity"
                 android:exported="false" />
 

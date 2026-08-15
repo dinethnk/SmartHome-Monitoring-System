@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.data.model.Device
 import com.example.smarthome_monitoring_system.data.model.DeviceStatus
+import com.example.smarthome_monitoring_system.view.common.TopBarHelper
 import com.example.smarthome_monitoring_system.view.devices.AddDeviceActivity
 import com.example.smarthome_monitoring_system.viewmodel.DeviceViewModel
 import com.google.android.material.button.MaterialButton
@@ -43,6 +44,8 @@ class OutletControlActivity : AppCompatActivity() {
 
         deviceViewModel =
             ViewModelProvider(this)[DeviceViewModel::class.java]
+
+        TopBarHelper.setupNotifications(this)
 
         readDeviceInformation()
         connectViews()

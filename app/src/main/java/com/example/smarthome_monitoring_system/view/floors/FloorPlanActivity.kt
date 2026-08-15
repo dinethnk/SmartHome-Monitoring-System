@@ -20,6 +20,7 @@ import com.example.smarthome_monitoring_system.data.model.Device
 import com.example.smarthome_monitoring_system.data.model.DeviceStatus
 import com.example.smarthome_monitoring_system.data.model.DeviceType
 import com.example.smarthome_monitoring_system.view.camera.CameraActivity
+import com.example.smarthome_monitoring_system.view.common.TopBarHelper
 import com.example.smarthome_monitoring_system.view.devices.AddDeviceActivity
 import com.example.smarthome_monitoring_system.view.devices.MultiSwitchControlActivity
 import com.example.smarthome_monitoring_system.view.devices.OutletControlActivity
@@ -45,6 +46,8 @@ class FloorPlanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_floor_plan)
+
+        TopBarHelper.setupNotifications(this)
 
         readFloorInformation()
         connectViews()
@@ -585,6 +588,7 @@ class FloorPlanActivity : AppCompatActivity() {
         when (device.type) {
 
             DeviceType.LIGHT -> {
+                
 
                 val floorName =
                     intent.getStringExtra(
@@ -673,13 +677,14 @@ class FloorPlanActivity : AppCompatActivity() {
             }
 
             DeviceType.SAFETY_DEVICE -> {
-
-                startActivity(
-                    Intent(
-                        this,
-                        SafetyDeviceActivity::class.java
-                    )
-                )
+                val floorName = intent.getStringExtra(EXTRA_FLOOR_NAME).orEmpty()
+                val safetyIntent = Intent(this, SafetyDeviceActivity::class.java).apply {
+                    putExtra(SafetyDeviceActivity.EXTRA_DEVICE_ID, device.id)
+                    putExtra(SafetyDeviceActivity.EXTRA_FLOOR_NAME, floorName)
+                    putExtra(SafetyDeviceActivity.EXTRA_GRID_ROWS, gridRows)
+                    putExtra(SafetyDeviceActivity.EXTRA_GRID_COLUMNS, gridColumns)
+                }
+                startActivity(safetyIntent)
             }
 
             DeviceType.CAMERA -> {
