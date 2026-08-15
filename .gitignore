@@ -13,4 +13,7 @@ hardware-simulator/node_modules/
 
 .env
 *.log
+
+# Firebase credentials
+secrets/*.json
 service-account*.json
