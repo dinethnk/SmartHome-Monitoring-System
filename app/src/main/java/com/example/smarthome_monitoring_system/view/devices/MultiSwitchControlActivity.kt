@@ -381,6 +381,11 @@ class MultiSwitchControlActivity :
             updateParentUI(
                 device.status
             )
+
+            // Update individual switches enabled/disabled state
+            if (::switchAdapter.isInitialized) {
+                switchAdapter.updateMasterState(device.status == DeviceStatus.ON)
+            }
         }
 
 
@@ -422,6 +427,11 @@ class MultiSwitchControlActivity :
             switchChannels.addAll(
                 channels
             )
+
+            // Ensure master state is correct for new data
+            currentDevice?.let { device ->
+                switchAdapter.updateMasterState(device.status == DeviceStatus.ON)
+            }
 
             switchAdapter.notifyDataSetChanged()
         }
@@ -709,6 +719,14 @@ class MultiSwitchControlActivity :
 
                 masterSwitch.isEnabled =
                     true
+
+                // -------------------------------------------------
+                // If master is OFF, turn off all child switches
+                // in the database as well (Extension Cable logic).
+                // -------------------------------------------------
+                if (!isOn) {
+                    viewModel.turnOffAllChildSwitches(deviceId)
+                }
             },
 
             onError = { message ->

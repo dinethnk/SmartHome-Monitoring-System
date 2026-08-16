@@ -208,9 +208,23 @@ class DeviceFirebaseDataSource {
             return
         }
 
+        // -----------------------------------------------------
+        // We use updateChildren instead of setValue to avoid
+        // overwriting child nodes like "switches" (for multi-switch)
+        // or "schedules".
+        // -----------------------------------------------------
+
+        val updates = HashMap<String, Any?>()
+        updates["name"] = device.name
+        updates["floorId"] = device.floorId
+        updates["type"] = device.type
+        updates["status"] = device.status
+        updates["row"] = device.row
+        updates["column"] = device.column
+
         devicesReference
             .child(device.id)
-            .setValue(device)
+            .updateChildren(updates)
             .addOnSuccessListener {
 
                 Log.d(
@@ -506,6 +520,68 @@ class DeviceFirebaseDataSource {
                     exception.message
                         ?: "Failed to delete switch"
                 )
+            }
+    }
+
+
+    // =========================================================
+    // TURN OFF ALL CHILD SWITCHES
+    // =========================================================
+
+    fun turnOffAllSwitches(
+        deviceId: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        if (deviceId.isBlank()) {
+
+            onError(
+                "Multi-switch device ID is required"
+            )
+
+            return
+        }
+
+        val switchesPath =
+            devicesReference
+                .child(deviceId)
+                .child("switches")
+
+
+        switchesPath
+            .get()
+            .addOnSuccessListener { snapshot ->
+
+                if (!snapshot.exists()) {
+                    onSuccess()
+                    return@addOnSuccessListener
+                }
+
+                val updates = HashMap<String, Any?>()
+
+                for (child in snapshot.children) {
+                    // Update only the "isOn" field of each switch
+                    updates["${child.key}/isOn"] = false
+                }
+
+                if (updates.isEmpty()) {
+                    onSuccess()
+                    return@addOnSuccessListener
+                }
+
+                switchesPath
+                    .updateChildren(updates)
+                    .addOnSuccessListener {
+                        onSuccess()
+                    }
+                    .addOnFailureListener { e ->
+                        onError(e.message ?: "Update failed")
+                    }
+
+            }
+            .addOnFailureListener { e ->
+                onError(e.message ?: "Failed to read switches")
             }
     }
 }

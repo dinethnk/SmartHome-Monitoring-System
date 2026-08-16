@@ -218,6 +218,20 @@ class SmartHomeRepository(
         }
 
 
+        fun turnOffAllChildSwitches(
+            deviceId: String,
+            onSuccess: () -> Unit,
+            onError: (String) -> Unit
+        ) {
+
+            deviceFirebaseDataSource.turnOffAllSwitches(
+                deviceId = deviceId,
+                onSuccess = onSuccess,
+                onError = onError
+            )
+        }
+
+
     // =========================================================
     // SCHEDULE
     // =========================================================

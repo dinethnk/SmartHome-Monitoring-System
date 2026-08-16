@@ -214,6 +214,24 @@ class MultiSwitchViewModel : ViewModel() {
     }
 
 
+    fun turnOffAllChildSwitches(
+        deviceId: String
+    ) {
+
+        repository.turnOffAllChildSwitches(
+            deviceId = deviceId,
+
+            onSuccess = {
+                // Success
+            },
+
+            onError = { message ->
+                _error.postValue(message)
+            }
+        )
+    }
+
+
     // =========================================================
     // UPDATE PARENT
     // =========================================================

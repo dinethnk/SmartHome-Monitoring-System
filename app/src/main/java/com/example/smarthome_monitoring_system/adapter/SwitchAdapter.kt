@@ -28,6 +28,15 @@ class SwitchAdapter(
 
 ) : RecyclerView.Adapter<SwitchAdapter.SwitchViewHolder>() {
 
+    private var isMasterOn: Boolean = true
+
+    fun updateMasterState(isOn: Boolean) {
+        if (this.isMasterOn != isOn) {
+            this.isMasterOn = isOn
+            notifyDataSetChanged()
+        }
+    }
+
 
     // =========================================================
     // VIEW HOLDER
@@ -115,7 +124,7 @@ class SwitchAdapter(
 
         updateSwitchState(
             holder,
-            switchChannel.isOn
+            switchChannel.isOn && isMasterOn
         )
 
 
@@ -134,7 +143,15 @@ class SwitchAdapter(
         // -----------------------------------------------------
 
         holder.switchControl.isChecked =
-            switchChannel.isOn
+            switchChannel.isOn && isMasterOn
+
+
+        // -----------------------------------------------------
+        // Enabled state (based on master switch)
+        // -----------------------------------------------------
+
+        holder.switchControl.isEnabled =
+            isMasterOn
 
 
         // -----------------------------------------------------
