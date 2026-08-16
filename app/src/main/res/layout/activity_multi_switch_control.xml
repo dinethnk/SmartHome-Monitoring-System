@@ -1,77 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFF8FF"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context=".view.devices.MultiSwitchControlActivity">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:context=".view.devices.MultiSwitchControlActivity">
+
+    <!-- ===================================================== -->
+    <!-- TOP BAR -->
+    <!-- ===================================================== -->
 
     <include
-        android:id="@+id/multiSwitchTopBar"
-        layout="@layout/component_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="24dp"
-        android:paddingEnd="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Multi-Switch Control"
-            android:textColor="#211F26"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
+            android:id="@+id/multiSwitchTopBar"
+            layout="@layout/component_top_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Control each switch independently"
-            android:textColor="#716B76"
-            android:textSize="14sp" />
+            android:layout_height="wrap_content" />
 
-        <include
-            android:id="@+id/multiSwitchDeviceStatus"
-            layout="@layout/component_device_status"
+
+    <!-- ===================================================== -->
+    <!-- MAIN CONTENT -->
+    <!-- ===================================================== -->
+
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Individual Switches"
-            android:textColor="#211F26"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/spacing_24"
+                android:paddingTop="@dimen/spacing_24"
+                android:paddingEnd="@dimen/spacing_24"
+                android:paddingBottom="@dimen/spacing_24">
 
-    </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerSwitchChannels"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="24dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="3"
-        tools:listitem="@layout/item_switch_control" />
+            <!-- ================================================= -->
+            <!-- TITLE -->
+            <!-- ================================================= -->
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Multi-Switch Control"
+                    android:textAppearance="?attr/textAppearanceHeadlineMedium" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_4"
+                    android:text="Control each switch independently"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+
+            <!-- ================================================= -->
+            <!-- DEVICE STATUS -->
+            <!-- ================================================= -->
+
+            <include
+                    android:id="@+id/multiSwitchDeviceStatus"
+                    layout="@layout/component_device_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_24" />
+
+
+            <!-- ================================================= -->
+            <!-- MASTER CONTROL CARD -->
+            <!-- ================================================= -->
+
+            <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_24"
+                    app:cardBackgroundColor="@color/surface"
+                    app:cardCornerRadius="@dimen/radius_medium"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                    <!-- ========================================= -->
+                    <!-- MASTER POWER -->
+                    <!-- ========================================= -->
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="105dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/spacing_24">
+
+                        <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@drawable/bg_stat_icon"
+                                android:backgroundTint="@color/primary_container"
+                                android:contentDescription="Master power"
+                                android:padding="12dp"
+                                android:src="@drawable/ic_power"
+                                app:tint="@color/primary" />
+
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/spacing_16"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Master Power"
+                                    android:textAppearance="?attr/textAppearanceTitleSmall"
+                                    android:textStyle="bold" />
+
+                            <TextView
+                                    android:id="@+id/textMultiSwitchControlState"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_4"
+                                    android:text="Switch unit is OFF"
+                                    android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                        </LinearLayout>
+
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchMultiSwitchPower"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:contentDescription="Turn switch unit on or off" />
+
+                    </LinearLayout>
+
+
+                    <!-- ========================================= -->
+                    <!-- DIVIDER -->
+                    <!-- ========================================= -->
+
+                    <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/outline"
+                            android:alpha="0.2" />
+
+
+                    <!-- ========================================= -->
+                    <!-- EDIT / DELETE -->
+                    <!-- ========================================= -->
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="@dimen/spacing_8"
+                            android:paddingVertical="@dimen/spacing_4">
+
+                        <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonEditMultiSwitch"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Edit"
+                                app:icon="@drawable/ic_edit"
+                                app:iconSize="18dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonDeleteMultiSwitch"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Delete"
+                                android:textColor="@color/error"
+                                app:icon="@drawable/ic_delete"
+                                app:iconTint="@color/error"
+                                app:iconSize="18dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <!-- ================================================= -->
+            <!-- CHILD SWITCHES HEADER -->
+            <!-- ================================================= -->
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_24"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Individual Switches"
+                        android:textAppearance="?attr/textAppearanceTitleLarge" />
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonAddSwitch"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add"
+                        android:textAllCaps="false"
+                        app:icon="@drawable/ic_add"
+                        app:iconSize="18dp" />
+
+            </LinearLayout>
+
+
+            <!-- ================================================= -->
+            <!-- CHILD SWITCH LIST -->
+            <!-- ================================================= -->
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSwitchChannels"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_12"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_switch_control" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
