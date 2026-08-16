@@ -11,6 +11,7 @@ import com.example.smarthome_monitoring_system.data.model.DeviceSchedule
 import com.example.smarthome_monitoring_system.data.model.Floor
 import com.example.smarthome_monitoring_system.data.model.SafetyRuntime
 import com.example.smarthome_monitoring_system.data.model.SafetySettings
+import com.example.smarthome_monitoring_system.data.model.SwitchChannel
 
 class SmartHomeRepository(
     private val floorFirebaseDataSource: FloorFirebaseDataSource,
@@ -135,6 +136,100 @@ class SmartHomeRepository(
             onError = onError
         )
     }
+
+    // =========================================================
+    // MULTI-SWITCH CHILD CHANNELS
+    // =========================================================
+
+        fun observeSwitchChannels(
+            deviceId: String,
+            onSuccess: (List<SwitchChannel>) -> Unit,
+            onError: (String) -> Unit
+        ) {
+
+            deviceFirebaseDataSource.observeSwitchChannels(
+
+                deviceId = deviceId,
+
+                onSuccess = onSuccess,
+
+                onError = onError
+            )
+        }
+
+
+        fun addSwitchChannel(
+            deviceId: String,
+            switchChannel: SwitchChannel,
+            onSuccess: () -> Unit,
+            onError: (String) -> Unit
+        ) {
+
+            deviceFirebaseDataSource.addSwitchChannel(
+
+                deviceId = deviceId,
+
+                switchChannel = switchChannel,
+
+                onSuccess = onSuccess,
+
+                onError = onError
+            )
+        }
+
+
+        fun updateSwitchChannel(
+            deviceId: String,
+            switchChannel: SwitchChannel,
+            onSuccess: () -> Unit,
+            onError: (String) -> Unit
+        ) {
+
+            deviceFirebaseDataSource.updateSwitchChannel(
+
+                deviceId = deviceId,
+
+                switchChannel = switchChannel,
+
+                onSuccess = onSuccess,
+
+                onError = onError
+            )
+        }
+
+
+        fun deleteSwitchChannel(
+            deviceId: String,
+            switchId: String,
+            onSuccess: () -> Unit,
+            onError: (String) -> Unit
+        ) {
+
+            deviceFirebaseDataSource.deleteSwitchChannel(
+
+                deviceId = deviceId,
+
+                switchId = switchId,
+
+                onSuccess = onSuccess,
+
+                onError = onError
+            )
+        }
+
+
+        fun turnOffAllChildSwitches(
+            deviceId: String,
+            onSuccess: () -> Unit,
+            onError: (String) -> Unit
+        ) {
+
+            deviceFirebaseDataSource.turnOffAllSwitches(
+                deviceId = deviceId,
+                onSuccess = onSuccess,
+                onError = onError
+            )
+        }
 
 
     // =========================================================

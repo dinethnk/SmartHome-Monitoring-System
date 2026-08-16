@@ -50,6 +50,10 @@
                 android:exported="false" />
 
         <activity
+                android:name=".view.camera.FullscreenImageActivity"
+                android:exported="false" />
+
+        <activity
                 android:name=".view.floors.FloorPlanActivity"
                 android:exported="false" />
 

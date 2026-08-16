@@ -2,6 +2,7 @@ package com.example.smarthome_monitoring_system.data.firebase
 
 import android.util.Log
 import com.example.smarthome_monitoring_system.data.model.Device
+import com.example.smarthome_monitoring_system.data.model.SwitchChannel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -207,9 +208,23 @@ class DeviceFirebaseDataSource {
             return
         }
 
+        // -----------------------------------------------------
+        // We use updateChildren instead of setValue to avoid
+        // overwriting child nodes like "switches" (for multi-switch)
+        // or "schedules".
+        // -----------------------------------------------------
+
+        val updates = HashMap<String, Any?>()
+        updates["name"] = device.name
+        updates["floorId"] = device.floorId
+        updates["type"] = device.type
+        updates["status"] = device.status
+        updates["row"] = device.row
+        updates["column"] = device.column
+
         devicesReference
             .child(device.id)
-            .setValue(device)
+            .updateChildren(updates)
             .addOnSuccessListener {
 
                 Log.d(
@@ -266,6 +281,307 @@ class DeviceFirebaseDataSource {
                     exception.message
                         ?: "Failed to delete device"
                 )
+            }
+    }
+
+    // =========================================================
+// MULTI-SWITCH CHILDREN
+// =========================================================
+
+    fun observeSwitchChannels(
+        deviceId: String,
+        onSuccess: (List<SwitchChannel>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        if (deviceId.isBlank()) {
+
+            onError(
+                "Multi-switch device ID is required"
+            )
+
+            return
+        }
+
+        devicesReference
+            .child(deviceId)
+            .child("switches")
+            .addValueEventListener(
+                object : ValueEventListener {
+
+                    override fun onDataChange(
+                        snapshot: DataSnapshot
+                    ) {
+
+                        val switches =
+                            mutableListOf<SwitchChannel>()
+
+                        for (
+                        switchSnapshot
+                        in snapshot.children
+                        ) {
+
+                            val switchChannel =
+                                switchSnapshot.getValue(
+                                    SwitchChannel::class.java
+                                )
+
+                            if (switchChannel != null) {
+
+                                switchChannel.id =
+                                    switchSnapshot.key ?: ""
+
+                                switches.add(
+                                    switchChannel
+                                )
+                            }
+                        }
+
+                        onSuccess(
+                            switches
+                        )
+                    }
+
+                    override fun onCancelled(
+                        error: DatabaseError
+                    ) {
+
+                        onError(
+                            error.message
+                        )
+                    }
+                }
+            )
+    }
+
+
+// =========================================================
+// ADD CHILD SWITCH
+// =========================================================
+
+    fun addSwitchChannel(
+        deviceId: String,
+        switchChannel: SwitchChannel,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        if (deviceId.isBlank()) {
+
+            onError(
+                "Multi-switch device ID is required"
+            )
+
+            return
+        }
+
+        val switchId =
+            devicesReference
+                .child(deviceId)
+                .child("switches")
+                .push()
+                .key
+
+        if (switchId == null) {
+
+            onError(
+                "Unable to generate switch ID"
+            )
+
+            return
+        }
+
+        switchChannel.id =
+            switchId
+
+        devicesReference
+            .child(deviceId)
+            .child("switches")
+            .child(switchId)
+            .setValue(switchChannel)
+            .addOnSuccessListener {
+
+                Log.d(
+                    "DeviceFirebase",
+                    "Switch added: $switchId"
+                )
+
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+
+                onError(
+                    exception.message
+                        ?: "Failed to add switch"
+                )
+            }
+    }
+
+
+// =========================================================
+// UPDATE CHILD SWITCH
+// =========================================================
+
+    fun updateSwitchChannel(
+        deviceId: String,
+        switchChannel: SwitchChannel,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        if (deviceId.isBlank()) {
+
+            onError(
+                "Multi-switch device ID is required"
+            )
+
+            return
+        }
+
+        if (switchChannel.id.isBlank()) {
+
+            onError(
+                "Switch ID is required for update"
+            )
+
+            return
+        }
+
+        devicesReference
+            .child(deviceId)
+            .child("switches")
+            .child(switchChannel.id)
+            .setValue(switchChannel)
+            .addOnSuccessListener {
+
+                Log.d(
+                    "DeviceFirebase",
+                    "Switch updated: ${switchChannel.id}"
+                )
+
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+
+                onError(
+                    exception.message
+                        ?: "Failed to update switch"
+                )
+            }
+    }
+
+
+// =========================================================
+// DELETE CHILD SWITCH
+// =========================================================
+
+    fun deleteSwitchChannel(
+        deviceId: String,
+        switchId: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        if (deviceId.isBlank()) {
+
+            onError(
+                "Multi-switch device ID is required"
+            )
+
+            return
+        }
+
+        if (switchId.isBlank()) {
+
+            onError(
+                "Switch ID is required for deletion"
+            )
+
+            return
+        }
+
+        devicesReference
+            .child(deviceId)
+            .child("switches")
+            .child(switchId)
+            .removeValue()
+            .addOnSuccessListener {
+
+                Log.d(
+                    "DeviceFirebase",
+                    "Switch deleted: $switchId"
+                )
+
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+
+                onError(
+                    exception.message
+                        ?: "Failed to delete switch"
+                )
+            }
+    }
+
+
+    // =========================================================
+    // TURN OFF ALL CHILD SWITCHES
+    // =========================================================
+
+    fun turnOffAllSwitches(
+        deviceId: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+
+        if (deviceId.isBlank()) {
+
+            onError(
+                "Multi-switch device ID is required"
+            )
+
+            return
+        }
+
+        val switchesPath =
+            devicesReference
+                .child(deviceId)
+                .child("switches")
+
+
+        switchesPath
+            .get()
+            .addOnSuccessListener { snapshot ->
+
+                if (!snapshot.exists()) {
+                    onSuccess()
+                    return@addOnSuccessListener
+                }
+
+                val updates = HashMap<String, Any?>()
+
+                for (child in snapshot.children) {
+                    // Update only the "isOn" field of each switch
+                    updates["${child.key}/isOn"] = false
+                }
+
+                if (updates.isEmpty()) {
+                    onSuccess()
+                    return@addOnSuccessListener
+                }
+
+                switchesPath
+                    .updateChildren(updates)
+                    .addOnSuccessListener {
+                        onSuccess()
+                    }
+                    .addOnFailureListener { e ->
+                        onError(e.message ?: "Update failed")
+                    }
+
+            }
+            .addOnFailureListener { e ->
+                onError(e.message ?: "Failed to read switches")
             }
     }
 }
