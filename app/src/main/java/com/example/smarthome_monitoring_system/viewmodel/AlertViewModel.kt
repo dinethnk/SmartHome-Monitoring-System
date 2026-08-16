@@ -3,34 +3,36 @@ package com.example.smarthome_monitoring_system.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.smarthome_monitoring_system.data.model.DeviceSchedule
+import com.example.smarthome_monitoring_system.data.firebase.DeviceFirebaseDataSource
+import com.example.smarthome_monitoring_system.data.firebase.FloorFirebaseDataSource
+import com.example.smarthome_monitoring_system.data.model.Alert
 import com.example.smarthome_monitoring_system.data.repository.SmartHomeRepository
 
-class ScheduleViewModel : ViewModel() {
+class AlertViewModel : ViewModel() {
 
     private val repository =
         SmartHomeRepository(
             floorFirebaseDataSource =
-                com.example.smarthome_monitoring_system.data.firebase.FloorFirebaseDataSource(),
+                FloorFirebaseDataSource(),
 
             deviceFirebaseDataSource =
-                com.example.smarthome_monitoring_system.data.firebase.DeviceFirebaseDataSource()
+                DeviceFirebaseDataSource()
         )
 
 
     // =========================================================
-    // Current schedule
+    // ALERTS
     // =========================================================
 
-    private val _schedule =
-        MutableLiveData<DeviceSchedule?>()
+    private val _alerts =
+        MutableLiveData<List<Alert>>()
 
-    val schedule: LiveData<DeviceSchedule?>
-        get() = _schedule
+    val alerts: LiveData<List<Alert>>
+        get() = _alerts
 
 
     // =========================================================
-    // Error
+    // ERROR
     // =========================================================
 
     private val _error =
@@ -41,21 +43,17 @@ class ScheduleViewModel : ViewModel() {
 
 
     // =========================================================
-    // Observe schedule
+    // OBSERVE ALERTS
     // =========================================================
 
-    fun observeSchedule(
-        deviceId: String
-    ) {
+    fun observeAlerts() {
 
-        repository.observeSchedule(
+        repository.observeAlerts(
 
-            deviceId = deviceId,
+            onSuccess = { alerts ->
 
-            onSuccess = { schedule ->
-
-                _schedule.postValue(
-                    schedule
+                _alerts.postValue(
+                    alerts
                 )
             },
 
@@ -70,39 +68,15 @@ class ScheduleViewModel : ViewModel() {
 
 
     // =========================================================
-    // Save schedule
+    // MARK ALL ALERTS AS READ
     // =========================================================
 
-    fun saveSchedule(
-        schedule: DeviceSchedule,
+    fun markAllAlertsAsRead(
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
 
-        repository.saveSchedule(
-
-            schedule = schedule,
-
-            onSuccess = onSuccess,
-
-            onError = onError
-        )
-    }
-
-
-    // =========================================================
-    // Delete schedule
-    // =========================================================
-
-    fun deleteSchedule(
-        deviceId: String,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ) {
-
-        repository.deleteSchedule(
-
-            deviceId = deviceId,
+        repository.markAllAlertsAsRead(
 
             onSuccess = onSuccess,
 

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.adapter.UsageRecordAdapter
 import com.example.smarthome_monitoring_system.data.model.UsageRecord
+import com.example.smarthome_monitoring_system.view.common.TopBarHelper
 
 class ReportsActivity : AppCompatActivity() {
 
@@ -15,6 +16,8 @@ class ReportsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_reports)
+
+        TopBarHelper.setupNotifications(this)
 
         setupTopBar()
         setupUsageRecords()

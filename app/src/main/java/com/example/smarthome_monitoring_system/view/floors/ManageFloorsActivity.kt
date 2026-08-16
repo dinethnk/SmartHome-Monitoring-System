@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.adapter.FloorAdapter
 import com.example.smarthome_monitoring_system.data.model.Floor
+import com.example.smarthome_monitoring_system.view.common.TopBarHelper
 import com.example.smarthome_monitoring_system.viewmodel.FloorViewModel
 import com.google.android.material.button.MaterialButton
 
@@ -22,10 +23,14 @@ class ManageFloorsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
         setContentView(R.layout.activity_manage_floors)
 
         floorViewModel =
             ViewModelProvider(this)[FloorViewModel::class.java]
+
+        TopBarHelper.setupNotifications(this)
 
         setupTopBar()
         setupFloorList()

@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import coil3.load
 import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.data.model.Floor
+import com.example.smarthome_monitoring_system.view.common.TopBarHelper
 import com.example.smarthome_monitoring_system.viewmodel.FloorViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -48,6 +49,8 @@ class FloorFormActivity : AppCompatActivity() {
 
         floorViewModel =
             ViewModelProvider(this)[FloorViewModel::class.java]
+
+        TopBarHelper.setupNotifications(this)
 
         connectViews()
         readIntentData()

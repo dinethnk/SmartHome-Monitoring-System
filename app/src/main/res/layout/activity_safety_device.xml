@@ -65,51 +65,95 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="96dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/spacing_24">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/bg_stat_icon"
-                        android:backgroundTint="@color/primary_container"
-                        android:contentDescription="Iron power"
-                        android:padding="12dp"
-                        android:src="@drawable/ic_iron"
-                        app:tint="@color/primary" />
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/spacing_16"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:minHeight="96dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/spacing_24">
 
-                        <TextView
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@drawable/bg_stat_icon"
+                            android:backgroundTint="@color/primary_container"
+                            android:contentDescription="Iron power"
+                            android:padding="12dp"
+                            android:src="@drawable/ic_iron"
+                            app:tint="@color/primary" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_16"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Iron Power"
+                                android:textAppearance="?attr/textAppearanceTitleSmall"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textSafetyPowerState"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_4"
+                                android:text="Device is OFF"
+                                android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchSafetyPower"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Iron Power"
-                            android:textAppearance="?attr/textAppearanceTitleSmall"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/textSafetyPowerState"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_4"
-                            android:text="Device is OFF"
-                            android:textAppearance="?attr/textAppearanceBodySmall" />
+                            android:checked="false"
+                            android:textAppearance="?attr/textAppearanceLabelLarge" />
 
                     </LinearLayout>
 
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switchSafetyPower"
-                        android:layout_width="wrap_content"
+                    <!-- Action buttons -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/outline"
+                        android:alpha="0.2" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="false"
-                        android:textAppearance="?attr/textAppearanceLabelLarge" />
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/spacing_8"
+                        android:paddingVertical="@dimen/spacing_4"
+                        android:gravity="end">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonEditDevice"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Edit"
+                            app:icon="@drawable/ic_edit"
+                            app:iconSize="18dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonDeleteDevice"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delete"
+                            android:textColor="@color/error"
+                            app:icon="@drawable/ic_delete"
+                            app:iconTint="@color/error"
+                            app:iconSize="18dp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
