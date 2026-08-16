@@ -60,8 +60,11 @@ class CameraActivity : AppCompatActivity() {
     private var currentDevice: Device? = null
 
 
+    // =========================================================
     // Prevent Firebase updates from triggering
     // the switch listener again.
+    // =========================================================
+
     private var isUpdatingFromFirebase = false
 
 
@@ -89,6 +92,7 @@ class CameraActivity : AppCompatActivity() {
         setupCameraSwitch()
         setupActionButtons()
         setupRefreshButton()
+        setupSnapshotClick()
         observeDevice()
     }
 
@@ -451,18 +455,15 @@ class CameraActivity : AppCompatActivity() {
             R.drawable.ic_camera
         )
 
-
         findViewById<TextView>(
             R.id.textDeviceStatusName
         ).text =
             camera.name
 
-
         findViewById<TextView>(
             R.id.textDeviceStatusLocation
         ).text =
             "$floorName • Camera"
-
 
         findViewById<TextView>(
             R.id.textConnectionStatus
@@ -475,7 +476,6 @@ class CameraActivity : AppCompatActivity() {
             } else {
                 "Connected"
             }
-
 
         findViewById<View>(
             R.id.viewConnectionStatusDot
@@ -574,6 +574,28 @@ class CameraActivity : AppCompatActivity() {
         status: DeviceStatus
     ) {
 
+        // =========================================================
+        // CAMERA SNAPSHOT
+        // =========================================================
+
+        if (status == DeviceStatus.ON) {
+
+            snapshotImage.setImageResource(
+                R.drawable.livingroomcam
+            )
+
+        } else {
+
+            snapshotImage.setImageResource(
+                R.drawable.mock_camera_snapshot
+            )
+        }
+
+
+        // =========================================================
+        // CAMERA SWITCH
+        // =========================================================
+
         val isOn =
             status == DeviceStatus.ON
 
@@ -582,7 +604,6 @@ class CameraActivity : AppCompatActivity() {
 
         cameraSwitch.isChecked =
             isOn
-
 
         cameraSwitch.text =
             when (status) {
@@ -604,11 +625,15 @@ class CameraActivity : AppCompatActivity() {
             false
 
 
+        // =========================================================
+        // STATUS UI
+        // =========================================================
+
         when (status) {
 
-            // =================================================
+            // =====================================================
             // ON
-            // =================================================
+            // =====================================================
 
             DeviceStatus.ON -> {
 
@@ -642,9 +667,9 @@ class CameraActivity : AppCompatActivity() {
             }
 
 
-            // =================================================
+            // =====================================================
             // OFF
-            // =================================================
+            // =====================================================
 
             DeviceStatus.OFF -> {
 
@@ -678,9 +703,9 @@ class CameraActivity : AppCompatActivity() {
             }
 
 
-            // =================================================
+            // =====================================================
             // ERROR
-            // =================================================
+            // =====================================================
 
             DeviceStatus.ERROR -> {
 
@@ -714,9 +739,9 @@ class CameraActivity : AppCompatActivity() {
             }
 
 
-            // =================================================
+            // =====================================================
             // DISCONNECTED
-            // =================================================
+            // =====================================================
 
             DeviceStatus.DISCONNECTED -> {
 
@@ -753,6 +778,41 @@ class CameraActivity : AppCompatActivity() {
 
 
     // =========================================================
+    // SNAPSHOT CLICK → FULLSCREEN
+    // =========================================================
+
+    private fun setupSnapshotClick() {
+
+        snapshotImage.setOnClickListener {
+
+            val imageResId =
+                if (
+                    currentDevice?.status ==
+                    DeviceStatus.ON
+                ) {
+                    R.drawable.livingroomcam
+                } else {
+                    R.drawable.mock_camera_snapshot
+                }
+
+            val intent =
+                Intent(
+                    this,
+                    FullscreenImageActivity::class.java
+                ).apply {
+
+                    putExtra(
+                        FullscreenImageActivity.EXTRA_IMAGE_RES_ID,
+                        imageResId
+                    )
+                }
+
+            startActivity(intent)
+        }
+    }
+
+
+    // =========================================================
     // REFRESH SNAPSHOT
     // =========================================================
 
@@ -772,8 +832,18 @@ class CameraActivity : AppCompatActivity() {
 
     private fun refreshSnapshot() {
 
+        val imageResId =
+            if (
+                currentDevice?.status ==
+                DeviceStatus.ON
+            ) {
+                R.drawable.livingroomcam
+            } else {
+                R.drawable.mock_camera_snapshot
+            }
+
         snapshotImage.setImageResource(
-            R.drawable.mock_camera_snapshot
+            imageResId
         )
 
         snapshotImage.alpha =
