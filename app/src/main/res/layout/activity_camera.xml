@@ -1,116 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFF8FF"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context=".view.camera.CameraActivity">
-
-    <include
-        android:id="@+id/cameraTopBar"
-        layout="@layout/component_top_bar"
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:fitsSystemWindows="true"
+        android:fillViewport="true"
+        tools:context=".view.camera.CameraActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="24dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="32dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Security Camera"
-            android:textColor="#211F26"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="View the latest mock camera snapshot"
-            android:textColor="#716B76"
-            android:textSize="14sp" />
+            android:orientation="vertical">
+
+        <!-- ================================================= -->
+        <!-- TOP BAR -->
+        <!-- ================================================= -->
 
         <include
-            android:id="@+id/cameraDeviceStatus"
-            layout="@layout/component_device_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp" />
-
-        <!-- Mock snapshot -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_marginTop="20dp"
-            app:cardBackgroundColor="#1C1B20"
-            app:cardCornerRadius="18dp"
-            app:cardElevation="1dp">
-
-            <FrameLayout
+                android:id="@+id/cameraTopBar"
+                layout="@layout/component_top_bar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/imageCameraSnapshot"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="Mock camera snapshot"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/mock_camera_snapshot" />
 
-                <TextView
+        <!-- ================================================= -->
+        <!-- CONTENT -->
+        <!-- ================================================= -->
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/spacing_24"
+                android:paddingTop="@dimen/spacing_24"
+                android:paddingEnd="@dimen/spacing_24"
+                android:paddingBottom="@dimen/spacing_32">
+
+
+            <!-- ================================================= -->
+            <!-- TITLE -->
+            <!-- ================================================= -->
+
+            <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top|start"
-                    android:layout_margin="12dp"
-                    android:background="@drawable/bg_camera_label"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
-                    android:text="MOCK CAMERA"
-                    android:textColor="#FFFFFF"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:text="Security Camera"
+                    android:textAppearance="?attr/textAppearanceHeadlineMedium" />
 
-            </FrameLayout>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_4"
+                    android:text="Monitor and control the security camera"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
 
-        </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/textSnapshotTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="Snapshot not refreshed yet"
-            android:textColor="#716B76"
-            android:textSize="13sp" />
+            <!-- ================================================= -->
+            <!-- DEVICE INFORMATION -->
+            <!-- ================================================= -->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonRefreshSnapshot"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="18dp"
-            android:text="Refresh Snapshot"
-            android:textAllCaps="false"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:backgroundTint="#6750A4"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/ic_camera"
-            app:iconTint="#FFFFFF" />
+            <include
+                    android:id="@+id/cameraDeviceStatus"
+                    layout="@layout/component_device_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_24" />
+
+
+            <!-- ================================================= -->
+            <!-- CAMERA CONTROL -->
+            <!-- ================================================= -->
+
+            <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_24"
+                    app:cardBackgroundColor="@color/surface"
+                    app:cardCornerRadius="@dimen/radius_medium"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                    <!-- Power row -->
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="105dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/spacing_24">
+
+                        <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@drawable/bg_stat_icon"
+                                android:backgroundTint="@color/primary_container"
+                                android:contentDescription="Camera power"
+                                android:padding="12dp"
+                                android:src="@drawable/ic_camera"
+                                app:tint="@color/primary" />
+
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/spacing_16"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Camera Power"
+                                    android:textAppearance="?attr/textAppearanceTitleSmall"
+                                    android:textStyle="bold" />
+
+                            <TextView
+                                    android:id="@+id/textCameraControlState"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_4"
+                                    android:text="Camera is OFF"
+                                    android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                        </LinearLayout>
+
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchCameraPower"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:contentDescription="Turn camera on or off"
+                                android:textAppearance="?attr/textAppearanceLabelLarge" />
+
+                    </LinearLayout>
+
+
+                    <!-- Divider -->
+
+                    <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/outline"
+                            android:alpha="0.2" />
+
+
+                    <!-- Action buttons -->
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="@dimen/spacing_8"
+                            android:paddingVertical="@dimen/spacing_4"
+                            android:gravity="end">
+
+                        <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonEditDevice"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Edit"
+                                app:icon="@drawable/ic_edit"
+                                app:iconSize="18dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonDeleteDevice"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Delete"
+                                android:textColor="@color/error"
+                                app:icon="@drawable/ic_delete"
+                                app:iconTint="@color/error"
+                                app:iconSize="18dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <!-- ================================================= -->
+            <!-- CAMERA SNAPSHOT -->
+            <!-- ================================================= -->
+
+            <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:layout_marginTop="@dimen/spacing_24"
+                    app:cardBackgroundColor="#1C1B20"
+                    app:cardCornerRadius="@dimen/radius_medium"
+                    app:cardElevation="1dp">
+
+                <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <ImageView
+                            android:id="@+id/imageCameraSnapshot"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="Mock camera snapshot"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/mock_camera_snapshot" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|start"
+                            android:layout_margin="12dp"
+                            android:background="@drawable/bg_camera_label"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:text="MOCK CAMERA"
+                            android:textColor="#FFFFFF"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                </FrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <!-- ================================================= -->
+            <!-- SNAPSHOT TIME -->
+            <!-- ================================================= -->
+
+            <TextView
+                    android:id="@+id/textSnapshotTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_8"
+                    android:gravity="center"
+                    android:text="Snapshot not refreshed yet"
+                    android:textAppearance="?attr/textAppearanceBodySmall" />
+
+
+            <!-- ================================================= -->
+            <!-- REFRESH -->
+            <!-- ================================================= -->
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonRefreshSnapshot"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="@dimen/spacing_16"
+                    android:text="Refresh Snapshot"
+                    android:textAllCaps="false"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_camera"
+                    app:iconTint="@color/on_primary" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

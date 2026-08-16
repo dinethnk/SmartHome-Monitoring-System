@@ -689,11 +689,40 @@ class FloorPlanActivity : AppCompatActivity() {
 
             DeviceType.CAMERA -> {
 
-                startActivity(
+                val floorName =
+                    intent.getStringExtra(
+                        EXTRA_FLOOR_NAME
+                    ).orEmpty()
+
+                val cameraIntent =
                     Intent(
                         this,
                         CameraActivity::class.java
-                    )
+                    ).apply {
+
+                        putExtra(
+                            CameraActivity.EXTRA_DEVICE_ID,
+                            device.id
+                        )
+
+                        putExtra(
+                            CameraActivity.EXTRA_FLOOR_NAME,
+                            floorName
+                        )
+
+                        putExtra(
+                            CameraActivity.EXTRA_GRID_ROWS,
+                            gridRows
+                        )
+
+                        putExtra(
+                            CameraActivity.EXTRA_GRID_COLUMNS,
+                            gridColumns
+                        )
+                    }
+
+                startActivity(
+                    cameraIntent
                 )
             }
         }
