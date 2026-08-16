@@ -45,7 +45,14 @@ class StatCardAdapter(
         val statCard = statCards[position]
 
         holder.statIcon.setImageResource(statCard.iconResource)
+        holder.statIcon.setColorFilter(statCard.tintColor)
+        
+        val iconContainer = holder.itemView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardStatIconContainer)
+        iconContainer.setCardBackgroundColor(statCard.backgroundColor)
+
         holder.statValue.text = statCard.value
+        holder.statValue.setTextColor(statCard.tintColor)
+        
         holder.statTitle.text = statCard.title
     }
 

@@ -272,6 +272,16 @@ class SmartHomeRepository(
         )
     }
 
+    fun observeAllSchedules(
+        onSuccess: (List<DeviceSchedule>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        scheduleFirebaseDataSource.observeAllSchedules(
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
 
     // =========================================================
     // SAFETY SETTINGS

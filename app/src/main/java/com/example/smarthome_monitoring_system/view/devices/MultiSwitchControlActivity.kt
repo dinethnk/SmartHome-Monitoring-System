@@ -449,7 +449,7 @@ class MultiSwitchControlActivity :
         findViewById<ImageView>(
             R.id.imageDeviceStatusIcon
         ).setImageResource(
-            R.drawable.ic_light
+            R.drawable.ic_multi_switch
         )
 
 

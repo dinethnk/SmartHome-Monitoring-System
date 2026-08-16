@@ -29,6 +29,14 @@
                 android:exported="false" />
 
         <activity
+                android:name=".view.camera.CameraListActivity"
+                android:exported="false" />
+
+        <activity
+                android:name=".view.schedule.ScheduleListActivity"
+                android:exported="false" />
+
+        <activity
                 android:name=".view.schedule.LightScheduleActivity"
                 android:exported="false" />
 
