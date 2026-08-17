@@ -151,4 +151,28 @@ class ScheduleFirebaseDataSource {
                 )
             }
     }
+
+    fun observeAllSchedules(
+        onSuccess: (List<DeviceSchedule>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        schedulesReference.addValueEventListener(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val schedules = mutableListOf<DeviceSchedule>()
+                    for (child in snapshot.children) {
+                        val schedule = child.getValue(DeviceSchedule::class.java)
+                        if (schedule != null) {
+                            schedule.deviceId = child.key ?: ""
+                            schedules.add(schedule)
+                        }
+                    }
+                    onSuccess(schedules)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    onError(error.message)
+                }
+            }
+        )
+    }
 }

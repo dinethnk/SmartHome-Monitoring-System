@@ -17,3 +17,8 @@ hardware-simulator/node_modules/
 # Firebase credentials
 secrets/*.json
 service-account*.json
+
+# apk file
+NexHome-v1.0.apk
+
+app/release/

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".view.camera.CameraListActivity">
+
+    <include
+        android:id="@+id/cameraListTopBar"
+        layout="@layout/component_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_24"
+        android:paddingTop="@dimen/spacing_24"
+        android:paddingBottom="@dimen/spacing_16">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Security Cameras"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="@color/primary" />
+
+        <TextView
+            android:id="@+id/textCameraCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_4"
+            android:text="Loading cameras..."
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/outline" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCameras"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/spacing_24"
+        android:paddingBottom="@dimen/spacing_32"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_camera_card" />
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/bottomNavigation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?attr/colorSurface"-->
+<!--        android:elevation="8dp"-->
+<!--        app:menu="@menu/menu_bottom_navigation" />-->
+
+</LinearLayout>

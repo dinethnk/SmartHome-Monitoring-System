@@ -95,6 +95,9 @@ class UsageRecordAdapter(
             normalizedName.contains("iron") ->
                 R.drawable.ic_iron
 
+            normalizedName.contains("multi") || normalizedName.contains("switch") ->
+                R.drawable.ic_multi_switch
+
             else ->
                 R.drawable.ic_power
         }

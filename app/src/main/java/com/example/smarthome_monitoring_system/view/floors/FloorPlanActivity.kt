@@ -541,7 +541,7 @@ class FloorPlanActivity : AppCompatActivity() {
                 R.drawable.ic_devices
 
             DeviceType.MULTI_SWITCH ->
-                R.drawable.ic_light
+                R.drawable.ic_multi_switch
 
             DeviceType.SAFETY_DEVICE ->
                 R.drawable.ic_iron
@@ -668,11 +668,40 @@ class FloorPlanActivity : AppCompatActivity() {
 
             DeviceType.MULTI_SWITCH -> {
 
-                startActivity(
+                val floorName =
+                    intent.getStringExtra(
+                        EXTRA_FLOOR_NAME
+                    ).orEmpty()
+
+                val multiSwitchIntent =
                     Intent(
                         this,
                         MultiSwitchControlActivity::class.java
-                    )
+                    ).apply {
+
+                        putExtra(
+                            MultiSwitchControlActivity.EXTRA_DEVICE_ID,
+                            device.id
+                        )
+
+                        putExtra(
+                            MultiSwitchControlActivity.EXTRA_FLOOR_NAME,
+                            floorName
+                        )
+
+                        putExtra(
+                            MultiSwitchControlActivity.EXTRA_GRID_ROWS,
+                            gridRows
+                        )
+
+                        putExtra(
+                            MultiSwitchControlActivity.EXTRA_GRID_COLUMNS,
+                            gridColumns
+                        )
+                    }
+
+                startActivity(
+                    multiSwitchIntent
                 )
             }
 
@@ -689,11 +718,40 @@ class FloorPlanActivity : AppCompatActivity() {
 
             DeviceType.CAMERA -> {
 
-                startActivity(
+                val floorName =
+                    intent.getStringExtra(
+                        EXTRA_FLOOR_NAME
+                    ).orEmpty()
+
+                val cameraIntent =
                     Intent(
                         this,
                         CameraActivity::class.java
-                    )
+                    ).apply {
+
+                        putExtra(
+                            CameraActivity.EXTRA_DEVICE_ID,
+                            device.id
+                        )
+
+                        putExtra(
+                            CameraActivity.EXTRA_FLOOR_NAME,
+                            floorName
+                        )
+
+                        putExtra(
+                            CameraActivity.EXTRA_GRID_ROWS,
+                            gridRows
+                        )
+
+                        putExtra(
+                            CameraActivity.EXTRA_GRID_COLUMNS,
+                            gridColumns
+                        )
+                    }
+
+                startActivity(
+                    cameraIntent
                 )
             }
         }

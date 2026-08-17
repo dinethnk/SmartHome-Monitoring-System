@@ -137,3 +137,19 @@ export async function updateDeviceStatus(
         }
     );
 }
+
+export async function updateMultiSwitchPoint(
+    deviceId,
+    switchId,
+    newState
+) {
+    const switchReference = ref(
+        database,
+        `devices/${deviceId}/switches/${switchId}`
+    );
+
+    await update(switchReference, {
+        isOn: newState,
+        on: newState
+    });
+}

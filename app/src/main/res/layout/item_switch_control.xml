@@ -1,68 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="1dp"
-    app:strokeColor="#E8E5EC"
-    app:strokeWidth="1dp">
-
-    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="86dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_marginBottom="12dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="1dp"
+        app:strokeColor="#E8E5EC"
+        app:strokeWidth="1dp">
 
-        <ImageView
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:background="@drawable/bg_stat_icon"
-            android:contentDescription="Switch"
-            android:padding="11dp"
-            android:src="@drawable/ic_light"
-            app:tint="#6750A4" />
-
-        <LinearLayout
-            android:layout_width="0dp"
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textSwitchName"
+
+        <!-- ================================================= -->
+        <!-- SWITCH INFORMATION -->
+        <!-- ================================================= -->
+
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#211F26"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="Main Light" />
+                android:minHeight="82dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/textSwitchState"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="OFF"
-                android:textColor="#716B76"
-                android:textSize="12sp" />
+            <ImageView
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:background="@drawable/bg_stat_icon"
+                    android:contentDescription="Switch"
+                    android:padding="11dp"
+                    android:src="@drawable/ic_power"
+                    app:tint="#6750A4" />
+
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/textSwitchName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#211F26"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:text="Main Light" />
+
+                <TextView
+                        android:id="@+id/textSwitchState"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="OFF"
+                        android:textColor="#716B76"
+                        android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchChannelControl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:contentDescription="Switch control" />
 
         </LinearLayout>
 
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/switchChannelControl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:contentDescription="Switch control" />
+
+        <!-- ================================================= -->
+        <!-- DIVIDER -->
+        <!-- ================================================= -->
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#E8E5EC" />
+
+
+        <!-- ================================================= -->
+        <!-- EDIT / DELETE -->
+        <!-- ================================================= -->
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp">
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonEditSwitch"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit"
+                    app:icon="@drawable/ic_edit"
+                    app:iconSize="18dp" />
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonDeleteSwitch"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete"
+                    android:textColor="@color/error"
+                    app:icon="@drawable/ic_delete"
+                    app:iconTint="@color/error"
+                    app:iconSize="18dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

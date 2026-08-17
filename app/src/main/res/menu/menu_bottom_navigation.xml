@@ -17,9 +17,9 @@
         android:icon="@android:drawable/ic_menu_camera"
         android:title="Cameras" />
 
-    <item
-        android:id="@+id/navigationReports"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:title="Reports" />
+<!--    <item-->
+<!--        android:id="@+id/navigationReports"-->
+<!--        android:icon="@android:drawable/ic_menu_agenda"-->
+<!--        android:title="Reports" />-->
 
 </menu>
