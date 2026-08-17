@@ -711,3 +711,325 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==================================================
+   MULTI-SWITCH INTERNAL POWER OUTLETS
+   ================================================== */
+
+/*
+ * Container displayed inside a MULTI_SWITCH card.
+ */
+.multi-switch-section {
+    margin-top: 16px;
+    padding-top: 16px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/*
+ * "Power outlets" heading and outlet count.
+ */
+.multi-switch-section__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 12px;
+
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/*
+ * Small number showing how many outlets exist.
+ */
+.multi-switch-section__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 27px;
+    height: 27px;
+    padding: 0 8px;
+
+    background: var(--primary-light);
+    color: var(--primary-dark);
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+
+/*
+ * Container holding all internal outlets.
+ */
+.multi-switch-outlet-list {
+    display: grid;
+    gap: 10px;
+}
+
+
+/*
+ * One individual outlet row.
+ */
+.multi-switch-outlet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+
+    min-height: 64px;
+    padding: 11px 12px;
+
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    transition:
+        border-color 160ms ease,
+        background-color 160ms ease,
+        opacity 160ms ease;
+}
+
+
+/*
+ * Slight highlight when the user points at an
+ * enabled outlet.
+ */
+.multi-switch-outlet:not(.is-disabled):hover {
+    background: var(--primary-light);
+    border-color: rgba(103, 80, 164, 0.25);
+}
+
+
+/*
+ * Applied when the parent multi-switch is OFF.
+ */
+.multi-switch-outlet.is-disabled {
+    opacity: 0.55;
+}
+
+
+/*
+ * Left-hand content: icon, name and state.
+ */
+.multi-switch-outlet__details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 0;
+}
+
+
+/*
+ * Outlet icon background.
+ */
+.multi-switch-outlet__icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    background: var(--primary-light);
+    color: var(--primary-dark);
+
+    border-radius: 10px;
+
+    font-size: 17px;
+}
+
+
+/*
+ * Allows long outlet names to be shortened safely.
+ */
+.multi-switch-outlet__text {
+    min-width: 0;
+}
+
+
+/*
+ * Individual outlet name.
+ */
+.multi-switch-outlet__name {
+    overflow: hidden;
+
+    max-width: 175px;
+
+    color: var(--text-primary);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/*
+ * Power ON, Power OFF or Master switch is OFF.
+ */
+.multi-switch-outlet__status {
+    margin-top: 2px;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+}
+
+
+/*
+ * Message used when a MULTI_SWITCH has no switches.
+ */
+.multi-switch-empty {
+    margin: 0;
+    padding: 12px;
+
+    background: var(--surface-soft);
+    color: var(--text-secondary);
+
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+
+    font-size: 12px;
+    text-align: center;
+}
+
+
+/* ==================================================
+   INDIVIDUAL OUTLET TOGGLE
+   ================================================== */
+
+.switch-control {
+    position: relative;
+
+    display: inline-block;
+    flex-shrink: 0;
+
+    width: 46px;
+    height: 26px;
+}
+
+
+/*
+ * Hide the native checkbox but preserve its
+ * accessibility and keyboard behaviour.
+ */
+.switch-control input {
+    width: 0;
+    height: 0;
+
+    opacity: 0;
+}
+
+
+/*
+ * Toggle background.
+ */
+.switch-control__slider {
+    position: absolute;
+    inset: 0;
+
+    background: #b8b2bc;
+
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 180ms ease,
+        opacity 180ms ease;
+}
+
+
+/*
+ * White circular toggle handle.
+ */
+.switch-control__slider::before {
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+
+    width: 20px;
+    height: 20px;
+
+    background: #ffffff;
+
+    border-radius: 50%;
+
+    content: "";
+
+    box-shadow:
+        0 1px 4px rgba(40, 32, 52, 0.2);
+
+    transition: transform 180ms ease;
+}
+
+
+/*
+ * ON appearance.
+ */
+.switch-control input:checked +
+.switch-control__slider {
+    background: var(--success);
+}
+
+
+/*
+ * Move the handle to the right when ON.
+ */
+.switch-control input:checked +
+.switch-control__slider::before {
+    transform: translateX(20px);
+}
+
+
+/*
+ * Keyboard accessibility.
+ */
+.switch-control input:focus-visible +
+.switch-control__slider {
+    outline: 3px solid rgba(103, 80, 164, 0.25);
+    outline-offset: 2px;
+}
+
+
+/*
+ * Disabled when the multi-switch master power
+ * is OFF.
+ */
+.switch-control input:disabled +
+.switch-control__slider {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+
+/* ==================================================
+   MULTI-SWITCH RESPONSIVE STYLES
+   ================================================== */
+
+@media (max-width: 600px) {
+    .multi-switch-outlet {
+        min-height: 60px;
+        padding: 10px;
+    }
+
+    .multi-switch-outlet__name {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 380px) {
+    .multi-switch-outlet__name {
+        max-width: 120px;
+    }
+}

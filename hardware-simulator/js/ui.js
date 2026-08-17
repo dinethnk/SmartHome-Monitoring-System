@@ -28,6 +28,7 @@ const offDeviceCount =
 const problemDeviceCount =
     document.getElementById("problemDeviceCount");
 
+
 /*
  * Add Firebase floors to the selector.
  */
@@ -71,6 +72,7 @@ export function displayFloorOptions(floors) {
             : "all";
 }
 
+
 /*
  * Detect floor selection changes.
  */
@@ -80,6 +82,7 @@ export function onFloorSelectionChanged(callback) {
         () => callback(floorFilter.value)
     );
 }
+
 
 /*
  * Convert different database state formats into
@@ -99,8 +102,10 @@ function getDeviceStatus(device) {
         return "OFF";
     }
 
-    if (storedStatus === undefined ||
-        storedStatus === null) {
+    if (
+        storedStatus === undefined ||
+        storedStatus === null
+    ) {
         return "DISCONNECTED";
     }
 
@@ -119,6 +124,7 @@ function getDeviceStatus(device) {
     return "DISCONNECTED";
 }
 
+
 /*
  * Return the device's floor ID.
  */
@@ -131,6 +137,7 @@ export function getDeviceFloorId(device) {
         ""
     );
 }
+
 
 /*
  * Find the readable name of a floor.
@@ -154,6 +161,7 @@ function getFloorName(device, floors) {
     );
 }
 
+
 /*
  * Return an icon symbol according to the device type.
  */
@@ -170,6 +178,7 @@ function getDeviceIcon(type) {
             return "🎚";
 
         case "SAFETY_DEVICE":
+        case "SAFETY-DEVICE":
         case "IRON":
             return "♨";
 
@@ -180,6 +189,7 @@ function getDeviceIcon(type) {
             return "●";
     }
 }
+
 
 /*
  * Apply the correct class to the status badge.
@@ -217,14 +227,207 @@ function updateStatusBadge(
     }
 }
 
+
+/**
+ * Prevent text received from Firebase from being
+ * interpreted as HTML.
+ */
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/**
+ * Convert a multi-switch's switches into a normal
+ * JavaScript array.
+ *
+ * This supports:
+ * 1. Firebase objects using generated IDs.
+ * 2. Normal JavaScript arrays.
+ */
+function getMultiSwitchPoints(device) {
+    const switches =
+        device.switches;
+
+    if (!switches) {
+        return [];
+    }
+
+    /*
+     * Support a real JavaScript array.
+     */
+    if (Array.isArray(switches)) {
+        return switches
+            .filter(Boolean)
+            .map((switchPoint, index) => ({
+                id:
+                    switchPoint.id ??
+                    String(index),
+
+                ...switchPoint
+            }));
+    }
+
+    /*
+     * Support the existing Firebase object format.
+     */
+    return Object.entries(switches).map(
+        ([firebaseId, switchPoint]) => ({
+            id:
+                switchPoint.id ??
+                firebaseId,
+
+            ...switchPoint
+        })
+    );
+}
+
+
+/**
+ * Create the internal power-outlet controls for a
+ * MULTI_SWITCH device.
+ */
+export function renderMultiSwitchPoints(
+    deviceId,
+    device
+) {
+    const deviceType = String(
+        device.type ||
+        device.deviceType ||
+        ""
+    ).toUpperCase();
+
+    if (
+        deviceType !== "MULTI_SWITCH" &&
+        deviceType !== "MULTI-SWITCH"
+    ) {
+        return "";
+    }
+
+    const switchPoints =
+        getMultiSwitchPoints(device);
+
+    /*
+     * Some MULTI_SWITCH devices in Firebase do not
+     * currently contain a switches collection.
+     */
+    if (switchPoints.length === 0) {
+        return `
+            <section class="multi-switch-section">
+                <div class="multi-switch-section__header">
+                    <span>Power outlets</span>
+
+                    <span class="multi-switch-section__count">
+                        0
+                    </span>
+                </div>
+
+                <p class="multi-switch-empty">
+                    No power outlets are configured.
+                </p>
+            </section>
+        `;
+    }
+
+    const isMasterOn =
+        getDeviceStatus(device) === "ON";
+
+    const outletRows = switchPoints
+        .map((switchPoint, index) => {
+            /*
+             * The existing Firebase records contain
+             * both isOn and on fields.
+             */
+            const isOutletOn =
+                switchPoint.isOn ??
+                switchPoint.on ??
+                false;
+
+            const outletName =
+                switchPoint.name ||
+                `Outlet ${index + 1}`;
+
+            const outletStatusText =
+                isMasterOn
+                    ? isOutletOn
+                        ? "Power ON"
+                        : "Power OFF"
+                    : "Master switch is OFF";
+
+            return `
+                <div class="
+                    multi-switch-outlet
+                    ${isMasterOn ? "" : "is-disabled"}
+                ">
+                    <div class="multi-switch-outlet__details">
+                        <div class="multi-switch-outlet__icon">
+                            ⚡
+                        </div>
+
+                        <div class="multi-switch-outlet__text">
+                            <div class="multi-switch-outlet__name">
+                                ${escapeHtml(outletName)}
+                            </div>
+
+                            <div class="multi-switch-outlet__status">
+                                ${outletStatusText}
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="switch-control">
+                        <input
+                            type="checkbox"
+                            class="multi-switch-point-toggle"
+                            data-device-id="${escapeHtml(deviceId)}"
+                            data-switch-id="${escapeHtml(switchPoint.id)}"
+                            ${isOutletOn ? "checked" : ""}
+                            ${isMasterOn ? "" : "disabled"}
+                            aria-label="Toggle ${escapeHtml(outletName)}"
+                        />
+
+                        <span class="switch-control__slider"></span>
+                    </label>
+                </div>
+            `;
+        })
+        .join("");
+
+    return `
+        <section class="multi-switch-section">
+            <div class="multi-switch-section__header">
+                <span>Power outlets</span>
+
+                <span class="multi-switch-section__count">
+                    ${switchPoints.length}
+                </span>
+            </div>
+
+            <div class="multi-switch-outlet-list">
+                ${outletRows}
+            </div>
+        </section>
+    `;
+}
+
+
 /*
- * Display additional information in the control area.
+ * Display additional information in the device
+ * control area.
  */
 function displayDeviceDetails(
     container,
     device,
     status
 ) {
+    /*
+     * Current hardware-state row.
+     */
     const row =
         document.createElement("div");
 
@@ -238,7 +441,8 @@ function displayDeviceDetails(
     const title =
         document.createElement("strong");
 
-    title.textContent = "Current hardware state";
+    title.textContent =
+        "Current hardware state";
 
     const description =
         document.createElement("span");
@@ -246,56 +450,74 @@ function displayDeviceDetails(
     description.textContent =
         "Live value received from Firebase";
 
-    label.append(title, description);
+    label.append(
+        title,
+        description
+    );
 
     const value =
         document.createElement("strong");
 
     value.textContent = status;
 
-    row.append(label, value);
+    row.append(
+        label,
+        value
+    );
 
     container.appendChild(row);
 
-    /*
-     * Cameras and multi-switch units use specialized
-     * controls, so do not display the simple toggle.
-     */
     const deviceType = String(
         device.type ||
         device.deviceType ||
         "UNKNOWN"
     ).toUpperCase();
 
+    /*
+     * These device types can have a main physical
+     * ON/OFF control.
+     */
     const usesSimplePowerControl =
         deviceType === "OUTLET" ||
         deviceType === "LIGHT" ||
         deviceType === "IRON" ||
         deviceType === "SAFETY_DEVICE" ||
-        deviceType === "SAFETY-DEVICE";
+        deviceType === "SAFETY-DEVICE" ||
+        deviceType === "MULTI_SWITCH" ||
+        deviceType === "MULTI-SWITCH";
 
     if (usesSimplePowerControl) {
         const powerRow =
             document.createElement("div");
 
-        powerRow.className = "control-row";
+        powerRow.className =
+            "control-row";
 
         const powerLabel =
             document.createElement("div");
 
-        powerLabel.className = "control-label";
+        powerLabel.className =
+            "control-label";
 
         const powerTitle =
             document.createElement("strong");
 
+        const isMultiSwitch =
+            deviceType === "MULTI_SWITCH" ||
+            deviceType === "MULTI-SWITCH";
+
         powerTitle.textContent =
-            "Hardware power";
+            isMultiSwitch
+                ? "Multi-switch master power"
+                : "Hardware power";
 
         const powerDescription =
             document.createElement("span");
 
         powerDescription.textContent =
-            "Simulate the physical ON/OFF switch";
+            isMultiSwitch
+                ? "Control power to the complete multi-switch"
+                : "Simulate the physical ON/OFF switch";
 
         powerLabel.append(
             powerTitle,
@@ -305,12 +527,15 @@ function displayDeviceDetails(
         const toggleLabel =
             document.createElement("label");
 
-        toggleLabel.className = "toggle";
+        toggleLabel.className =
+            "toggle";
 
         const toggleInput =
             document.createElement("input");
 
-        toggleInput.type = "checkbox";
+        toggleInput.type =
+            "checkbox";
+
         toggleInput.className =
             "device-power-toggle";
 
@@ -344,7 +569,29 @@ function displayDeviceDetails(
             toggleLabel
         );
 
-        container.appendChild(powerRow);
+        container.appendChild(
+            powerRow
+        );
+    }
+
+    /*
+     * Show the individual power outlets belonging
+     * to a multi-switch.
+     */
+    if (
+        deviceType === "MULTI_SWITCH" ||
+        deviceType === "MULTI-SWITCH"
+    ) {
+        const multiSwitchHtml =
+            renderMultiSwitchPoints(
+                device.id,
+                device
+            );
+
+        container.insertAdjacentHTML(
+            "beforeend",
+            multiSwitchHtml
+        );
     }
 
     /*
@@ -352,19 +599,23 @@ function displayDeviceDetails(
      */
     const maximumDuration =
         device.maxOnDuration ??
+        device.maxOnDurationSeconds ??
         device.max_on_duration;
 
     if (maximumDuration !== undefined) {
         const durationRow =
             document.createElement("div");
 
-        durationRow.className = "control-row";
+        durationRow.className =
+            "control-row";
 
         durationRow.textContent =
             `Maximum ON duration: ` +
             `${maximumDuration} minutes`;
 
-        container.appendChild(durationRow);
+        container.appendChild(
+            durationRow
+        );
     }
 
     /*
@@ -374,20 +625,26 @@ function displayDeviceDetails(
         const scheduleRow =
             document.createElement("div");
 
-        scheduleRow.className = "control-row";
+        scheduleRow.className =
+            "control-row";
 
         const onTime =
-            device.onTime || "Not set";
+            device.onTime ||
+            "Not set";
 
         const offTime =
-            device.offTime || "Not set";
+            device.offTime ||
+            "Not set";
 
         scheduleRow.textContent =
             `Schedule: ${onTime} - ${offTime}`;
 
-        container.appendChild(scheduleRow);
+        container.appendChild(
+            scheduleRow
+        );
     }
 }
+
 
 /*
  * Display devices and update summary cards.
@@ -396,23 +653,35 @@ export function displayDevices(
     devices,
     floors
 ) {
-    loadingState.classList.add("hidden");
-    errorState.classList.add("hidden");
+    loadingState.classList.add(
+        "hidden"
+    );
+
+    errorState.classList.add(
+        "hidden"
+    );
 
     deviceGrid.innerHTML = "";
 
     updateSummaryCards(devices);
 
     if (devices.length === 0) {
-        emptyState.classList.remove("hidden");
+        emptyState.classList.remove(
+            "hidden"
+        );
+
         return;
     }
 
-    emptyState.classList.add("hidden");
+    emptyState.classList.add(
+        "hidden"
+    );
 
     devices.forEach((device) => {
         const cardFragment =
-            deviceCardTemplate.content.cloneNode(true);
+            deviceCardTemplate.content.cloneNode(
+                true
+            );
 
         const card =
             cardFragment.querySelector(
@@ -438,7 +707,8 @@ export function displayDevices(
             device.isConnected ??
             status !== "DISCONNECTED";
 
-        card.dataset.deviceId = device.id;
+        card.dataset.deviceId =
+            device.id;
 
         card.querySelector(
             ".device-name"
@@ -447,7 +717,10 @@ export function displayDevices(
         card.querySelector(
             ".device-location"
         ).textContent =
-            getFloorName(device, floors);
+            getFloorName(
+                device,
+                floors
+            );
 
         card.querySelector(
             ".device-type"
@@ -466,7 +739,9 @@ export function displayDevices(
             getDeviceIcon(type);
 
         const badge =
-            card.querySelector(".status-badge");
+            card.querySelector(
+                ".status-badge"
+            );
 
         updateStatusBadge(
             badge,
@@ -490,9 +765,13 @@ export function displayDevices(
     });
 }
 
+
 /*
  * Update the dashboard totals using the currently
  * displayed devices.
+ *
+ * Multi-switch points are not counted as separate
+ * devices.
  */
 function updateSummaryCards(devices) {
     let onCount = 0;
