@@ -904,7 +904,20 @@ class MultiSwitchControlActivity :
             switchChannel = switchChannel,
 
             onSuccess = {
-                // Firebase listener updates UI.
+                // Log event for individual switch toggle
+                val eventMessage = "${switchChannel.name} was turned ${if (switchChannel.isOn) "ON" else "OFF"}"
+                
+                com.example.smarthome_monitoring_system.data.firebase.FirebaseDataSource.eventsReference
+                    .push()
+                    .setValue(
+                        com.example.smarthome_monitoring_system.data.model.HomeEvent(
+                            deviceId = "${deviceId}_${switchChannel.id}",
+                            deviceName = currentDevice?.name ?: "Switch",
+                            type = if (switchChannel.isOn) "POWER_ON" else "POWER_OFF",
+                            message = eventMessage,
+                            timestamp = System.currentTimeMillis()
+                        )
+                    )
             },
 
             onError = { message ->

@@ -25,6 +25,8 @@ import com.example.smarthome_monitoring_system.view.floors.ManageFloorsActivity
 import com.example.smarthome_monitoring_system.viewmodel.AlertViewModel
 import com.example.smarthome_monitoring_system.viewmodel.DeviceViewModel
 import com.example.smarthome_monitoring_system.viewmodel.FloorViewModel
+import com.example.smarthome_monitoring_system.viewmodel.HomeEventViewModel
+import com.example.smarthome_monitoring_system.viewmodel.UsageRecordViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -35,10 +37,14 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var floorViewModel: FloorViewModel
     private lateinit var deviceViewModel: DeviceViewModel
     private lateinit var alertViewModel: AlertViewModel
+    private lateinit var usageRecordViewModel: UsageRecordViewModel
+    private lateinit var homeEventViewModel: HomeEventViewModel
 
     private val floors = mutableListOf<com.example.smarthome_monitoring_system.data.model.Floor>()
     private val devices = mutableListOf<com.example.smarthome_monitoring_system.data.model.Device>()
     private val alerts = mutableListOf<com.example.smarthome_monitoring_system.data.model.Alert>()
+    private val usageRecords = mutableListOf<com.example.smarthome_monitoring_system.data.model.UsageRecord>()
+    private val homeEvents = mutableListOf<com.example.smarthome_monitoring_system.data.model.HomeEvent>()
     
     private var currentFloorIndex = 0
 
@@ -54,6 +60,8 @@ class DashboardActivity : AppCompatActivity() {
         floorViewModel = ViewModelProvider(this)[FloorViewModel::class.java]
         deviceViewModel = ViewModelProvider(this)[DeviceViewModel::class.java]
         alertViewModel = ViewModelProvider(this)[AlertViewModel::class.java]
+        usageRecordViewModel = ViewModelProvider(this)[UsageRecordViewModel::class.java]
+        homeEventViewModel = ViewModelProvider(this)[HomeEventViewModel::class.java]
 
         // Setup dashboard sections.
         setupFloorSelector()
@@ -85,6 +93,21 @@ class DashboardActivity : AppCompatActivity() {
             alerts.clear()
             alerts.addAll(alertList)
             updateHomeOverview()
+            updateRecentActivityUI()
+        }
+
+        usageRecordViewModel.observeUsageRecords()
+        usageRecordViewModel.usageRecords.observe(this) { recordList ->
+            usageRecords.clear()
+            usageRecords.addAll(recordList)
+            updateRecentActivityUI()
+        }
+
+        homeEventViewModel.observeEvents()
+        homeEventViewModel.events.observe(this) { eventList ->
+            homeEvents.clear()
+            homeEvents.addAll(eventList)
+            updateRecentActivityUI()
         }
     }
 
@@ -308,51 +331,93 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun setupRecentActivity() {
+        updateRecentActivityUI()
+    }
 
-        val recyclerRecentActivity =
-            findViewById<RecyclerView>(
-                R.id.recyclerRecentActivity
-            )
+    private fun updateRecentActivityUI() {
+        val recyclerRecentActivity = findViewById<RecyclerView>(R.id.recyclerRecentActivity)
+        
+        val recentActivities = mutableListOf<RecentActivity>()
 
-        val recentActivities =
-            listOf(
-
+        // 1. Map Alerts to RecentActivity
+        alerts.forEach { alert ->
+            recentActivities.add(
                 RecentActivity(
-                    title = "Living Room Light",
-                    description = "Device was turned ON",
-                    time = "2 min ago",
-                    iconResource = R.drawable.ic_light
-                ),
-
-                RecentActivity(
-                    title = "Safety Device",
-                    description =
-                        "Iron was automatically turned OFF",
-                    time = "15 min ago",
-                    iconResource = R.drawable.ic_devices
-                ),
-
-                RecentActivity(
-                    title = "Security Camera",
-                    description = "Movement was detected",
-                    time = "1 hour ago",
-                    iconResource = R.drawable.ic_camera
+                    title = alert.deviceName,
+                    description = alert.message,
+                    time = getTimeAgo(alert.timestamp),
+                    iconResource = getIconForAlert(alert.type),
+                    timestamp = alert.timestamp // Need to add timestamp to model for sorting
                 )
             )
+        }
 
-        recyclerRecentActivity.layoutManager =
-            LinearLayoutManager(
-                this,
-                LinearLayoutManager.VERTICAL,
-                false
+        // 2. Map UsageRecords to RecentActivity
+        usageRecords.forEach { record ->
+            recentActivities.add(
+                RecentActivity(
+                    title = record.deviceName,
+                    description = "Device was used for ${record.durationMinutes} minutes",
+                    time = getTimeAgo(record.timestamp),
+                    iconResource = getIconForDevice(record.deviceName),
+                    timestamp = record.timestamp
+                )
             )
+        }
 
-        recyclerRecentActivity.isNestedScrollingEnabled =
-            false
-
-        recyclerRecentActivity.adapter =
-            RecentActivityAdapter(
-                recentActivities
+        // 3. Map HomeEvents to RecentActivity
+        homeEvents.forEach { event ->
+            recentActivities.add(
+                RecentActivity(
+                    title = event.deviceName,
+                    description = event.message,
+                    time = getTimeAgo(event.timestamp),
+                    iconResource = getIconForDevice(event.deviceName),
+                    timestamp = event.timestamp
+                )
             )
+        }
+
+        // 4. Sort by timestamp (desc) and take top 10
+        val sortedActivities = recentActivities
+            .sortedByDescending { it.timestamp }
+            .take(10)
+
+        recyclerRecentActivity.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerRecentActivity.isNestedScrollingEnabled = false
+        recyclerRecentActivity.adapter = RecentActivityAdapter(sortedActivities)
+    }
+
+    private fun getTimeAgo(timestamp: Long): String {
+        if (timestamp == 0L) return "Unknown"
+        val now = System.currentTimeMillis()
+        val diff = now - timestamp
+
+        return when {
+            diff < 0 -> "Just now"
+            diff < 60_000 -> "Just now"
+            diff < 3600_000 -> "${diff / 60_000} min ago"
+            diff < 86400_000 -> "${diff / 3600_000} hours ago"
+            else -> "${diff / 86400_000} days ago"
+        }
+    }
+
+    private fun getIconForAlert(type: String): Int {
+        return when (type) {
+            "SAFETY_CUTOFF" -> R.drawable.ic_iron
+            "SECURITY_ALERT" -> R.drawable.ic_camera
+            else -> R.drawable.ic_notifications
+        }
+    }
+
+    private fun getIconForDevice(deviceName: String): Int {
+        val name = deviceName.lowercase()
+        return when {
+            name.contains("light") -> R.drawable.ic_light
+            name.contains("outlet") || name.contains("power") -> R.drawable.ic_power
+            name.contains("iron") -> R.drawable.ic_iron
+            name.contains("camera") -> R.drawable.ic_camera
+            else -> R.drawable.ic_devices
+        }
     }
 }
