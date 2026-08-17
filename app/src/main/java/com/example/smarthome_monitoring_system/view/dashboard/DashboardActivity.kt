@@ -31,6 +31,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import androidx.recyclerview.widget.GridLayoutManager
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -301,11 +302,7 @@ class DashboardActivity : AppCompatActivity() {
             )
 
         recyclerQuickActions.layoutManager =
-            LinearLayoutManager(
-                this,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
+            GridLayoutManager(this, 3)
 
         recyclerQuickActions.adapter =
             QuickActionAdapter(
