@@ -37,7 +37,7 @@
                     android:background="@drawable/bg_stat_icon"
                     android:contentDescription="Switch"
                     android:padding="11dp"
-                    android:src="@drawable/ic_light"
+                    android:src="@drawable/ic_power"
                     app:tint="#6750A4" />
 
 
