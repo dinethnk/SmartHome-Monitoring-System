@@ -4,6 +4,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 
 data class StatCard(
+    val id: String,
     val title: String,
     val value: String,
     @DrawableRes val iconResource: Int,

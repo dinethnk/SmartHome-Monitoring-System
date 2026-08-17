@@ -212,6 +212,7 @@ class DashboardActivity : AppCompatActivity() {
 
         val overviewCards = listOf(
             StatCard(
+                id = "TOTAL",
                 title = "Total Devices",
                 value = totalDevices.toString(),
                 iconResource = R.drawable.ic_devices,
@@ -219,6 +220,7 @@ class DashboardActivity : AppCompatActivity() {
                 backgroundColor = Color.parseColor("#E8EAF6")
             ),
             StatCard(
+                id = "ON",
                 title = "Devices ON",
                 value = devicesOn.toString(),
                 iconResource = R.drawable.ic_power,
@@ -226,6 +228,7 @@ class DashboardActivity : AppCompatActivity() {
                 backgroundColor = Color.parseColor("#E0F2F1")
             ),
             StatCard(
+                id = "OFF",
                 title = "Devices OFF",
                 value = devicesOff.toString(),
                 iconResource = R.drawable.ic_power,
@@ -233,6 +236,7 @@ class DashboardActivity : AppCompatActivity() {
                 backgroundColor = Color.parseColor("#F5F5F5")
             ),
             StatCard(
+                id = "ALERTS",
                 title = "Active Alerts",
                 value = activeAlerts.toString(),
                 iconResource = R.drawable.ic_notifications,
@@ -242,7 +246,32 @@ class DashboardActivity : AppCompatActivity() {
         )
 
         recyclerHomeOverview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerHomeOverview.adapter = StatCardAdapter(overviewCards)
+        recyclerHomeOverview.adapter = StatCardAdapter(overviewCards) { clickedCard ->
+            when (clickedCard.id) {
+                "TOTAL" -> {
+                    val intent = Intent(this, com.example.smarthome_monitoring_system.view.devices.DeviceListActivity::class.java).apply {
+                        putExtra(com.example.smarthome_monitoring_system.view.devices.DeviceListActivity.EXTRA_FILTER_TYPE, "ALL")
+                    }
+                    startActivity(intent)
+                }
+                "ON" -> {
+                    val intent = Intent(this, com.example.smarthome_monitoring_system.view.devices.DeviceListActivity::class.java).apply {
+                        putExtra(com.example.smarthome_monitoring_system.view.devices.DeviceListActivity.EXTRA_FILTER_TYPE, "ON")
+                    }
+                    startActivity(intent)
+                }
+                "OFF" -> {
+                    val intent = Intent(this, com.example.smarthome_monitoring_system.view.devices.DeviceListActivity::class.java).apply {
+                        putExtra(com.example.smarthome_monitoring_system.view.devices.DeviceListActivity.EXTRA_FILTER_TYPE, "OFF")
+                    }
+                    startActivity(intent)
+                }
+                "ALERTS" -> {
+                    val intent = Intent(this, com.example.smarthome_monitoring_system.view.alerts.AlertsActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+        }
     }
 
     private fun setupQuickActions() {

@@ -37,6 +37,10 @@
                 android:exported="false" />
 
         <activity
+                android:name=".view.devices.DeviceListActivity"
+                android:exported="false" />
+
+        <activity
                 android:name=".view.schedule.LightScheduleActivity"
                 android:exported="false" />
 
