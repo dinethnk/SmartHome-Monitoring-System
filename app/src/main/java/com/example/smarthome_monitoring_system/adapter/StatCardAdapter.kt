@@ -10,7 +10,8 @@ import com.example.smarthome_monitoring_system.R
 import com.example.smarthome_monitoring_system.data.model.StatCard
 
 class StatCardAdapter(
-    private val statCards: List<StatCard>
+    private val statCards: List<StatCard>,
+    private val onCardClick: (StatCard) -> Unit
 ) : RecyclerView.Adapter<StatCardAdapter.StatCardViewHolder>() {
 
     class StatCardViewHolder(itemView: View) :
@@ -45,8 +46,19 @@ class StatCardAdapter(
         val statCard = statCards[position]
 
         holder.statIcon.setImageResource(statCard.iconResource)
+        holder.statIcon.setColorFilter(statCard.tintColor)
+        
+        val iconContainer = holder.itemView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardStatIconContainer)
+        iconContainer.setCardBackgroundColor(statCard.backgroundColor)
+
         holder.statValue.text = statCard.value
+        holder.statValue.setTextColor(statCard.tintColor)
+        
         holder.statTitle.text = statCard.title
+
+        holder.itemView.setOnClickListener {
+            onCardClick(statCard)
+        }
     }
 
     override fun getItemCount(): Int {

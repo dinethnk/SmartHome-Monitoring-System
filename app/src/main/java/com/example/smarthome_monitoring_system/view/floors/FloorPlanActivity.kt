@@ -541,7 +541,7 @@ class FloorPlanActivity : AppCompatActivity() {
                 R.drawable.ic_devices
 
             DeviceType.MULTI_SWITCH ->
-                R.drawable.ic_light
+                R.drawable.ic_multi_switch
 
             DeviceType.SAFETY_DEVICE ->
                 R.drawable.ic_iron

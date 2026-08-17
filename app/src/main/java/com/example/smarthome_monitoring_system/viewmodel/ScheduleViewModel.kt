@@ -28,6 +28,12 @@ class ScheduleViewModel : ViewModel() {
     val schedule: LiveData<DeviceSchedule?>
         get() = _schedule
 
+    private val _schedules =
+        MutableLiveData<List<DeviceSchedule>>()
+
+    val schedules: LiveData<List<DeviceSchedule>>
+        get() = _schedules
+
 
     // =========================================================
     // Error
@@ -64,6 +70,17 @@ class ScheduleViewModel : ViewModel() {
                 _error.postValue(
                     message
                 )
+            }
+        )
+    }
+
+    fun observeAllSchedules() {
+        repository.observeAllSchedules(
+            onSuccess = { schedules ->
+                _schedules.postValue(schedules)
+            },
+            onError = { message ->
+                _error.postValue(message)
             }
         )
     }

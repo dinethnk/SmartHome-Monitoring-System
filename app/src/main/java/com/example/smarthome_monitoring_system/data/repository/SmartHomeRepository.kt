@@ -9,9 +9,11 @@ import com.example.smarthome_monitoring_system.data.model.Alert
 import com.example.smarthome_monitoring_system.data.model.Device
 import com.example.smarthome_monitoring_system.data.model.DeviceSchedule
 import com.example.smarthome_monitoring_system.data.model.Floor
+import com.example.smarthome_monitoring_system.data.model.HomeEvent
 import com.example.smarthome_monitoring_system.data.model.SafetyRuntime
 import com.example.smarthome_monitoring_system.data.model.SafetySettings
 import com.example.smarthome_monitoring_system.data.model.SwitchChannel
+import com.example.smarthome_monitoring_system.data.model.UsageRecord
 
 class SmartHomeRepository(
     private val floorFirebaseDataSource: FloorFirebaseDataSource,
@@ -21,7 +23,11 @@ class SmartHomeRepository(
     private val safetyFirebaseDataSource: SafetyFirebaseDataSource =
         SafetyFirebaseDataSource(),
     private val alertFirebaseDataSource: AlertFirebaseDataSource =
-        AlertFirebaseDataSource()
+        AlertFirebaseDataSource(),
+    private val usageRecordFirebaseDataSource: com.example.smarthome_monitoring_system.data.firebase.UsageRecordFirebaseDataSource =
+        com.example.smarthome_monitoring_system.data.firebase.UsageRecordFirebaseDataSource(),
+    private val homeEventFirebaseDataSource: com.example.smarthome_monitoring_system.data.firebase.HomeEventFirebaseDataSource =
+        com.example.smarthome_monitoring_system.data.firebase.HomeEventFirebaseDataSource()
 ) {
 
     // =========================================================
@@ -120,7 +126,24 @@ class SmartHomeRepository(
     ) {
         deviceFirebaseDataSource.updateDevice(
             device = device,
-            onSuccess = onSuccess,
+            onSuccess = {
+                // Automatically log a HomeEvent for status changes
+                val statusMessage = if (device.status == com.example.smarthome_monitoring_system.data.model.DeviceStatus.ON) 
+                    "Device was turned ON" else "Device was turned OFF"
+                
+                logEvent(
+                    com.example.smarthome_monitoring_system.data.model.HomeEvent(
+                        deviceId = device.id,
+                        deviceName = device.name,
+                        type = if (device.status == com.example.smarthome_monitoring_system.data.model.DeviceStatus.ON) "POWER_ON" else "POWER_OFF",
+                        message = statusMessage,
+                        timestamp = System.currentTimeMillis()
+                    ),
+                    onSuccess = {},
+                    onError = {}
+                )
+                onSuccess()
+            },
             onError = onError
         )
     }
@@ -272,6 +295,16 @@ class SmartHomeRepository(
         )
     }
 
+    fun observeAllSchedules(
+        onSuccess: (List<DeviceSchedule>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        scheduleFirebaseDataSource.observeAllSchedules(
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
 
     // =========================================================
     // SAFETY SETTINGS
@@ -371,4 +404,36 @@ class SmartHomeRepository(
                 onError = onError
             )
         }
+
+    fun observeUsageRecords(
+        onSuccess: (List<UsageRecord>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        usageRecordFirebaseDataSource.observeUsageRecords(
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
+    fun logEvent(
+        event: HomeEvent,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        homeEventFirebaseDataSource.logEvent(
+            event = event,
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
+
+    fun observeEvents(
+        onSuccess: (List<HomeEvent>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        homeEventFirebaseDataSource.observeEvents(
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
 }

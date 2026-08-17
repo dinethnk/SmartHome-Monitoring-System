@@ -35,4 +35,7 @@ object FirebaseDataSource {
 
     val simulatorEventsReference: DatabaseReference
         get() = database.getReference("simulatorEvents")
+
+    val eventsReference: DatabaseReference
+        get() = database.getReference("events")
 }
