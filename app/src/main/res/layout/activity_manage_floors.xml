@@ -82,12 +82,4 @@
         tools:itemCount="3"
         tools:listitem="@layout/item_floor" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
-        android:elevation="8dp"
-        app:menu="@menu/menu_bottom_navigation" />
-
 </LinearLayout>
